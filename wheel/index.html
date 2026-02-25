@@ -1,0 +1,1574 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Колесо Фортуны — Premium Edition</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* Адаптация под тему Telegram */
+        body {
+            background-color: var(--tg-theme-bg-color, var(--bg));
+            color: var(--tg-theme-text-color, var(--txt));
+        }
+        
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        
+        :root{
+            --h:218;
+            --h-alt:280;
+            --bg:hsl(var(--h) 42% 5%);
+            --bg-deep:hsl(var(--h) 45% 2%);
+            --acc:hsl(var(--h) 58% 54%);
+            --acc-l:hsl(var(--h) 68% 78%);
+            --acc-xl:hsl(var(--h) 72% 90%);
+            --acc-d:hsl(var(--h) 48% 35%);
+            --glow:hsla(var(--h) 80% 60%/.45);
+            --glow-intense:hsla(var(--h) 70% 65%/.7);
+            --glass:hsla(var(--h) 50% 70%/.12);
+            --glass-b:hsla(var(--h) 45% 65%/.16);
+            --txt:hsl(var(--h) 25% 92%);
+            --txt-m:hsla(var(--h) 22% 72%/.5);
+            --wh:min(420px,78vw);
+            --rare-gold:hsl(45 80% 55%);
+            --bloom-intensity:1;
+        }
+        
+        [data-theme="ocean"] { --h:200; --h-alt:180; }
+        [data-theme="sunset"] { --h:25; --h-alt:340; }
+        [data-theme="forest"] { --h:140; --h-alt:100; }
+        [data-theme="royal"] { --h:270; --h-alt:320; }
+        [data-theme="cyber"] { --h:320; --h-alt:180; }
+        
+        html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+        body{
+            font-family:'Montserrat',sans-serif;
+            min-height:100vh;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            background:var(--bg);
+            overflow-x:hidden;
+            overflow-y:auto;
+        }
+
+        .bg{position:fixed;inset:0;z-index:0;background:
+            radial-gradient(ellipse 130% 90% at 15% 5%,hsla(var(--h) 48% 16%/.55),transparent),
+            radial-gradient(ellipse 110% 100% at 85% 95%,hsla(var(--h) 38% 10%/.6),transparent),
+            linear-gradient(155deg,hsl(var(--h) 42% 5%),hsl(var(--h) 36% 9%));
+            transition:filter 1s ease;
+        }
+        .bg.spinning{filter:hue-rotate(10deg) brightness(1.1)}
+        .bg.jackpot{filter:hue-rotate(-20deg) brightness(1.3)}
+        .bg.bullet-time{filter:hue-rotate(5deg) saturate(1.4) brightness(1.1)}
+        
+        /* ... Остальной CSS остается без изменений ... */
+        .neon-signs-container{position:fixed;inset:0;pointer-events:none;z-index:3;opacity:0;transition:opacity 1s;}
+        .neon-signs-container.active{opacity:1}
+        .neon-sign{position:absolute;font-family:'Montserrat',sans-serif;font-weight:900;text-transform:uppercase;animation:neonFlicker 3s ease-in-out infinite;}
+        .neon-sign-1{top:8%;left:5%;font-size:clamp(14px,2vw,24px);color:hsl(320 100% 60%);text-shadow:0 0 10px hsl(320 100% 60%),0 0 20px hsl(320 100% 60%),0 0 40px hsl(320 100% 50%);transform:rotate(-5deg);}
+        .neon-sign-2{top:12%;right:8%;font-size:clamp(12px,1.8vw,20px);color:hsl(180 100% 50%);text-shadow:0 0 10px hsl(180 100% 50%),0 0 20px hsl(180 100% 50%);transform:rotate(3deg);}
+        .neon-sign-3{bottom:15%;left:8%;font-size:clamp(10px,1.5vw,16px);color:hsl(45 100% 60%);text-shadow:0 0 10px hsl(45 100% 60%);transform:rotate(-8deg);}
+        .neon-sign-4{bottom:20%;right:5%;font-size:clamp(12px,1.6vw,18px);color:hsl(280 100% 70%);text-shadow:0 0 10px hsl(280 100% 70%);transform:rotate(5deg);}
+        @keyframes neonFlicker{0%,100%{opacity:1}92%{opacity:1}93%{opacity:0.8}94%{opacity:1}96%{opacity:0.9}97%{opacity:1}}
+        
+        .cyber-rain-container{position:fixed;inset:0;pointer-events:none;z-index:2;opacity:0;transition:opacity 1s;overflow:hidden;}
+        .cyber-rain-container.active{opacity:1}
+        .cyber-drop{position:absolute;width:2px;background:linear-gradient(to bottom,transparent,hsla(180 100% 50%/.8),hsla(180 100% 50%/.3));opacity:0;}
+        
+        .holo-ads-container{position:fixed;inset:0;pointer-events:none;z-index:4;opacity:0;transition:opacity 1s;}
+        .holo-ads-container.active{opacity:1}
+        .holo-ad{position:absolute;padding:10px 20px;background:linear-gradient(135deg,hsla(180 100% 50%/.1),hsla(320 100% 60%/.1));border:1px solid hsla(180 100% 50%/.3);border-radius:8px;backdrop-filter:blur(5px);animation:holoFloat 8s ease-in-out infinite;}
+        .holo-ad-1{top:25%;left:3%;animation-delay:0s;}
+        .holo-ad-2{top:40%;right:4%;animation-delay:2s;}
+        .holo-ad-3{bottom:30%;left:6%;animation-delay:4s;}
+        .holo-ad-text{font-size:clamp(8px,1vw,12px);font-weight:600;color:hsla(180 100% 70%/1);text-transform:uppercase;letter-spacing:2px;}
+        .holo-ad-text span{color:hsla(320 100% 70%/1);}
+        @keyframes holoFloat{0%,100%{transform:translateY(0) translateX(0);opacity:0.7}25%{transform:translateY(-10px) translateX(5px);opacity:0.9}50%{transform:translateY(-5px) translateX(-5px);opacity:0.8}75%{transform:translateY(-15px) translateX(3px);opacity:1}}
+        
+        .glitch-overlay{position:fixed;inset:0;pointer-events:none;z-index:5;opacity:0;mix-blend-mode:screen;}
+        .glitch-overlay.active{opacity:1;animation:glitchMain 0.3s steps(2) infinite;}
+        .glitch-line{position:absolute;left:0;right:0;height:2px;background:hsla(320 100% 60%/.5);animation:glitchLineMove 0.1s linear infinite;}
+        @keyframes glitchMain{0%{transform:translateX(0)}20%{transform:translateX(-2px)}40%{transform:translateX(2px)}60%{transform:translateX(-1px)}80%{transform:translateX(1px)}100%{transform:translateX(0)}}
+        @keyframes glitchLineMove{0%{top:0%}100%{top:100%}}
+        
+        .scanlines{position:fixed;inset:0;pointer-events:none;z-index:6;background:repeating-linear-gradient(0deg,transparent,transparent 2px,hsla(0 0% 0%/.03) 2px,hsla(0 0% 0%/.03) 4px);opacity:0;transition:opacity 1s;}
+        .scanlines.active{opacity:1}
+        
+        .black-hole-container{position:absolute;inset:-100px;border-radius:50%;pointer-events:none;z-index:0;opacity:0;transition:opacity .5s;}
+        .black-hole-container.active{opacity:1}
+        .black-hole-ring{position:absolute;border-radius:50%;border:1px solid var(--acc);animation:blackHoleSpin 8s linear infinite;}
+        .black-hole-ring:nth-child(1){inset:20px;opacity:.4;animation-duration:6s}
+        .black-hole-ring:nth-child(2){inset:40px;opacity:.3;animation-duration:8s;animation-direction:reverse}
+        .black-hole-ring:nth-child(3){inset:60px;opacity:.2;animation-duration:10s}
+        .black-hole-ring:nth-child(4){inset:80px;opacity:.15;animation-duration:12s;animation-direction:reverse}
+        @keyframes blackHoleSpin{0%{transform:rotate(0deg) scale(1)}50%{transform:rotate(180deg) scale(1.05)}100%{transform:rotate(360deg) scale(1)}}
+        .gravity-particles{position:absolute;inset:-150px;border-radius:50%;pointer-events:none;overflow:hidden;}
+        .gravity-particle{position:absolute;border-radius:50%;background:var(--acc-l);box-shadow:0 0 10px var(--glow);}
+        .space-distortion{position:absolute;inset:-50px;border-radius:50%;pointer-events:none;background:radial-gradient(ellipse at center,transparent 30%,hsla(var(--h) 60% 50%/.05) 50%,hsla(var(--h) 70% 60%/.1) 70%,transparent 100%);filter:blur(20px);animation:distortPulse 2s ease-in-out infinite;}
+        @keyframes distortPulse{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.1);opacity:.8}}
+        
+        .bloom-layer{position:fixed;inset:0;z-index:1;pointer-events:none;filter:blur(80px) brightness(calc(var(--bloom-intensity) * 1.5));opacity:.4;mix-blend-mode:screen;transition:opacity .5s, filter .5s;}
+        .bloom-layer.active{opacity:.7;filter:blur(60px) brightness(calc(var(--bloom-intensity) * 2))}
+        .bloom-source{position:absolute;border-radius:50%;background:radial-gradient(circle,var(--acc-l),transparent)}
+        
+        .motion-blur{position:absolute;inset:0;border-radius:50%;pointer-events:none;z-index:2;opacity:0;transition:opacity .3s}
+        .motion-blur.active{opacity:1}
+        .motion-blur-ring{position:absolute;inset:-5px;border-radius:50%;border:2px solid var(--acc);opacity:.3;filter:blur(2px)}
+        
+        .parallax-bg{position:fixed;inset:0;z-index:0;will-change:transform;transition:transform .1s linear}
+        .orb{position:fixed;border-radius:50%;filter:blur(120px);z-index:0;will-change:transform,opacity}
+        .o1{width:700px;height:700px;background:hsla(var(--h) 50% 22%/.2);top:-20%;left:-14%;animation:oF1 30s ease-in-out infinite alternate}
+        .o2{width:520px;height:520px;background:hsla(var(--h) 55% 28%/.16);bottom:-16%;right:-10%;animation:oF2 24s ease-in-out infinite alternate-reverse}
+        .o3{width:300px;height:300px;background:hsla(var(--h) 65% 40%/.08);top:35%;left:50%;animation:oF3 35s ease-in-out infinite alternate}
+        .o4{width:200px;height:200px;background:hsla(var(--h-alt) 60% 35%/.1);top:10%;right:20%;animation:oF4 40s ease-in-out infinite alternate}
+        @keyframes oF1{0%{transform:translate(0,0) scale(1)}33%{transform:translate(55px,-80px) scale(1.12)}66%{transform:translate(-40px,55px) scale(.9)}100%{transform:translate(30px,-30px) scale(1.06)}}
+        @keyframes oF2{0%{transform:translate(0,0) scale(1)}40%{transform:translate(-70px,40px) scale(1.15)}70%{transform:translate(30px,-60px) scale(.88)}100%{transform:translate(-20px,20px) scale(1.04)}}
+        @keyframes oF3{0%{transform:translate(-50%,0) scale(1)}50%{transform:translate(-30%,-40px) scale(1.2)}100%{transform:translate(-70%,20px) scale(.85)}}
+        @keyframes oF4{0%{transform:translate(0,0) scale(1)}50%{transform:translate(-40px,60px) scale(1.3)}100%{transform:translate(20px,-30px) scale(.9)}}
+        
+        .noise{position:fixed;inset:0;z-index:0;opacity:.022;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:256px}
+        .grid{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(hsla(var(--h) 40% 45%/.02) 1px,transparent 1px),linear-gradient(90deg,hsla(var(--h) 40% 45%/.02) 1px,transparent 1px);background-size:72px 72px;animation:gridMove 60s linear infinite}
+        @keyframes gridMove{to{background-position:72px 72px}}
+        .stars{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+        .star{position:absolute;width:2px;height:2px;background:var(--acc-l);border-radius:50%;opacity:0;animation:starPulse 4s ease-in-out infinite}
+        @keyframes starPulse{0%,100%{opacity:0;transform:scale(.5)}50%{opacity:.8;transform:scale(1)}}
+        
+        .crystals{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+        .crystal{position:absolute;opacity:0;will-change:transform,opacity,filter;animation:crystalFloat 25s ease-in-out infinite}
+        .crystal-shape{clip-path:polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);background:linear-gradient(135deg,hsla(var(--h) 50% 75%/.12),hsla(var(--h) 60% 85%/.06));box-shadow:0 0 15px hsla(var(--h) 70% 80%/.08)}
+        .crystal.near .crystal-shape{filter:blur(0px);opacity:1}
+        .crystal.mid .crystal-shape{filter:blur(1px);opacity:.7}
+        .crystal.far .crystal-shape{filter:blur(3px);opacity:.4}
+        .crystal.vfar .crystal-shape{filter:blur(6px);opacity:.2}
+        @keyframes crystalFloat{0%,100%{opacity:0;transform:translateY(100vh) rotate(0deg) scale(.3)}8%{opacity:1}50%{opacity:1;transform:translateY(50vh) rotate(180deg) scale(1)}92%{opacity:1}100%{opacity:0;transform:translateY(-10vh) rotate(360deg) scale(.3)}}
+
+        .holographic-overlay{position:absolute;inset:0;border-radius:50%;pointer-events:none;z-index:5;opacity:0;mix-blend-mode:overlay;transition:opacity .5s}
+        .holographic-overlay.active{opacity:1;animation:holographicShift 3s linear infinite}
+        @keyframes holographicShift{
+            0%{background:linear-gradient(45deg,hsla(0 80% 70%/.2),hsla(60 80% 70%/.2),hsla(120 80% 70%/.2),hsla(180 80% 70%/.2),hsla(240 80% 70%/.2),hsla(300 80% 70%/.2))}
+            100%{background:linear-gradient(45deg,hsla(0 80% 70%/.2),hsla(60 80% 70%/.2),hsla(120 80% 70%/.2),hsla(180 80% 70%/.2),hsla(240 80% 70%/.2),hsla(300 80% 70%/.2))}
+        }
+        
+        .ptr.stopped{animation:ptrMorph .6s cubic-bezier(.175,.885,.32,1.275) forwards}
+        @keyframes ptrMorph{
+            0%{transform:translateX(-50%) scale(1) rotate(0deg)}
+            20%{transform:translateX(-50%) scale(1.15) rotate(3deg)}
+            40%{transform:translateX(-50%) scale(.95) rotate(-2deg)}
+            60%{transform:translateX(-50%) scale(1.05) rotate(1deg)}
+            80%{transform:translateX(-50%) scale(.98) rotate(-0.5deg)}
+            100%{transform:translateX(-50%) scale(1) rotate(0deg)}
+        }
+        
+        .ptr.bullet-time{animation:ptrBulletTime 0.5s ease-in-out infinite;}
+        @keyframes ptrBulletTime{
+            0%,100%{transform:translateX(-50%) scale(1);filter:drop-shadow(0 8px 35px var(--glow))}
+            50%{transform:translateX(-50%) scale(1.1);filter:drop-shadow(0 12px 50px var(--glow-intense))}
+        }
+        
+        .ptr{
+            position:absolute;top:-42px;left:50%;transform:translateX(-50%);z-index:20;
+            filter:drop-shadow(0 8px 35px var(--glow));transform-origin:50% 85%;
+            animation:ptrIdle 3s ease-in-out infinite;transition:filter .2s;
+        }
+        @keyframes ptrIdle{0%,100%{transform:translateX(-50%) rotate(-1deg)}50%{transform:translateX(-50%) rotate(1deg)}}
+        
+        .ptr-body{width:40px;height:54px;position:relative;transition:all .3s ease}
+        .ptr-shape{width:100%;height:100%;transition:all .3s ease}
+        .ptr[data-shape="triangle"] .ptr-shape{clip-path:polygon(50% 100%,0 0,100% 0);background:linear-gradient(180deg,var(--acc-l),hsla(var(--h) 52% 50%/.88))}
+        .ptr[data-shape="diamond"] .ptr-shape{clip-path:polygon(50% 100%,0 40%,50% 0,100% 40%);background:linear-gradient(180deg,var(--acc-l),hsla(var(--h) 52% 50%/.88))}
+        .ptr[data-shape="arrow"] .ptr-shape{clip-path:polygon(50% 100%,20% 30%,35% 30%,35% 0,65% 0,65% 30%,80% 30%);background:linear-gradient(180deg,var(--acc-l),hsla(var(--h) 52% 50%/.88))}
+        .ptr[data-shape="claw"] .ptr-shape{clip-path:polygon(50% 100%,30% 20%,35% 0,45% 15%,50% 0,55% 15%,65% 0,70% 20%);background:linear-gradient(180deg,var(--acc-l),hsla(var(--h) 52% 50%/.88))}
+        .ptr[data-shape="crystal"] .ptr-shape{clip-path:polygon(50% 100%,15% 35%,30% 0,50% 15%,70% 0,85% 35%);background:linear-gradient(180deg,var(--acc-l),hsla(var(--h) 52% 50%/.88))}
+        .ptr[data-shape="sword"] .ptr-shape{clip-path:polygon(50% 100%,45% 15%,40% 0,50% 5%,60% 0,55% 15%);background:linear-gradient(180deg,var(--acc-l),hsla(var(--h) 52% 50%/.88))}
+        
+        .ptr-shape::before{content:'';position:absolute;inset:3px;background:linear-gradient(180deg,rgba(255,255,255,.5),transparent 60%);transition:all .3s ease}
+        .ptr[data-shape="triangle"] .ptr-shape::before{clip-path:polygon(50% 100%,0 0,100% 0)}
+        .ptr[data-shape="diamond"] .ptr-shape::before{clip-path:polygon(50% 100%,0 40%,50% 0,100% 40%)}
+        .ptr[data-shape="arrow"] .ptr-shape::before{clip-path:polygon(50% 100%,20% 30%,35% 30%,35% 0,65% 0,65% 30%,80% 30%)}
+        .ptr[data-shape="claw"] .ptr-shape::before{clip-path:polygon(50% 100%,30% 20%,35% 0,45% 15%,50% 0,55% 15%,65% 0,70% 20%)}
+        .ptr[data-shape="crystal"] .ptr-shape::before{clip-path:polygon(50% 100%,15% 35%,30% 0,50% 15%,70% 0,85% 35%)}
+        .ptr[data-shape="sword"] .ptr-shape::before{clip-path:polygon(50% 100%,45% 15%,40% 0,50% 5%,60% 0,55% 15%)}
+        
+        .ptr-hi{position:absolute;top:4px;left:50%;transform:translateX(-50%);width:16px;height:24px;clip-path:polygon(50% 100%,10% 0,90% 0);background:linear-gradient(180deg,rgba(255,255,255,.6),transparent);animation:ptrGlow 2s ease-in-out infinite}
+        @keyframes ptrGlow{0%,100%{opacity:.6}50%{opacity:1}}
+        .ptr-glow{position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);width:22px;height:22px;border-radius:50%;background:var(--glow);filter:blur(10px);animation:pG 2.4s ease-in-out infinite}
+        @keyframes pG{0%,100%{opacity:.3;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(2.2)}}
+        
+        .pointer-customizer{
+            position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:60;
+            display:flex;gap:10px;padding:10px 16px;background:hsla(var(--h) 40% 10%/.85);
+            backdrop-filter:blur(20px);border-radius:16px;border:1px solid var(--glass-b);
+            opacity:0;animation:fadeUp 1s cubic-bezier(.22,.6,.36,1) forwards .9s;
+        }
+        .ptr-shape-btn{width:36px;height:36px;border-radius:10px;border:2px solid transparent;background:hsla(var(--h) 50% 30%/.3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;}
+        .ptr-shape-btn:hover{transform:scale(1.1);background:hsla(var(--h) 50% 40%/.4)}
+        .ptr-shape-btn.active{border-color:var(--acc-l);box-shadow:0 0 15px var(--glow)}
+        .ptr-shape-btn svg{width:20px;height:20px;fill:var(--txt)}
+        
+        .glitter-container{position:absolute;inset:0;border-radius:50%;pointer-events:none;z-index:6;overflow:hidden;opacity:0;transition:opacity .5s}
+        .glitter-container.active{opacity:1}
+        .glitter{position:absolute;width:4px;height:4px;border-radius:50%;background:#fff;box-shadow:0 0 6px #fff, 0 0 12px var(--rare-gold);animation:glitterPulse .8s ease-in-out infinite}
+        @keyframes glitterPulse{0%,100%{opacity:.3;transform:scale(.5)}50%{opacity:1;transform:scale(1.2)}}
+        
+        .magnetic-sparks{position:fixed;inset:0;pointer-events:none;z-index:15;overflow:hidden}
+        .spark{position:absolute;border-radius:50%;pointer-events:none}
+        .mouse-particles{position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden}
+        .mouse-particle{position:absolute;border-radius:50%;pointer-events:none;background:radial-gradient(circle,hsla(var(--h) 70% 80%/.8),transparent)}
+        .stardust{position:fixed;inset:0;z-index:3;pointer-events:none;overflow:hidden;opacity:0;transition:opacity .5s}
+        .stardust.active{opacity:1}
+        .stardust-particle{position:absolute;border-radius:50%;pointer-events:none;background:radial-gradient(circle,#fff,hsla(var(--h) 70% 80%/.5),transparent)}
+        
+        .neon-glow{position:absolute;inset:-20px;border-radius:50%;pointer-events:none;z-index:1;opacity:.5;transition:opacity .3s, filter .3s}
+        .neon-glow-ring{position:absolute;inset:0;border-radius:50%;border:3px solid var(--acc);filter:blur(8px);animation:neonPulse 2s ease-in-out infinite}
+        .neon-glow-ring:nth-child(2){inset:5px;border-color:var(--acc-l);filter:blur(12px);animation-delay:.3s}
+        .neon-glow-ring:nth-child(3){inset:10px;border-color:var(--acc-xl);filter:blur(20px);animation-delay:.6s}
+        @keyframes neonPulse{0%,100%{opacity:.4}50%{opacity:.8}}
+        
+        .time-warp{position:fixed;inset:0;pointer-events:none;z-index:14;opacity:0;transition:opacity .5s}
+        .time-warp.active{opacity:1}
+        .time-warp-ring{position:absolute;top:50%;left:50%;transform:translate(-50%, -50%);border-radius:50%;border:1px solid var(--acc);opacity:.3;animation:timeWarpExpand 1s ease-out infinite}
+        @keyframes timeWarpExpand{0%{width:100px;height:100px;opacity:.5}100%{width:600px;height:600px;opacity:0}}
+        
+        .bullet-time-waves{position:fixed;inset:0;pointer-events:none;z-index:13;opacity:0;transition:opacity .5s}
+        .bullet-time-waves.active{opacity:1}
+        .bt-wave{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:50%;border:2px solid var(--acc-l);opacity:0;}
+        
+        .frozen-particles{position:fixed;inset:0;pointer-events:none;z-index:12;opacity:0;transition:opacity .3s}
+        .frozen-particles.active{opacity:1}
+        .frozen-particle{position:absolute;border-radius:50%;background:var(--acc-l);box-shadow:0 0 10px var(--glow);animation:frozenPulse 1s ease-in-out infinite;}
+        @keyframes frozenPulse{0%,100%{opacity:0.5;transform:scale(1)}50%{opacity:1;transform:scale(1.2)}}
+        
+        .theme-selector{position:fixed;top:18px;left:22px;z-index:50;display:flex;gap:8px;opacity:0;animation:fadeUp 1s cubic-bezier(.22,.6,.36,1) forwards .7s;}
+        .theme-btn{width:32px;height:32px;border-radius:50%;border:2px solid var(--glass-b);cursor:pointer;transition:all .3s;position:relative;overflow:hidden;}
+        .theme-btn:hover{transform:scale(1.15);border-color:var(--acc)}
+        .theme-btn.active{border-color:var(--acc-l);box-shadow:0 0 15px var(--glow)}
+        .theme-btn::before{content:'';position:absolute;inset:3px;border-radius:50%}
+        .theme-btn[data-theme="default"]::before{background:linear-gradient(135deg,hsl(218 58% 54%),hsl(218 48% 35%))}
+        .theme-btn[data-theme="ocean"]::before{background:linear-gradient(135deg,hsl(200 58% 54%),hsl(180 48% 35%))}
+        .theme-btn[data-theme="sunset"]::before{background:linear-gradient(135deg,hsl(25 58% 54%),hsl(340 48% 35%))}
+        .theme-btn[data-theme="forest"]::before{background:linear-gradient(135deg,hsl(140 58% 54%),hsl(100 48% 35%))}
+        .theme-btn[data-theme="royal"]::before{background:linear-gradient(135deg,hsl(270 58% 54%),hsl(320 48% 35%))}
+        .theme-btn[data-theme="cyber"]::before{background:linear-gradient(135deg,hsl(320 58% 54%),hsl(180 48% 35%))}
+        
+        .ambient-toggle{
+            position:fixed;top:18px;left:280px;z-index:50;width:36px;height:36px;
+            border-radius:50%;border:2px solid var(--glass-b);background:hsla(var(--h) 40% 15%/.6);
+            cursor:pointer;display:flex;align-items:center;justify-content:center;
+            transition:all .3s;opacity:0;animation:fadeUp 1s cubic-bezier(.22,.6,.36,1) forwards .8s;
+        }
+        .ambient-toggle:hover{transform:scale(1.1);border-color:var(--acc)}
+        .ambient-toggle.active{border-color:var(--acc-l);box-shadow:0 0 15px var(--glow)}
+        .ambient-toggle svg{width:18px;height:18px;fill:var(--txt);transition:all .3s}
+        .ambient-toggle.active svg{fill:var(--acc-l)}
+        
+        .main{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;padding:20px;padding-top:10px;}
+        .hdr{text-align:center;opacity:0;animation:hdrAppear 1s cubic-bezier(.22,.6,.36,1) forwards .2s;margin-bottom:10px;}
+        @keyframes hdrAppear{to{opacity:1;transform:translateY(-60px)}}
+        .hdr h1{
+            font-size:clamp(22px,5vw,40px);font-weight:900;letter-spacing:6px;text-transform:uppercase;
+            background:linear-gradient(100deg,hsla(var(--h) 35% 58%/.6) 0%,var(--txt) 28%,#fff 50%,var(--txt) 72%,hsla(var(--h) 35% 58%/.6) 100%);
+            background-size:280% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+            animation:titleMove 5s ease-in-out infinite, tSh 8s linear infinite;
+            filter:drop-shadow(0 4px 30px hsla(var(--h) 60% 50%/.3));position:relative;display:inline-block;
+        }
+        @keyframes titleMove{0%,100%{transform:translateY(0) translateX(0) rotate(0deg)}25%{transform:translateY(-4px) translateX(3px) rotate(0.3deg)}50%{transform:translateY(-1px) translateX(-2px) rotate(-0.2deg)}75%{transform:translateY(3px) translateX(2px) rotate(0.2deg)}}
+        .hdr h1::before{content:'✦';position:absolute;left:-28px;top:50%;transform:translateY(-50%);font-size:14px;background:linear-gradient(135deg,var(--acc-l),var(--acc));-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:starSpin 4s linear infinite}
+        .hdr h1::after{content:'✦';position:absolute;right:-28px;top:50%;transform:translateY(-50%);font-size:14px;background:linear-gradient(135deg,var(--acc),var(--acc-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:starSpin 4s linear infinite reverse}
+        @keyframes starSpin{0%{transform:translateY(-50%) rotate(0deg)}100%{transform:translateY(-50%) rotate(360deg)}}
+        .hdr .sub{font-size:10px;font-weight:500;color:var(--txt-m);letter-spacing:10px;text-transform:uppercase;margin-top:6px;opacity:0;animation:fadeUp .8s ease forwards .5s}
+        @keyframes tSh{0%{background-position:280% center}100%{background-position:-280% center}}
+        @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+        .wh-wrap,.btn{transform:translateY(20px)}
+
+        .wh-wrap{position:relative;width:var(--wh);height:var(--wh);opacity:0;animation:fadeUp 1s cubic-bezier(.22,.6,.36,1) forwards .35s}
+        .ring{
+            position:absolute;inset:-30px;border-radius:50%;
+            background:linear-gradient(135deg,hsla(var(--h) 50% 58%/.08),hsla(var(--h) 40% 38%/.02) 40%,hsla(var(--h) 50% 58%/.06));
+            border:1px solid var(--glass-b);
+            box-shadow:0 0 120px hsla(var(--h) 55% 28%/.15),0 0 60px hsla(var(--h) 55% 35%/.08),inset 0 0 100px hsla(var(--h) 55% 28%/.06),inset 0 2px 0 hsla(0 0% 100%/.05);
+            backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+            animation:ringPulse 4s ease-in-out infinite;transition:box-shadow .3s;
+        }
+        .ring.spinning{box-shadow:0 0 180px hsla(var(--h) 55% 28%/.25),0 0 100px hsla(var(--h) 55% 35%/.15),inset 0 0 100px hsla(var(--h) 55% 28%/.06)}
+        @keyframes ringPulse{0%,100%{box-shadow:0 0 120px hsla(var(--h) 55% 28%/.15),0 0 60px hsla(var(--h) 55% 35%/.08),inset 0 0 100px hsla(var(--h) 55% 28%/.06)}50%{box-shadow:0 0 150px hsla(var(--h) 55% 28%/.22),0 0 80px hsla(var(--h) 55% 35%/.12),inset 0 0 120px hsla(var(--h) 55% 28%/.08)}}
+        .ring::before{content:'';position:absolute;inset:10px;border-radius:50%;border:1px solid hsla(var(--h) 50% 65%/.04);background:linear-gradient(180deg,hsla(0 0% 100%/.02),transparent 50%)}
+        .ring::after{content:'';position:absolute;inset:5px;border-radius:50%;border:1px solid hsla(var(--h) 50% 65%/.05)}
+
+        .leds{position:absolute;inset:-30px;border-radius:50%;pointer-events:none}
+        .led{position:absolute;width:5px;height:5px;border-radius:50%;background:var(--acc-l);opacity:.08;top:50%;left:50%;transition:opacity .1s,box-shadow .1s,transform .12s}
+        .led.on{opacity:1;box-shadow:0 0 15px var(--glow),0 0 30px hsla(var(--h) 70% 60%/.25);transform:scale(1.4)}
+        .led.chase{opacity:.6;box-shadow:0 0 8px var(--glow);transform:scale(1.2)}
+
+        .rotor{position:absolute;inset:0;border-radius:50%;will-change:transform}
+        .cv{width:100%;height:100%;border-radius:50%;display:block}
+        .in-sh{position:absolute;inset:0;border-radius:50%;box-shadow:inset 0 0 80px hsla(var(--h) 42% 4%/.5),inset 0 -10px 40px hsla(var(--h) 42% 4%/.3);pointer-events:none;z-index:3}
+        .gloss{position:absolute;inset:0;border-radius:50%;background:linear-gradient(165deg,hsla(var(--h) 60% 90%/.08) 0%,transparent 35%),linear-gradient(195deg,transparent 65%,hsla(var(--h) 60% 20%/.05) 100%);pointer-events:none;z-index:3}
+
+        .hub{
+            position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:85px;height:85px;border-radius:50%;z-index:10;
+            background:linear-gradient(145deg,hsla(var(--h) 38% 22%/.92),hsla(var(--h) 34% 10%/.98));
+            border:1px solid hsla(var(--h) 50% 58%/.2);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
+            box-shadow:0 0 60px hsla(var(--h) 48% 22%/.3),0 0 120px hsla(var(--h) 48% 22%/.1),inset 0 2px 0 hsla(0 0% 100%/.1),inset 0 -4px 16px hsla(var(--h) 38% 4%/.4);
+            display:flex;align-items:center;justify-content:center;animation:hubFloat 6s ease-in-out infinite;
+        }
+        @keyframes hubFloat{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.02)}}
+        .hub::before{content:'';position:absolute;inset:7px;border-radius:50%;border:1px solid hsla(var(--h) 50% 58%/.08);background:radial-gradient(circle at 30% 30%,hsla(var(--h) 58% 68%/.08),transparent 55%)}
+        .hub::after{content:'';position:absolute;inset:16px;border-radius:50%;background:radial-gradient(circle,var(--acc-xl),var(--acc));box-shadow:0 0 25px var(--glow),0 0 50px hsla(var(--h) 70% 60%/.15);animation:hubP 3s ease-in-out infinite}
+        @keyframes hubP{0%,100%{box-shadow:0 0 25px var(--glow),0 0 50px hsla(var(--h) 70% 60%/.15)}50%{box-shadow:0 0 45px var(--glow),0 0 90px hsla(var(--h) 70% 60%/.25)}}
+
+        .burst{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:0;height:0;border-radius:50%;background:radial-gradient(circle,hsla(var(--h) 70% 68%/.25),hsla(var(--h) 70% 68%/.1) 40%,transparent 70%);pointer-events:none;z-index:4;transition:width 1.5s cubic-bezier(.1,.8,.1,1),height 1.5s cubic-bezier(.1,.8,.1,1)}
+        .burst.on{width:850px;height:850px}
+        .rays{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:580px;height:580px;z-index:4;pointer-events:none;opacity:0;transition:opacity 1.2s ease}
+        .rays.on{opacity:1;animation:raysRot 25s linear infinite}
+        @keyframes raysRot{to{transform:translate(-50%,-50%) rotate(360deg)}}
+        .ray{position:absolute;top:50%;left:50%;width:2px;height:280px;transform-origin:top center;background:linear-gradient(180deg,hsla(var(--h) 68% 78%/.3),hsla(var(--h) 68% 78%/.1) 40%,transparent);border-radius:1px}
+
+        .energy-ring{position:absolute;inset:-18px;border-radius:50%;border:2px solid transparent;pointer-events:none;z-index:2;opacity:0;transition:opacity .5s}
+        .energy-ring.active{opacity:1;animation:energyPulse 1.5s ease-out infinite}
+        @keyframes energyPulse{0%{transform:scale(1);border-color:hsla(var(--h) 70% 70%/.5)}100%{transform:scale(1.3);border-color:transparent}}
+
+        .btn{
+            position:relative;padding:20px 70px;font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;
+            letter-spacing:6px;text-transform:uppercase;color:var(--txt);cursor:pointer;z-index:1;
+            background:linear-gradient(135deg,hsla(var(--h) 44% 28%/.5),hsla(var(--h) 38% 16%/.6));
+            border:1px solid var(--glass-b);border-radius:60px;backdrop-filter:blur(25px);-webkit-backdrop-filter:blur(25px);
+            box-shadow:0 12px 40px hsla(var(--h) 48% 14%/.3),inset 0 1px 0 hsla(0 0% 100%/.08);
+            transition:all .4s ease;overflow:hidden;opacity:0;
+            animation:fadeUp 1s cubic-bezier(.22,.6,.36,1) forwards .5s;margin-top:48px;
+        }
+        .btn::before{content:'';position:absolute;inset:0;border-radius:inherit;background:linear-gradient(135deg,hsla(var(--h) 58% 72%/.1),transparent 50%);opacity:0;transition:opacity .35s}
+        .btn::after{content:'';position:absolute;top:0;left:-120%;width:70%;height:100%;background:linear-gradient(90deg,transparent,hsla(0 0% 100%/.06),transparent);transition:left .6s ease}
+        .btn:hover:not(:disabled){transform:translateY(-3px);box-shadow:0 18px 55px hsla(var(--h) 55% 18%/.4),0 0 80px hsla(var(--h) 58% 48%/.08),inset 0 1px 0 hsla(0 0% 100%/.1);border-color:hsla(var(--h) 48% 68%/.3);color:#fff}
+        .btn:hover:not(:disabled)::before{opacity:1}
+        .btn:hover:not(:disabled)::after{left:130%}
+        .btn:active:not(:disabled){transform:translateY(0);transition-duration:.1s}
+        .btn:disabled{opacity:.35;cursor:not-allowed;pointer-events:none}
+        .rip{position:absolute;border-radius:50%;background:hsla(var(--h) 58% 78%/.12);transform:scale(0);animation:ripA .7s ease-out forwards;pointer-events:none}
+        @keyframes ripA{to{transform:scale(5);opacity:0}}
+
+        /* МОДАЛЬНОЕ ОКНО */
+        .m-ov{
+            position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;
+            background:hsla(var(--h) 42% 8%/.8);backdrop-filter:blur(30px) saturate(1.2);
+            -webkit-backdrop-filter:blur(30px) saturate(1.2);opacity:0;pointer-events:none;transition:opacity .5s ease;
+        }
+        .m-ov.open{opacity:1;pointer-events:all;}
+        
+        .m-bg-orbs{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+        .m-bg-orb{position:absolute;border-radius:50%;filter:blur(60px);animation:mOrbFloat 8s ease-in-out infinite;}
+        .m-bg-orb-1{width:300px;height:300px;background:hsla(var(--h) 50% 40%/.15);top:-10%;left:-5%;animation-delay:0s;}
+        .m-bg-orb-2{width:250px;height:250px;background:hsla(var(--h) 60% 50%/.12);bottom:-15%;right:-10%;animation-delay:2s;}
+        .m-bg-orb-3{width:200px;height:200px;background:hsla(var(--h) 40% 35%/.1);top:40%;right:10%;animation-delay:4s;}
+        @keyframes mOrbFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.1)}66%{transform:translate(-20px,30px) scale(0.95)}}
+        
+        .m-particles{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+        .m-particle{position:absolute;width:3px;height:3px;background:var(--acc-l);border-radius:50%;opacity:0;animation:mParticleRise 4s ease-in-out infinite;}
+        @keyframes mParticleRise{0%{opacity:0;transform:translateY(100vh) scale(0)}20%{opacity:0.5}80%{opacity:0.5}100%{opacity:0;transform:translateY(-50px) scale(1)}}
+        
+        .m-c{
+            text-align:center;padding:55px 65px 50px;border-radius:32px;max-width:440px;width:90vw;
+            position:relative;overflow:hidden;
+            background:linear-gradient(165deg,hsla(var(--h) 38% 22%/.75),hsla(var(--h) 34% 10%/.85));
+            border:1px solid hsla(var(--h) 48% 58%/.2);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);
+            box-shadow:0 40px 120px hsla(var(--h) 38% 5%/.5),0 0 80px hsla(var(--h) 50% 40%/.1),inset 0 1px 0 hsla(0 0% 100%/.1);
+            transform:scale(.75) translateY(60px);transition:transform .65s cubic-bezier(.175,.885,.32,1.275);
+        }
+        .m-ov.open .m-c{transform:scale(1) translateY(0)}
+        .m-c::before{content:'';position:absolute;top:-50%;right:-30%;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,hsla(var(--h) 60% 60%/.15),transparent 70%);filter:blur(30px);pointer-events:none;}
+        .m-c::after{content:'';position:absolute;bottom:-30%;left:-20%;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,hsla(var(--h) 50% 50%/.1),transparent 70%);filter:blur(25px);pointer-events:none;}
+        
+        .m-tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:6px;text-transform:uppercase;color:var(--acc);padding:10px 26px;border:1px solid hsla(var(--h) 48% 55%/.2);border-radius:50px;margin-bottom:32px;background:hsla(var(--h) 48% 48%/.08)}
+        .m-tag.r{color:var(--rare-gold);border-color:hsla(45 80% 55%/.35);background:hsla(45 80% 50%/.12);box-shadow:0 0 25px hsla(45 80% 55%/.2)}
+        .m-val{font-size:clamp(26px,7vw,40px);font-weight:900;line-height:1.2;margin-bottom:14px;letter-spacing:2px}
+        .m-val.rv{background:linear-gradient(135deg,var(--rare-gold),#fff,var(--rare-gold));background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 30px hsla(45 90% 60%/.3));animation:mShine 3s linear infinite}
+        @keyframes mShine{0%{background-position:200% center}100%{background-position:-200% center}}
+        .m-val.cv{color:var(--acc);filter:drop-shadow(0 0 15px hsla(var(--h) 70% 60%/.3))}
+        
+        .m-value-info{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;}
+        .m-value-badge{display:inline-flex;align-items:center;gap:4px;padding:6px 14px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:1px;}
+        .m-value-badge.common{background:hsla(var(--h) 40% 30%/.3);color:var(--txt-m);border:1px solid hsla(var(--h) 40% 50%/.2);}
+        .m-value-badge.rare{background:hsla(45 80% 50%/.2);color:var(--rare-gold);border:1px solid hsla(45 80% 55%/.3);}
+        .m-value-badge.epic{background:hsla(280 70% 50%/.2);color:hsl(280 80% 75%);border:1px solid hsla(280 70% 60%/.3);}
+        
+        .m-sub{font-size:13px;font-weight:400;color:var(--txt-m);margin-bottom:40px}
+        .m-btn{padding:16px 55px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:600;letter-spacing:5px;text-transform:uppercase;color:var(--acc-l);background:hsla(var(--h) 42% 32%/.25);border:1px solid hsla(var(--h) 48% 55%/.18);border-radius:55px;cursor:pointer;backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);transition:all .35s ease}
+        .m-btn:hover{background:hsla(var(--h) 48% 38%/.35);border-color:hsla(var(--h) 48% 68%/.3);color:#fff;transform:translateY(-2px);box-shadow:0 10px 30px hsla(var(--h) 48% 28%/.3)}
+
+        .counter{position:fixed;top:18px;right:22px;z-index:50;display:flex;align-items:center;gap:8px;font-size:11px;font-weight:600;color:var(--txt-m);letter-spacing:2px;opacity:0;animation:fadeUp 1s cubic-bezier(.22,.6,.36,1) forwards .7s;transform:translateY(20px)}
+        .counter-val{color:var(--acc-l);font-weight:800;font-size:15px;min-width:26px;text-align:center;background:hsla(var(--h) 45% 30%/.28);padding:5px 12px;border-radius:22px;border:1px solid hsla(var(--h) 50% 55%/.12)}
+
+        .fx{position:fixed;inset:0;pointer-events:none;z-index:99;overflow:hidden}
+        .confetti{position:absolute;will-change:transform,opacity}
+        .screen-flash{position:fixed;inset:0;z-index:98;pointer-events:none;background:radial-gradient(circle at center,hsla(var(--h) 70% 80%/.12),transparent 70%);opacity:0}
+        .screen-flash.gold{background:radial-gradient(circle at center,hsla(45 90% 70%/.18),transparent 70%)}
+
+        @media(max-width:480px){
+            .main{padding-top:5px;padding-bottom:80px}.m-c{padding:40px 28px 35px}
+            .hdr{margin-bottom:6px}.hdr h1{font-size:clamp(18px,5vw,28px);letter-spacing:3px}
+            .hdr h1::before,.hdr h1::after{display:none}.hdr .sub{font-size:8px;letter-spacing:6px;margin-top:4px}
+            .wh-wrap{--wh:min(300px,75vw)}.btn{padding:16px 40px;font-size:11px;letter-spacing:4px;margin-top:32px}
+            .counter{top:8px;right:10px;font-size:9px}.ring{inset:-22px}.leds{inset:-22px}
+            .hub{width:65px;height:65px}.hub::after{inset:12px}
+            .ptr{top:-35px}.ptr-body{width:32px;height:44px}.ptr-hi{width:14px;height:20px}
+            .theme-selector{left:10px;top:8px}.theme-btn{width:26px;height:26px}
+            .ambient-toggle{left:auto;right:60px;top:8px;width:30px;height:30px}
+            .pointer-customizer{bottom:10px;padding:8px 12px;gap:8px}.ptr-shape-btn{width:30px;height:30px}
+            .neon-sign,.holo-ad{display:none}
+        }
+        @media(max-width:360px){.hdr h1{font-size:18px}.wh-wrap{--wh:min(260px,80vw)}.btn{padding:14px 32px;font-size:10px;letter-spacing:3px}}
+        @media(min-width:481px) and (max-width:768px){.wh-wrap{--wh:min(360px,70vw)}.hdr h1{font-size:clamp(20px,4vw,32px)}}
+        @media(min-width:1200px){.wh-wrap{--wh:460px}.hdr h1{font-size:44px}}
+    </style>
+</head>
+<body>
+
+<div class="parallax-bg" id="parallaxBg">
+    <div class="bg" id="bg"></div>
+    <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div><div class="orb o4"></div>
+</div>
+<div class="noise"></div>
+<div class="grid"></div>
+<div class="stars" id="stars"></div>
+<div class="crystals" id="crystals"></div>
+<div class="mouse-particles" id="mouseParticles"></div>
+<div class="stardust" id="stardust"></div>
+
+<div class="neon-signs-container" id="neonSigns">
+    <div class="neon-sign neon-sign-1">CYBER<span style="color:hsl(45 100% 60%)">PUNK</span></div>
+    <div class="neon-sign neon-sign-2">FORTUNE</div>
+    <div class="neon-sign neon-sign-3">24/7</div>
+    <div class="neon-sign neon-sign-4">WINNER</div>
+</div>
+
+<div class="cyber-rain-container" id="cyberRain"></div>
+
+<div class="holo-ads-container" id="holoAds">
+    <div class="holo-ad holo-ad-1"><div class="holo-ad-text"><span>NEW</span> BONUS</div></div>
+    <div class="holo-ad holo-ad-2"><div class="holo-ad-text">WIN <span>BIG</span></div></div>
+    <div class="holo-ad holo-ad-3"><div class="holo-ad-text"><span>LIMITED</span> OFFER</div></div>
+</div>
+
+<div class="glitch-overlay" id="glitchOverlay">
+    <div class="glitch-line"></div>
+    <div class="glitch-line" style="animation-delay:0.05s;top:30%"></div>
+    <div class="glitch-line" style="animation-delay:0.1s;top:60%"></div>
+</div>
+<div class="scanlines" id="scanlines"></div>
+
+<div class="bullet-time-waves" id="bulletTimeWaves"></div>
+<div class="frozen-particles" id="frozenParticles"></div>
+
+<div class="bloom-layer" id="bloomLayer">
+    <div class="bloom-source" id="bloomSource" style="width:300px;height:300px;left:50%;top:50%;transform:translate(-50%,-50%)"></div>
+</div>
+
+<div class="time-warp" id="timeWarp">
+    <div class="time-warp-ring"></div>
+    <div class="time-warp-ring" style="animation-delay:.3s"></div>
+    <div class="time-warp-ring" style="animation-delay:.6s"></div>
+</div>
+
+<div class="magnetic-sparks" id="magneticSparks"></div>
+
+<div class="theme-selector">
+    <div class="theme-btn active" data-theme="default" title="Стандартная"></div>
+    <div class="theme-btn" data-theme="ocean" title="Океан"></div>
+    <div class="theme-btn" data-theme="sunset" title="Закат"></div>
+    <div class="theme-btn" data-theme="forest" title="Лес"></div>
+    <div class="theme-btn" data-theme="royal" title="Королевская"></div>
+    <div class="theme-btn" data-theme="cyber" title="Киберпанк"></div>
+</div>
+
+<button class="ambient-toggle" id="ambientToggle" title="Звуки окружения">
+    <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+</button>
+
+<div class="counter">
+    <span>Осталось</span>
+    <span class="counter-val" id="spinsLeft">1</span>
+</div>
+
+<div class="main">
+    <div class="hdr">
+        <h1>Колесо Фортуны</h1>
+        <p class="sub">Испытай свою удачу</p>
+    </div>
+
+    <div class="wh-wrap" id="whWrap">
+        <div class="ring" id="ring"></div>
+        <div class="leds" id="leds"></div>
+        <div class="outer-particles" id="outerParticles"></div>
+        <div class="energy-ring" id="energyRing"></div>
+        
+        <div class="black-hole-container" id="blackHole">
+            <div class="space-distortion"></div>
+            <div class="black-hole-ring"></div>
+            <div class="black-hole-ring"></div>
+            <div class="black-hole-ring"></div>
+            <div class="black-hole-ring"></div>
+            <div class="gravity-particles" id="gravityParticles"></div>
+        </div>
+        
+        <div class="neon-glow" id="neonGlow">
+            <div class="neon-glow-ring"></div>
+            <div class="neon-glow-ring"></div>
+            <div class="neon-glow-ring"></div>
+        </div>
+        
+        <div class="motion-blur" id="motionBlur">
+            <div class="motion-blur-ring"></div>
+            <div class="motion-blur-ring" style="inset:-8px;opacity:.2"></div>
+            <div class="motion-blur-ring" style="inset:-12px;opacity:.1"></div>
+        </div>
+        
+        <div class="ptr" id="ptr" data-shape="triangle">
+            <div class="ptr-body">
+                <div class="ptr-shape"></div>
+            </div>
+            <div class="ptr-hi"></div>
+            <div class="ptr-glow"></div>
+        </div>
+        
+        <div class="rotor" id="rotor">
+            <canvas class="cv" id="cv"></canvas>
+        </div>
+        <div class="in-sh"></div>
+        <div class="gloss"></div>
+        <div class="burst" id="burst"></div>
+        <div class="rays" id="rays"></div>
+        <div class="hub"></div>
+        
+        <div class="glitter-container" id="glitterContainer"></div>
+        <div class="holographic-overlay" id="holographic"></div>
+    </div>
+
+    <button class="btn" id="btnSpin">Крутить</button>
+</div>
+
+<div class="pointer-customizer">
+    <button class="ptr-shape-btn active" data-shape="triangle" title="Треугольник">
+        <svg viewBox="0 0 24 24"><polygon points="12,22 2,4 22,4"/></svg>
+    </button>
+    <button class="ptr-shape-btn" data-shape="diamond" title="Ромб">
+        <svg viewBox="0 0 24 24"><polygon points="12,22 2,12 12,2 22,12"/></svg>
+    </button>
+    <button class="ptr-shape-btn" data-shape="arrow" title="Стрела">
+        <svg viewBox="0 0 24 24"><polygon points="12,22 4,10 8,10 8,2 16,2 16,10 20,10"/></svg>
+    </button>
+    <button class="ptr-shape-btn" data-shape="claw" title="Коготь">
+        <svg viewBox="0 0 24 24"><polygon points="12,22 8,8 10,2 12,6 14,2 16,8"/></svg>
+    </button>
+    <button class="ptr-shape-btn" data-shape="crystal" title="Кристалл">
+        <svg viewBox="0 0 24 24"><polygon points="12,22 4,12 8,2 16,2 20,12"/></svg>
+    </button>
+    <button class="ptr-shape-btn" data-shape="sword" title="Меч">
+        <svg viewBox="0 0 24 24"><polygon points="12,22 10,8 12,2 14,8"/></svg>
+    </button>
+</div>
+
+<div class="m-ov" id="mOv">
+    <div class="m-bg-orbs">
+        <div class="m-bg-orb m-bg-orb-1"></div>
+        <div class="m-bg-orb m-bg-orb-2"></div>
+        <div class="m-bg-orb m-bg-orb-3"></div>
+    </div>
+    <div class="m-particles" id="mParticles"></div>
+    <div class="m-c">
+        <div class="m-tag" id="mTag">🎁 Ваш приз</div>
+        <div class="m-val" id="mVal">Приз</div>
+        <div class="m-value-info" id="mValueInfo"></div>
+        <div class="m-sub" id="mSub">Описание приза</div>
+        <button class="m-btn" id="mBtn">Забрать</button>
+    </div>
+</div>
+
+<div class="fx" id="fx"></div>
+<div class="screen-flash" id="flash"></div>
+
+<script>
+/* =====================================================
+   СТРУКТУРА ПРИЗОВ
+   ===================================================== */
+const PRIZES = [
+    {id: "10d",        label: "10 D",        w: 35, desc: "Небольшой бонус",              d: 10,  rarity: "common"},
+    {id: "25d",        label: "25 D",        w: 28, desc: "Приятный подарок",             d: 25,  rarity: "common"},
+    {id: "50d",        label: "50 D",        w: 20, desc: "Хороший выигрыш",              d: 50,  rarity: "common"},
+    {id: "250d",       label: "250 D",       w: 10, desc: "Отличный приз!",              d: 250, rarity: "rare"},
+    {id: "premium_1d", label: "+1 день Premium", w: 6, desc: "Пробный доступ — 120 D", d: 120, rarity: "rare"},
+    {id: "premium_7d", label: "+7 дней Premium", w: 2, desc: "Невероятная удача! — 600 D", d: 600, rarity: "epic"},
+    {id: "discount_15",label: "Скидка 15%",  w: 12, desc: "На Premium — 200 D",          d: 200, rarity: "rare"},
+];
+
+const N = PRIZES.length;
+const ARC = (Math.PI * 2) / N;
+const SEG_ANGLE = 360 / N;
+
+let H = 218;
+let patternSeed = Math.random() * 1000;
+let patternGeneration = 0;
+
+/* =====================================================
+   TELEGRAM WEB APP
+   ===================================================== */
+// Инициализация
+const tg = window.Telegram.WebApp;
+tg.ready();
+tg.expand();
+
+// URL твоего бота (webhook для колеса)
+// ЗАМЕНИТЬ НА СВОЙ URL
+const API_URL = 'https://144.31.90.103:8443'; 
+
+/* =====================================================
+   DOM ЭЛЕМЕНТЫ
+   ===================================================== */
+const cv = document.getElementById('cv');
+const c = cv.getContext('2d');
+const rotor = document.getElementById('rotor');
+const btnSp = document.getElementById('btnSpin');
+const ptr = document.getElementById('ptr');
+const bg = document.getElementById('bg');
+const ring = document.getElementById('ring');
+const neonGlow = document.getElementById('neonGlow');
+const motionBlur = document.getElementById('motionBlur');
+const bloomLayer = document.getElementById('bloomLayer');
+const energyRing = document.getElementById('energyRing');
+const timeWarp = document.getElementById('timeWarp');
+const burst = document.getElementById('burst');
+const raysEl = document.getElementById('rays');
+const holographic = document.getElementById('holographic');
+const glitterContainer = document.getElementById('glitterContainer');
+const flash = document.getElementById('flash');
+const mOv = document.getElementById('mOv');
+const mTag = document.getElementById('mTag');
+const mVal = document.getElementById('mVal');
+const mValueInfo = document.getElementById('mValueInfo');
+const mSub = document.getElementById('mSub');
+const mBtn = document.getElementById('mBtn');
+const mParticles = document.getElementById('mParticles');
+const spLeft = document.getElementById('spinsLeft');
+const fxEl = document.getElementById('fx');
+const whWrap = document.getElementById('whWrap');
+const blackHole = document.getElementById('blackHole');
+const gravityParticles = document.getElementById('gravityParticles');
+const bulletTimeWaves = document.getElementById('bulletTimeWaves');
+const frozenParticles = document.getElementById('frozenParticles');
+const stardustEl = document.getElementById('stardust');
+const magneticSparks = document.getElementById('magneticSparks');
+const mouseParticlesEl = document.getElementById('mouseParticles');
+
+/* =====================================================
+   СОСТОЯНИЕ
+   ===================================================== */
+let currentAngle = 0;
+let isSpinning = false;
+let targetAngle = 0;
+let animationId = null;
+let S;
+let canSpin = true;
+
+// Эффекты
+let ledA = [];
+let currentTheme = 'default';
+let ambientEnabled = false;
+let ambientContext = null;
+let ambientNodes = [];
+let gravityParticleInterval = null;
+let frozenParticleInterval = null;
+let bulletTimeActive = false;
+let stardustInterval = null;
+let glitterInterval = null;
+let ledIv = null;
+let ledIdx = 0;
+let cyberRainInterval = null;
+
+/* =====================================================
+   ТЕМЫ
+   ===================================================== */
+const themeButtons = document.querySelectorAll('.theme-btn');
+const neonSigns = document.getElementById('neonSigns');
+const cyberRain = document.getElementById('cyberRain');
+const holoAds = document.getElementById('holoAds');
+const glitchOverlay = document.getElementById('glitchOverlay');
+const scanlines = document.getElementById('scanlines');
+const ambientToggle = document.getElementById('ambientToggle');
+
+themeButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        if (isSpinning) return;
+        themeButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const theme = btn.dataset.theme;
+        currentTheme = theme;
+        document.body.dataset.theme = theme === 'default' ? '' : theme;
+        const themes = {ocean:200, sunset:25, forest:140, royal:270, cyber:320};
+        H = themes[theme] || 218;
+        draw();
+        if (theme === 'cyber') {
+            neonSigns.classList.add('active');
+            holoAds.classList.add('active');
+            scanlines.classList.add('active');
+            startCyberRain();
+        } else {
+            neonSigns.classList.remove('active');
+            holoAds.classList.remove('active');
+            scanlines.classList.remove('active');
+            stopCyberRain();
+        }
+    });
+});
+
+/* CYBER RAIN */
+function startCyberRain() {
+    cyberRain.classList.add('active');
+    glitchOverlay.classList.add('active');
+    cyberRainInterval = setInterval(() => {
+        for (let i = 0; i < 5; i++) createCyberDrop();
+    }, 50);
+}
+
+function stopCyberRain() {
+    cyberRain.classList.remove('active');
+    glitchOverlay.classList.remove('active');
+    clearInterval(cyberRainInterval);
+}
+
+function createCyberDrop() {
+    const drop = document.createElement('div');
+    drop.className = 'cyber-drop';
+    drop.style.left = Math.random() * 100 + '%';
+    drop.style.top = '-30px';
+    const height = 15 + Math.random() * 30;
+    drop.style.height = height + 'px';
+    const isCyan = Math.random() > 0.3;
+    const color = isCyan ? 'hsla(180 100% 50%' : 'hsla(320 100% 60%';
+    drop.style.background = `linear-gradient(to bottom,transparent,${color}/.8),${color}/.3))`;
+    cyberRain.appendChild(drop);
+    const duration = 300 + Math.random() * 400;
+    const startTime = performance.now();
+    function animateDrop(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        if (progress >= 1) { drop.remove(); return; }
+        drop.style.transform = `translateY(${progress * (window.innerHeight + 60)}px)`;
+        drop.style.opacity = 0.8 - progress * 0.4;
+        requestAnimationFrame(animateDrop);
+    }
+    requestAnimationFrame(animateDrop);
+}
+
+/* BULLET TIME */
+function startBulletTimeEffects() {
+    bulletTimeActive = true;
+    bulletTimeWaves.classList.add('active');
+    frozenParticles.classList.add('active');
+    bg.classList.add('bullet-time');
+    createBulletTimeWave();
+    frozenParticleInterval = setInterval(() => {
+        if (Math.random() > 0.5) createFrozenParticle();
+    }, 100);
+}
+
+function stopBulletTimeEffects() {
+    bulletTimeActive = false;
+    bulletTimeWaves.classList.remove('active');
+    frozenParticles.classList.remove('active');
+    bg.classList.remove('bullet-time');
+    clearInterval(frozenParticleInterval);
+    frozenParticles.innerHTML = '';
+}
+
+function createBulletTimeWave() {
+    if (!bulletTimeActive) return;
+    const wave = document.createElement('div');
+    wave.className = 'bt-wave';
+    wave.style.cssText = 'width: 100px;height: 100px;left: 50%;top: 50%;transform: translate(-50%, -50%);';
+    bulletTimeWaves.appendChild(wave);
+    const startTime = performance.now();
+    function animateWave(now) {
+        const progress = Math.min((now - startTime) / 1500, 1);
+        const size = 100 + progress * 400;
+        wave.style.width = size + 'px';
+        wave.style.height = size + 'px';
+        wave.style.opacity = (1 - progress) * 0.5;
+        if (progress < 1) requestAnimationFrame(animateWave);
+        else wave.remove();
+    }
+    requestAnimationFrame(animateWave);
+    if (bulletTimeActive) setTimeout(createBulletTimeWave, 400);
+}
+
+function createFrozenParticle() {
+    const particle = document.createElement('div');
+    particle.className = 'frozen-particle';
+    const wheelRect = whWrap.getBoundingClientRect();
+    particle.style.cssText = `left: ${wheelRect.left + Math.random() * wheelRect.width}px;top: ${wheelRect.top + Math.random() * wheelRect.height}px;width: ${3 + Math.random() * 6}px;height: ${3 + Math.random() * 6}px;animation-delay: ${Math.random() * 0.5}s;`;
+    frozenParticles.appendChild(particle);
+    setTimeout(() => particle.remove(), 1000);
+}
+
+/* УКАЗАТЕЛЬ */
+function loadPointerSettings() {
+    const savedShape = localStorage.getItem('ptrShape') || 'triangle';
+    ptr.dataset.shape = savedShape;
+    document.querySelectorAll('.ptr-shape-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector(`.ptr-shape-btn[data-shape="${savedShape}"]`)?.classList.add('active');
+}
+document.querySelectorAll('.ptr-shape-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.ptr-shape-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        ptr.dataset.shape = btn.dataset.shape;
+        localStorage.setItem('ptrShape', btn.dataset.shape);
+    });
+});
+
+/* ЗВУКИ */
+ambientToggle.addEventListener('click', () => {
+    ambientEnabled = !ambientEnabled;
+    ambientToggle.classList.toggle('active', ambientEnabled);
+    if (ambientEnabled) startAmbientSounds(currentTheme === 'default' ? 'default' : currentTheme);
+    else stopAmbientSounds();
+});
+
+function startAmbientSounds(theme) {
+    if (ambientContext) stopAmbientSounds();
+    try {
+        ambientContext = new (AudioContext || webkitAudioContext)();
+        const masterGain = ambientContext.createGain();
+        masterGain.gain.value = 0.05;
+        masterGain.connect(ambientContext.destination);
+        const osc = ambientContext.createOscillator();
+        const gain = ambientContext.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = 136.1;
+        gain.gain.value = 0.4;
+        osc.connect(gain);
+        gain.connect(masterGain);
+        osc.start();
+        ambientNodes.push(osc);
+    } catch(e) {}
+}
+
+function stopAmbientSounds() {
+    ambientNodes.forEach(node => { try { if (node.stop) node.stop(); } catch(e) {} });
+    ambientNodes = [];
+    if (ambientContext) { ambientContext.close(); ambientContext = null; }
+}
+
+/* BLACK HOLE */
+function createGravityParticle() {
+    const particle = document.createElement('div');
+    particle.className = 'gravity-particle';
+    const size = 2 + Math.random() * 4;
+    particle.style.width = size + 'px';
+    particle.style.height = size + 'px';
+    const angle = Math.random() * Math.PI * 2;
+    const radius = 150 + Math.random() * 100;
+    const wheelRect = whWrap.getBoundingClientRect();
+    const centerX = wheelRect.width / 2;
+    const centerY = wheelRect.height / 2;
+    particle.style.left = centerX + Math.cos(angle) * radius + 'px';
+    particle.style.top = centerY + Math.sin(angle) * radius + 'px';
+    gravityParticles.appendChild(particle);
+    const duration = 1000 + Math.random() * 1000;
+    const startTime = performance.now();
+    let currentAngle = angle;
+    let currentRadius = radius;
+    function animateParticle(now) {
+        const progress = Math.min((now - startTime) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        currentRadius = radius * (1 - eased * 0.95);
+        currentAngle += 0.1 * (1 - progress);
+        particle.style.left = centerX + Math.cos(currentAngle) * currentRadius + 'px';
+        particle.style.top = centerY + Math.sin(currentAngle) * currentRadius + 'px';
+        particle.style.opacity = 1 - progress;
+        if (progress < 1) requestAnimationFrame(animateParticle);
+        else particle.remove();
+    }
+    requestAnimationFrame(animateParticle);
+}
+
+function startBlackHole(speed) {
+    if (speed > 0.6) {
+        blackHole.classList.add('active');
+        if (!gravityParticleInterval) {
+            gravityParticleInterval = setInterval(() => {
+                if (Math.random() > 0.3) createGravityParticle();
+            }, 100);
+        }
+    }
+}
+
+function stopBlackHole() {
+    blackHole.classList.remove('active');
+    clearInterval(gravityParticleInterval);
+    gravityParticleInterval = null;
+}
+
+/* CANVAS */
+function initCv() {
+    const b = cv.parentElement.getBoundingClientRect();
+    S = Math.round(b.width);
+    const d = Math.min(devicePixelRatio || 1, 3);
+    cv.width = S * d;
+    cv.height = S * d;
+    cv.style.width = S + 'px';
+    cv.style.height = S + 'px';
+    c.setTransform(d, 0, 0, d, 0, 0);
+    draw();
+}
+
+function segCol(i, rarity) {
+    const evolution = Math.sin(patternSeed + i * 0.5 + patternGeneration * 0.3) * 0.5 + 0.5;
+    if (rarity === 'epic') {
+        const v = i % 2;
+        return { g1: `hsla(45 ${80+v*10}% ${90+v*5}% / .95)`, g2: `hsla(50 ${75+v*10}% ${80+v*5}% / .9)`, t: `hsl(280 60% 15%)`, border: `hsla(45 90% 70% / 1)` };
+    } else if (rarity === 'rare') {
+        const v = i % 2;
+        return { g1: `hsla(${H} ${55+v*15}% ${90+v*3}% / .92)`, g2: `hsla(${H} ${50+v*10}% ${80+v*4}% / .88)`, t: `hsl(${H} 60% 12%)`, border: `hsla(${H} 50% 85% / .95)` };
+    }
+    const v = [{l:14,s:45,a:.75},{l:18,s:42,a:.68},{l:12,s:48,a:.8},{l:16,s:44,a:.72}][i % 4];
+    const evoShift = evolution * 3;
+    return { g1: `hsla(${H} ${v.s}% ${v.l + evoShift}% / ${v.a})`, g2: `hsla(${H} ${v.s+5}% ${v.l-3 + evoShift}% / ${v.a+.05})`, t: `hsl(${H} 55% 75%)`, border: null };
+}
+
+function draw() {
+    const cx = S / 2, cy = S / 2, R = S / 2;
+    c.clearRect(0, 0, S, S);
+    PRIZES.forEach((p, i) => {
+        const a0 = i * ARC - Math.PI / 2;
+        const a1 = a0 + ARC;
+        const mid = a0 + ARC / 2;
+        const cl = segCol(i, p.rarity);
+        const gx = cx + R * .5 * Math.cos(mid);
+        const gy = cy + R * .5 * Math.sin(mid);
+        const g = c.createRadialGradient(cx, cy, R * .15, gx, gy, R);
+        g.addColorStop(0, cl.g2);
+        g.addColorStop(.7, cl.g1);
+        g.addColorStop(1, cl.g1);
+        c.beginPath();
+        c.moveTo(cx, cy);
+        c.arc(cx, cy, R - 2, a0, a1);
+        c.closePath();
+        c.fillStyle = g;
+        c.fill();
+        if (p.rarity === 'epic' || p.rarity === 'rare') {
+            c.beginPath();
+            c.arc(cx, cy, R - 5, a0 + .02, a1 - .02);
+            c.strokeStyle = cl.border;
+            c.lineWidth = p.rarity === 'epic' ? 3 : 2.5;
+            c.stroke();
+        }
+        c.beginPath();
+        c.moveTo(cx + R * .18 * Math.cos(a0), cy + R * .18 * Math.sin(a0));
+        c.lineTo(cx + (R - 3) * Math.cos(a0), cy + (R - 3) * Math.sin(a0));
+        c.strokeStyle = `hsla(${H} 48% 58% / .1)`;
+        c.lineWidth = 1;
+        c.stroke();
+        c.save();
+        c.translate(cx, cy);
+        c.rotate(mid);
+        const textRadius = R * .62;
+        const label = p.label;
+        const parts = label.split(' ');
+        const isMultiWord = parts.length > 1;
+        const fontSize = Math.round(S * (isMultiWord ? .022 : label.length > 6 ? .028 : .032));
+        c.font = `${p.rarity === 'epic' ? 900 : p.rarity === 'rare' ? 800 : 700} ${fontSize}px Montserrat, sans-serif`;
+        c.fillStyle = cl.t;
+        c.textAlign = 'center';
+        c.textBaseline = 'middle';
+        c.save();
+        c.translate(textRadius, 0);
+        if (isMultiWord && label.length > 5) {
+            const lineHeight = fontSize * 1.2;
+            const lines = parts.length === 2 ? parts : [parts[0], parts.slice(1).join(' ')];
+            const startY = -(lines.length - 1) * lineHeight / 2;
+            lines.forEach((ln, li) => c.fillText(ln, 0, startY + li * lineHeight));
+        } else {
+            c.fillText(label, 0, 0);
+        }
+        c.restore();
+        c.restore();
+    });
+    c.beginPath();
+    c.arc(S/2, S/2, S/2 - 2, 0, Math.PI * 2);
+    c.strokeStyle = `hsla(${H} 48% 60% / .08)`;
+    c.lineWidth = 2;
+    c.stroke();
+}
+
+/* LEDS */
+const ledsEl = document.getElementById('leds');
+const NL = 60;
+
+function initLEDs() {
+    if (ledA.length > 0) { ledA.forEach(led => led.remove()); ledA.length = 0; }
+    const rr = ledsEl.offsetWidth / 2 || 230;
+    for (let i = 0; i < NL; i++) {
+        const a = (i / NL) * 360;
+        const d = document.createElement('div');
+        d.className = 'led';
+        const rad = (a - 90) * Math.PI / 180;
+        d.style.transform = `translate(${(rr - 14) * Math.cos(rad) - 2.5}px, ${(rr - 14) * Math.sin(rad) - 2.5}px)`;
+        ledsEl.appendChild(d);
+        ledA.push(d);
+    }
+}
+
+function ledsGo(speed) {
+    clearInterval(ledIv);
+    ledIv = setInterval(() => {
+        ledA.forEach(d => d.classList.remove('on', 'chase'));
+        for (let j = 0; j < 5; j++) {
+            ledA[(ledIdx + j) % NL].classList.add(j < 2 ? 'on' : 'chase');
+        }
+        ledIdx += 2;
+    }, speed);
+}
+
+function ledsStop() { clearInterval(ledIv); ledA.forEach(d => d.classList.remove('on', 'chase')); }
+
+/* PARTICLES */
+const starsEl = document.getElementById('stars');
+for (let i = 0; i < 20; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    star.style.left = Math.random() * 100 + '%';
+    star.style.top = Math.random() * 100 + '%';
+    star.style.animationDelay = Math.random() * 4 + 's';
+    starsEl.appendChild(star);
+}
+const outerParticlesEl = document.getElementById('outerParticles');
+for (let i = 0; i < 5; i++) {
+    const p = document.createElement('div');
+    p.className = 'outer-particle';
+    p.style.animationDelay = (i * 2.5) + 's';
+    outerParticlesEl.appendChild(p);
+}
+for (let i = 0; i < 18; i++) {
+    const r = document.createElement('div');
+    r.className = 'ray';
+    r.style.transform = `rotate(${i * 20}deg)`;
+    r.style.opacity = .12 + Math.random() * .5;
+    r.style.height = (160 + Math.random() * 80) + 'px';
+    raysEl.appendChild(r);
+}
+
+/* GLITTER */
+function createGlitter() {
+    const glitter = document.createElement('div');
+    glitter.className = 'glitter';
+    const angle = Math.random() * Math.PI * 2;
+    const radius = 30 + Math.random() * 40;
+    glitter.style.left = (50 + Math.cos(angle) * radius) + '%';
+    glitter.style.top = (50 + Math.sin(angle) * radius) + '%';
+    glitter.style.animationDelay = Math.random() * .5 + 's';
+    const size = 2 + Math.random() * 4;
+    glitter.style.width = size + 'px';
+    glitter.style.height = size + 'px';
+    glitterContainer.appendChild(glitter);
+    setTimeout(() => glitter.remove(), 800);
+}
+
+function startGlitter() { glitterContainer.classList.add('active'); glitterInterval = setInterval(() => { for (let i = 0; i < 5; i++) createGlitter(); }, 50); }
+function stopGlitter() { glitterContainer.classList.remove('active'); clearInterval(glitterInterval); }
+
+/* MAGNETIC SPARKS */
+function createMagneticSpark(targetX, targetY) {
+    const side = Math.floor(Math.random() * 4);
+    let startX, startY;
+    switch(side) {
+        case 0: startX = Math.random() * window.innerWidth; startY = -20; break;
+        case 1: startX = window.innerWidth + 20; startY = Math.random() * window.innerHeight; break;
+        case 2: startX = Math.random() * window.innerWidth; startY = window.innerHeight + 20; break;
+        case 3: startX = -20; startY = Math.random() * window.innerHeight; break;
+    }
+    const spark = document.createElement('div');
+    spark.className = 'spark';
+    const size = 3 + Math.random() * 5;
+    const color = Math.random() > 0.5 ? `hsl(${H} 70% 70%)` : '#fff';
+    spark.style.cssText = `width:${size}px;height:${size}px;left:${startX}px;top:${startY}px;background:radial-gradient(circle,${color},transparent);box-shadow:0 0 ${size*2}px ${color}`;
+    magneticSparks.appendChild(spark);
+    const duration = 600 + Math.random() * 400;
+    const startTime = performance.now();
+    function animateSpark(now) {
+        const progress = Math.min((now - startTime) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 2);
+        const currentX = startX + (targetX - startX) * eased;
+        const currentY = startY + (targetY - startY) * eased;
+        const curve = Math.sin(progress * Math.PI) * 30;
+        const dx = targetX - startX, dy = targetY - startY;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        const perpX = dist > 0 ? -dy / dist * curve : 0;
+        const perpY = dist > 0 ? dx / dist * curve : 0;
+        spark.style.left = (currentX + perpX) + 'px';
+        spark.style.top = (currentY + perpY) + 'px';
+        spark.style.opacity = 1 - progress * 0.5;
+        if (progress < 1) requestAnimationFrame(animateSpark);
+        else spark.remove();
+    }
+    requestAnimationFrame(animateSpark);
+}
+
+function fireMagneticSparks(targetX, targetY, count = 30) {
+    for (let i = 0; i < count; i++) setTimeout(() => createMagneticSpark(targetX, targetY), i * 30);
+}
+
+/* AUDIO */
+let actx, masterGain;
+function initAudio() {
+    if (actx) return;
+    actx = new (AudioContext || webkitAudioContext)();
+    masterGain = actx.createGain();
+    masterGain.gain.value = 0.5;
+    masterGain.connect(actx.destination);
+}
+
+function tick(freq = 1600, vol = .03, dur = .04, pan = 0) {
+    try {
+        initAudio();
+        const o = actx.createOscillator();
+        const g = actx.createGain();
+        const panner = actx.createStereoPanner();
+        o.type = 'sine';
+        o.frequency.value = freq + Math.random() * 200;
+        g.gain.value = vol;
+        g.gain.exponentialRampToValueAtTime(.001, actx.currentTime + dur);
+        panner.pan.value = pan;
+        o.connect(g);
+        g.connect(panner);
+        panner.connect(masterGain);
+        o.start();
+        o.stop(actx.currentTime + dur);
+    } catch(e) {}
+}
+
+function playTickWithLayers(speed, pan = 0) {
+    initAudio();
+    const vol = .015 + speed * .035;
+    const baseFreq = 1100 + speed * 700;
+    tick(baseFreq, vol, .03 + speed * .02, pan);
+}
+
+function winSound() { [523, 659, 784, 1047].forEach((f, i) => setTimeout(() => tick(f, .05, .12), i * 80)); }
+function rareWinSound() { [523, 659, 784, 880, 1047, 1319].forEach((f, i) => setTimeout(() => tick(f, .06, .2), i * 80)); }
+function epicWinSound() { [523, 659, 784, 880, 1047, 1175, 1319, 1568].forEach((f, i) => setTimeout(() => tick(f, .08, .25), i * 100)); }
+
+/* EASING */
+function easeOutQuart(t) {
+    return 1 - Math.pow(1 - t, 4);
+}
+
+/* =====================================================
+   ЗАПРОС К СЕРВЕРУ
+   ===================================================== */
+async function requestSpin() {
+    try {
+        const response = await fetch(API_URL + '/spin', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                init_data: tg.initData
+            })
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            if (error.error === 'already_spun') {
+                tg.showAlert('⏰ Вы уже крутили сегодня!\nПриходите завтра.');
+            } else {
+                tg.showAlert('Ошибка. Попробуйте позже.');
+            }
+            return null;
+        }
+
+        const data = await response.json();
+        return data; // { prize_index: 3, prize_id: "250d" }
+    } catch (e) {
+        console.error('Ошибка запроса:', e);
+        tg.showAlert('Нет связи с сервером.');
+        return null;
+    }
+}
+
+/* =====================================================
+   ГЛАВНАЯ ФУНКЦИЯ ВРАЩЕНИЯ (ИСПРАВЛЕНО)
+   ===================================================== */
+function spinWheel(winIdx, e) {
+    isSpinning = true;
+    btnSp.disabled = true;
+    bg.classList.add('spinning');
+    energyRing.classList.add('active');
+    ring.classList.add('spinning');
+    bloomLayer.classList.add('active');
+    motionBlur.classList.add('active');
+    
+    patternGeneration++;
+    patternSeed += Math.random() * 100;
+    draw();
+    
+    // Ripple effect
+    const rc = btnSp.getBoundingClientRect();
+    const rp = document.createElement('span');
+    rp.className = 'rip';
+    if(e && e.clientX) {
+        rp.style.left = (e.clientX - rc.left) + 'px';
+        rp.style.top = (e.clientY - rc.top) + 'px';
+    } else {
+        rp.style.left = '50%';
+        rp.style.top = '50%';
+    }
+    rp.style.width = rp.style.height = Math.max(rc.width, rc.height) + 'px';
+    btnSp.appendChild(rp);
+    setTimeout(() => rp.remove(), 700);
+    
+    // =====================================================
+    // ЛОГИКА УГЛА (ИСПРАВЛЕНО)
+    // =====================================================
+    // Сектора нарисованы начиная с верха (12 часов) по часовой стрелке.
+    // Сектор 0 начинается на 0 градусов (верх).
+    // Центр сектора winIdx находится на угле: winIdx * SEG_ANGLE + SEG_ANGLE/2
+    
+    const randomOffset = (0.2 + Math.random() * 0.6) * SEG_ANGLE;
+    const prizeAngleOnWheel = winIdx * SEG_ANGLE + randomOffset;
+    
+    // Чтобы этот угол оказался под указателем вверху (0 градусов),
+    // колесо нужно повернуть на (360 - prizeAngleOnWheel) градусов.
+    let targetStopAngle = 360 - prizeAngleOnWheel;
+    targetStopAngle = ((targetStopAngle % 360) + 360) % 360;
+    
+    const currentNormalized = ((currentAngle % 360) + 360) % 360;
+    const fullRotations = 5 + Math.floor(Math.random() * 2);
+    
+    let deltaAngle = targetStopAngle - currentNormalized;
+    if (deltaAngle < 0) deltaAngle += 360;
+    deltaAngle += fullRotations * 360;
+    
+    targetAngle = currentAngle + deltaAngle;
+    
+    const startAngle = currentAngle;
+    const startTime = performance.now();
+    const duration = 5500 + Math.random() * 1000;
+    
+    ledsGo(35);
+    startStardust();
+    
+    let bulletTimeStarted = false;
+    
+    function animate(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        if (progress > 0.75 && !bulletTimeStarted) {
+            bulletTimeStarted = true;
+            startBulletTimeEffects();
+            ptr.classList.add('bullet-time');
+        }
+        
+        const eased = easeOutQuart(progress);
+        const speed = 1 - eased;
+        
+        currentAngle = startAngle + (targetAngle - startAngle) * eased;
+        rotor.style.transform = `rotate(${currentAngle}deg)`;
+        
+        const glowIntensity = 0.3 + speed * 0.7;
+        neonGlow.style.opacity = glowIntensity;
+        neonGlow.style.filter = `blur(${8 + speed * 15}px)`;
+        document.documentElement.style.setProperty('--bloom-intensity', 1 + speed * 1.5);
+        if (progress > 0.8) timeWarp.classList.add('active');
+        motionBlur.style.opacity = speed * 0.8;
+        startBlackHole(speed);
+        if (progress < 1) ledsGo(Math.max(30, 80 * speed));
+        
+        const normAngle = ((currentAngle % 360) + 360) % 360;
+        const currentSeg = Math.floor(normAngle / SEG_ANGLE);
+        if (!animate.lastSeg || currentSeg !== animate.lastSeg) {
+            animate.lastSeg = currentSeg;
+            const bounce = 5 + Math.random() * 4;
+            ptr.style.transform = `translateX(-50%) rotate(${bounce}deg)`;
+            setTimeout(() => {
+                ptr.style.transform = `translateX(-50%) rotate(${-bounce * 0.3}deg)`;
+                setTimeout(() => ptr.style.transform = `translateX(-50%) rotate(0deg)`, 50);
+            }, 25);
+            const pan = Math.sin(currentAngle * 0.1) * 0.5;
+            playTickWithLayers(speed, pan);
+        }
+        
+        if (progress < 1) {
+            animationId = requestAnimationFrame(animate);
+        } else {
+            currentAngle = targetAngle;
+            rotor.style.transform = `rotate(${currentAngle}deg)`;
+            
+            isSpinning = false;
+            ledsStop();
+            stopStardust();
+            stopBlackHole();
+            stopBulletTimeEffects();
+            ptr.classList.remove('bullet-time');
+            bg.classList.remove('spinning', 'bullet-time');
+            energyRing.classList.remove('active');
+            ring.classList.remove('spinning');
+            timeWarp.classList.remove('active');
+            motionBlur.classList.remove('active');
+            bloomLayer.classList.remove('active');
+            ptr.classList.add('stopped');
+            setTimeout(() => ptr.classList.remove('stopped'), 600);
+            neonGlow.style.opacity = 0.5;
+            neonGlow.style.filter = 'blur(8px)';
+            
+            const winStart = Math.floor(winIdx * (NL / N));
+            for (let j = 0; j < Math.ceil(NL / N); j++) ledA[(winStart + j) % NL].classList.add('on');
+            
+            const prize = PRIZES[winIdx];
+            const isEpic = prize.rarity === 'epic';
+            const isRare = prize.rarity === 'rare';
+            
+            if (isEpic) {
+                flash.classList.add('gold');
+                flash.animate([{opacity:0},{opacity:1},{opacity:0}],{duration:500});
+                bg.classList.add('jackpot');
+                burst.classList.add('on');
+                raysEl.classList.add('on');
+                startGlitter();
+                setTimeout(() => stopGlitter(), 4000);
+                holographic.classList.add('active');
+                setTimeout(() => holographic.classList.remove('active'), 5000);
+                if (navigator.vibrate) navigator.vibrate([100, 50, 200, 50, 300, 50, 100]);
+                epicWinSound();
+                fireConfetti(120);
+                fireConfetti(80, true);
+                setTimeout(() => bg.classList.remove('jackpot'), 2500);
+            } else if (isRare) {
+                flash.classList.add('gold');
+                flash.animate([{opacity:0},{opacity:.8},{opacity:0}],{duration:400});
+                bg.classList.add('jackpot');
+                burst.classList.add('on');
+                raysEl.classList.add('on');
+                startGlitter();
+                setTimeout(() => stopGlitter(), 3000);
+                holographic.classList.add('active');
+                setTimeout(() => holographic.classList.remove('active'), 4000);
+                if (navigator.vibrate) navigator.vibrate([80, 50, 120, 40, 180, 30, 80]);
+                rareWinSound();
+                fireConfetti(90);
+                fireConfetti(50, true);
+                setTimeout(() => bg.classList.remove('jackpot'), 1800);
+            } else {
+                flash.animate([{opacity:0},{opacity:.4},{opacity:0}],{duration:250});
+                fireConfetti(35);
+                winSound();
+            }
+            
+            setTimeout(() => onSpinComplete(winIdx), isEpic ? 700 : isRare ? 600 : 300);
+        }
+    }
+    animate.lastSeg = -1;
+    animationId = requestAnimationFrame(animate);
+}
+
+/* =====================================================
+   ОБРАБОТЧИК КНОПКИ "КРУТИТЬ"
+   ===================================================== */
+async function onSpinClick(e) {
+    if (isSpinning || !canSpin) return;
+    canSpin = false;
+
+    // Запрашиваем приз у сервера
+    const result = await requestSpin();
+    if (!result) {
+        canSpin = true;
+        return;
+    }
+
+    // Запускаем анимацию колеса к нужному сектору
+    spinWheel(result.prize_index, e);
+}
+
+btnSp.addEventListener('click', onSpinClick);
+
+/* =====================================================
+   ПОСЛЕ ОСТАНОВКИ КОЛЕСА
+   ===================================================== */
+function onSpinComplete(prizeIndex) {
+    const prize = PRIZES[prizeIndex];
+    const prizeId = prize.id;
+
+    // Показываем модалку
+    showModal(prize);
+
+    // Отправляем результат боту
+    tg.sendData(JSON.stringify({
+        action: 'wheel_result',
+        prize_id: prizeId,
+        prize_index: prizeIndex
+    }));
+}
+
+/* =====================================================
+   ПОКАЗ МОДАЛЬНОГО ОКНА
+   ===================================================== */
+function showModal(prize) {
+    const rarityInfo = {
+        common: { tag: '🎁 Ваш приз', tagClass: '' },
+        rare: { tag: '💎 Редкий приз!', tagClass: 'r' },
+        epic: { tag: '🏆 Эпический приз!', tagClass: 'r' }
+    };
+    
+    const info = rarityInfo[prize.rarity] || rarityInfo.common;
+    mTag.textContent = info.tag;
+    mTag.className = 'm-tag' + (info.tagClass ? ' ' + info.tagClass : '');
+    
+    mVal.textContent = prize.label;
+    mVal.className = 'm-val ' + (prize.rarity !== 'common' ? 'rv' : 'cv');
+    
+    mValueInfo.innerHTML = '';
+    const badge = document.createElement('div');
+    badge.className = 'm-value-badge ' + prize.rarity;
+    const rarityLabels = { common: 'Обычный', rare: 'Редкий', epic: 'Эпический' };
+    badge.innerHTML = `<span>${prize.d} D</span> · ${rarityLabels[prize.rarity]}`;
+    mValueInfo.appendChild(badge);
+    
+    mSub.textContent = prize.desc;
+    mOv.classList.add('open');
+    
+    mParticles.innerHTML = '';
+    for (let i = 0; i < 15; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'm-particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 4 + 's';
+        particle.style.animationDuration = (3 + Math.random() * 3) + 's';
+        mParticles.appendChild(particle);
+    }
+}
+
+function closeModal() {
+    mOv.classList.remove('open');
+    burst.classList.remove('on');
+    raysEl.classList.remove('on');
+    flash.classList.remove('gold');
+    stopGlitter();
+    // Кнопку не включаем, так как спин один (или управляем этим через сервер)
+}
+mBtn.addEventListener('click', closeModal);
+mOv.addEventListener('click', e => { if (e.target === mOv) closeModal(); });
+
+/* CONFETTI */
+function fireConfetti(count, isGold = false) {
+    const palette = isGold ? ['hsl(45 90% 65%)','hsl(45 85% 75%)','hsl(50 95% 80%)','hsl(40 85% 55%)','#fff'] : [`hsl(${H} 65% 75%)`,`hsl(${H} 55% 60%)`,`hsl(${H} 70% 85%)`,`hsl(${H} 75% 92%)`,'#fff'];
+    for (let i = 0; i < count; i++) {
+        const el = document.createElement('div');
+        el.className = 'confetti';
+        const shape = Math.random();
+        let w, h, br;
+        if (shape < 0.33) { w = h = 3 + Math.random() * 5; br = '50%'; }
+        else if (shape < 0.66) { w = 4 + Math.random() * 7; h = 4 + Math.random() * 7; br = '2px'; }
+        else { w = 2 + Math.random() * 3; h = 10 + Math.random() * 18; br = '1px'; }
+        const color = palette[Math.floor(Math.random() * palette.length)];
+        el.style.cssText = `width:${w}px;height:${h}px;border-radius:${br};background:${color};left:50%;top:50%;`;
+        fxEl.appendChild(el);
+        const angle = Math.random() * 360;
+        const vel = 140 + Math.random() * 350;
+        const dx = Math.cos(angle * Math.PI / 180) * vel;
+        const dy = Math.sin(angle * Math.PI / 180) * vel - 150;
+        const rot = Math.random() * 800 - 400;
+        const dur = 1300 + Math.random() * 2000;
+        const gravity = 250 + Math.random() * 300;
+        el.animate([{transform:'translate(-50%,-50%) translate(0,0) rotate(0deg)',opacity:.95},{transform:`translate(-50%,-50%) translate(${dx}px,${dy+gravity}px) rotate(${rot}deg)`,opacity:0}],{duration: dur, easing: 'cubic-bezier(.22,.6,.36,1)', fill: 'forwards', delay: Math.random() * 250});
+        setTimeout(() => el.remove(), dur + 300);
+    }
+}
+
+/* STARDUST */
+function startStardust() { stardustEl.classList.add('active'); stardustInterval = setInterval(() => { for (let i = 0; i < 3; i++) createStardustParticle(); }, 50); }
+function stopStardust() { stardustEl.classList.remove('active'); clearInterval(stardustInterval); }
+function createStardustParticle() {
+    const wheelRect = whWrap.getBoundingClientRect();
+    const cx = wheelRect.left + wheelRect.width / 2, cy = wheelRect.top + wheelRect.height / 2;
+    const radius = wheelRect.width / 2;
+    const angle = Math.random() * Math.PI * 2;
+    const r = radius * (0.8 + Math.random() * 0.4);
+    const p = document.createElement('div');
+    p.className = 'stardust-particle';
+    const size = 2 + Math.random() * 4;
+    p.style.width = size + 'px';
+    p.style.height = size + 'px';
+    p.style.left = cx + Math.cos(angle) * r + 'px';
+    p.style.top = cy + Math.sin(angle) * r + 'px';
+    stardustEl.appendChild(p);
+    const flyAngle = angle + (Math.random() - 0.5) * 0.5;
+    const flyDist = 50 + Math.random() * 150;
+    p.animate([{opacity: 1, transform: 'translate(-50%, -50%) scale(1)'},{opacity: 0, transform: `translate(calc(-50% + ${Math.cos(flyAngle) * flyDist}px), calc(-50% + ${Math.sin(flyAngle) * flyDist}px)) scale(0)`}],{duration: 800 + Math.random() * 600, easing: 'ease-out', fill: 'forwards'});
+    setTimeout(() => p.remove(), 1500);
+}
+
+/* CRYSTALS */
+const crystalsEl = document.getElementById('crystals');
+const dofLayers = ['vfar', 'far', 'mid', 'near'];
+const layerSizes = {vfar: [8, 12], far: [12, 18], mid: [18, 28], near: [25, 40]};
+for (let i = 0; i < 16; i++) {
+    const crystal = document.createElement('div');
+    const layerIndex = Math.floor(i / 4);
+    const layer = dofLayers[layerIndex];
+    crystal.className = `crystal ${layer}`;
+    const sizeRange = layerSizes[layer];
+    const size = sizeRange[0] + Math.random() * (sizeRange[1] - sizeRange[0]);
+    crystal.innerHTML = `<div class="crystal-shape" style="width:${size}px;height:${size*1.4}px"></div>`;
+    crystal.style.left = 5 + Math.random() * 90 + '%';
+    crystal.style.animationDelay = Math.random() * 25 + 's';
+    crystal.style.animationDuration = (20 + layerIndex * 5 + Math.random() * 10) + 's';
+    crystalsEl.appendChild(crystal);
+}
+
+/* MOUSE PARTICLES */
+let mouseX = 0, mouseY = 0, lastMouseX = 0, lastMouseY = 0;
+document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    const dx = mouseX - lastMouseX, dy = mouseY - lastMouseY;
+    const dist = Math.sqrt(dx*dx + dy*dy);
+    if (dist > 8) { createMouseParticle(mouseX, mouseY); lastMouseX = mouseX; lastMouseY = mouseY; }
+});
+function createMouseParticle(x, y) {
+    const p = document.createElement('div');
+    p.className = 'mouse-particle';
+    const size = 4 + Math.random() * 6;
+    p.style.width = size + 'px';
+    p.style.height = size + 'px';
+    p.style.left = x + 'px';
+    p.style.top = y + 'px';
+    mouseParticlesEl.appendChild(p);
+    const angle = Math.random() * 360;
+    const dist = 20 + Math.random() * 40;
+    p.animate([{opacity: .8, transform: 'translate(-50%, -50%) scale(1)'},{opacity: 0, transform: `translate(calc(-50% + ${Math.cos(angle * Math.PI / 180) * dist}px), calc(-50% + ${Math.sin(angle * Math.PI / 180) * dist}px)) scale(0)`}],{duration: 600 + Math.random() * 400, easing: 'ease-out', fill: 'forwards'});
+    setTimeout(() => p.remove(), 1100);
+}
+
+/* INIT */
+addEventListener('DOMContentLoaded', () => { 
+    initCv(); 
+    initLEDs();
+    loadPointerSettings(); 
+});
+
+let resizeTimeout;
+function handleResize() {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+        if (!isSpinning) {
+            const savedAngle = currentAngle;
+            initCv();
+            initLEDs();
+            rotor.style.transform = `rotate(${savedAngle}deg)`;
+        }
+    }, 100);
+}
+
+addEventListener('resize', handleResize);
+</script>
+</body>
+</html>

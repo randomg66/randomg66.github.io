@@ -1167,32 +1167,51 @@ function easeOutQuart(t) {
    ===================================================== */
 async function requestSpin() {
     try {
-        const response = await fetch(API_URL + '/spin', {
+        const response = await fetch(API_URL + '/wheel/spin', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                init_data: tg.initData
-            })
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({init_data: tg.initData})
         });
 
         if (!response.ok) {
-            const error = await response.json();
-            if (error.error === 'already_spun') {
+            const err = await response.json();
+            if (err.error === 'already_spun') {
                 tg.showAlert('⏰ Вы уже крутили сегодня!\nПриходите завтра.');
             } else {
-                tg.showAlert('Ошибка. Попробуйте позже.');
+                tg.showAlert('Ошибка: ' + (err.message || 'попробуйте позже'));
             }
             return null;
         }
 
-        const data = await response.json();
-        return data; // { prize_index: 3, prize_id: "250d" }
+        return await response.json();
     } catch (e) {
-        console.error('Ошибка запроса:', e);
-        tg.showAlert('Нет связи с сервером.');
+        console.error('Ошибка:', e);
+        tg.showAlert('Нет связи с сервером');
         return null;
     }
 }
+
+/* Проверяем можно ли крутить при загрузке */
+async function checkCanSpin() {
+    try {
+        const response = await fetch(API_URL + '/wheel/check', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({init_data: tg.initData})
+        });
+        const data = await response.json();
+        if (!data.can_spin) {
+            btnSp.disabled = true;
+            btnSp.textContent = 'Приходите завтра';
+            canSpin = false;
+        }
+    } catch (e) {
+        console.error('Check error:', e);
+    }
+}
+
+/* Вызываем при загрузке */
+checkCanSpin();
 
 /* =====================================================
    ГЛАВНАЯ ФУНКЦИЯ ВРАЩЕНИЯ (ИСПРАВЛЕНО)

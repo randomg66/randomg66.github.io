@@ -21,33 +21,35 @@
             --txt-m:hsla(var(--h) 22% 72%/.5);
             --wh:min(420px,78vw);
             --rare-gold:hsl(45 80% 55%);
-            --theme-accent-2:hsl(260 50% 45%);
-            --ring-conic:hsla(var(--h) 60% 70%/.04);
-            --ring-conic2:transparent;
+            --h2:260;
+            --ring-shimmer:hsla(var(--h) 60% 70%/.04);
+            --star-color:var(--acc-l);
+            --led-glow:var(--glow);
         }
 
-        /* ====== COSMOS ====== */
+        /* ====== КОСМОС ====== */
         [data-theme="cosmos"]{
-            --h:218;--s:58%;
-            --theme-accent-2:hsl(260 50% 45%);
-            --ring-conic:hsla(260 60% 70%/.05);
-            --ring-conic2:hsla(200 60% 70%/.03);
+            --h:218;--s:58%;--h2:260;
+            --ring-shimmer:hsla(260 60% 70%/.05);
+            --star-color:hsla(220 70% 85%/1);
+            --led-glow:hsla(240 80% 65%/.4);
         }
 
-        /* ====== FLAME ====== */
+        /* ====== ПЛАМЯ ====== */
         [data-theme="flame"]{
-            --h:12;--s:72%;
-            --theme-accent-2:hsl(35 80% 50%);
-            --ring-conic:hsla(0 70% 60%/.06);
-            --ring-conic2:hsla(35 80% 60%/.04);
+            --h:12;--s:72%;--h2:35;
+            --ring-shimmer:hsla(35 80% 60%/.06);
+            --star-color:hsla(35 90% 75%/1);
+            --led-glow:hsla(20 90% 55%/.45);
+            --rare-gold:hsl(50 85% 55%);
         }
 
-        /* ====== NEON ====== */
+        /* ====== НЕОН ====== */
         [data-theme="neon"]{
-            --h:280;--s:65%;
-            --theme-accent-2:hsl(170 80% 45%);
-            --ring-conic:hsla(280 70% 70%/.05);
-            --ring-conic2:hsla(170 80% 60%/.04);
+            --h:280;--s:65%;--h2:170;
+            --ring-shimmer:hsla(170 80% 55%/.06);
+            --star-color:hsla(280 80% 82%/1);
+            --led-glow:hsla(280 80% 65%/.45);
         }
 
         html{-webkit-font-smoothing:antialiased}
@@ -61,7 +63,7 @@
             -webkit-user-select:none;user-select:none;
         }
 
-        /* ====== ФОН ====== */
+        /* ====== ФОН — тематический ====== */
         .bg{
             position:fixed;inset:0;z-index:0;
             transition:background 1s ease;
@@ -71,20 +73,22 @@
             background:
                 radial-gradient(ellipse 120% 80% at 20% 10%,hsla(260 50% 20%/.5),transparent),
                 radial-gradient(ellipse 100% 90% at 80% 90%,hsla(218 40% 12%/.6),transparent),
-                linear-gradient(155deg,hsl(220 42% 5%),hsl(245 36% 3%));
+                radial-gradient(circle at 50% 50%,hsla(230 30% 8%/.4),transparent 70%),
+                linear-gradient(155deg,hsl(218 42% 5%),hsl(240 36% 4%));
         }
         [data-theme="flame"] .bg{
             background:
-                radial-gradient(ellipse 120% 80% at 15% 15%,hsla(0 55% 14%/.6),transparent),
-                radial-gradient(ellipse 90% 80% at 85% 85%,hsla(30 50% 10%/.5),transparent),
-                radial-gradient(ellipse 60% 50% at 50% 60%,hsla(15 40% 8%/.3),transparent),
-                linear-gradient(155deg,hsl(5 28% 5%),hsl(20 22% 3%));
+                radial-gradient(ellipse 120% 80% at 25% 15%,hsla(0 55% 16%/.6),transparent),
+                radial-gradient(ellipse 90% 80% at 75% 85%,hsla(35 50% 12%/.5),transparent),
+                radial-gradient(circle at 50% 70%,hsla(20 40% 8%/.3),transparent 60%),
+                linear-gradient(165deg,hsl(5 28% 5%),hsl(20 22% 3%));
         }
         [data-theme="neon"] .bg{
             background:
-                radial-gradient(ellipse 100% 70% at 25% 15%,hsla(280 45% 12%/.6),transparent),
-                radial-gradient(ellipse 80% 70% at 75% 85%,hsla(170 35% 8%/.5),transparent),
-                linear-gradient(155deg,hsl(275 28% 4%),hsl(250 20% 2%));
+                radial-gradient(ellipse 120% 80% at 15% 10%,hsla(280 45% 15%/.55),transparent),
+                radial-gradient(ellipse 100% 90% at 85% 90%,hsla(170 40% 10%/.5),transparent),
+                radial-gradient(circle at 60% 40%,hsla(300 30% 8%/.3),transparent 60%),
+                linear-gradient(155deg,hsl(270 28% 4%),hsl(200 22% 3%));
         }
 
         /* Орбы */
@@ -94,25 +98,25 @@
             contain:strict;
             transition:background 1s ease;
         }
-        .o1{width:550px;height:550px;top:-18%;left:-12%;animation:oF1 28s ease-in-out infinite alternate}
-        .o2{width:400px;height:400px;bottom:-14%;right:-8%;animation:oF2 22s ease-in-out infinite alternate-reverse}
-        .o3{width:250px;height:250px;top:40%;left:60%;animation:oF3 32s ease-in-out infinite alternate}
+        .o1{width:500px;height:500px;top:-16%;left:-10%;animation:oF1 26s ease-in-out infinite alternate}
+        .o2{width:380px;height:380px;bottom:-12%;right:-6%;animation:oF2 20s ease-in-out infinite alternate-reverse}
+        .o3{width:220px;height:220px;top:38%;left:58%;animation:oF3 30s ease-in-out infinite alternate}
 
-        [data-theme="cosmos"] .o1,.o1{background:hsla(260 50% 25%/.2)}
-        [data-theme="cosmos"] .o2,.o2{background:hsla(200 55% 20%/.16)}
-        [data-theme="cosmos"] .o3,.o3{background:hsla(240 60% 30%/.08)}
+        [data-theme="cosmos"] .o1,.o1{background:hsla(260 50% 25%/.18)}
+        [data-theme="cosmos"] .o2,.o2{background:hsla(218 55% 20%/.14)}
+        [data-theme="cosmos"] .o3,.o3{background:hsla(200 60% 30%/.07)}
 
-        [data-theme="flame"] .o1{background:hsla(0 55% 22%/.22)}
-        [data-theme="flame"] .o2{background:hsla(30 55% 18%/.18)}
-        [data-theme="flame"] .o3{background:hsla(15 50% 25%/.12)}
+        [data-theme="flame"] .o1{background:hsla(0 55% 25%/.2)}
+        [data-theme="flame"] .o2{background:hsla(35 50% 22%/.16)}
+        [data-theme="flame"] .o3{background:hsla(20 45% 28%/.1)}
 
-        [data-theme="neon"] .o1{background:hsla(280 55% 22%/.2)}
-        [data-theme="neon"] .o2{background:hsla(170 45% 18%/.16)}
-        [data-theme="neon"] .o3{background:hsla(220 50% 25%/.08)}
+        [data-theme="neon"] .o1{background:hsla(280 55% 22%/.18)}
+        [data-theme="neon"] .o2{background:hsla(170 50% 18%/.14)}
+        [data-theme="neon"] .o3{background:hsla(310 45% 25%/.08)}
 
-        @keyframes oF1{0%{transform:translate3d(0,0,0) scale(1)}100%{transform:translate3d(35px,-25px,0) scale(1.06)}}
-        @keyframes oF2{0%{transform:translate3d(0,0,0) scale(1)}100%{transform:translate3d(-25px,20px,0) scale(1.04)}}
-        @keyframes oF3{0%{transform:translate3d(0,0,0) scale(1)}100%{transform:translate3d(-15px,-20px,0) scale(1.1)}}
+        @keyframes oF1{0%{transform:translate3d(0,0,0) scale(1)}100%{transform:translate3d(30px,-20px,0) scale(1.05)}}
+        @keyframes oF2{0%{transform:translate3d(0,0,0) scale(1)}100%{transform:translate3d(-22px,18px,0) scale(1.04)}}
+        @keyframes oF3{0%{transform:translate3d(0,0,0) scale(1)}100%{transform:translate3d(-12px,-16px,0) scale(1.08)}}
 
         .noise{
             position:fixed;inset:0;z-index:0;opacity:.02;pointer-events:none;
@@ -120,138 +124,153 @@
             background-size:128px;contain:strict;
         }
 
-        /* ====== ЗВЁЗДЫ (все темы, разный стиль) ====== */
+        /* ====== ЗВЁЗДЫ — тематические ====== */
         .stars{position:fixed;inset:0;z-index:0;pointer-events:none;contain:strict;overflow:hidden}
         .star{
             position:absolute;border-radius:50%;
-            opacity:0;contain:strict;
-        }
-
-        /* Cosmos: белые мерцающие точки */
-        [data-theme="cosmos"] .star,.star{
-            width:2px;height:2px;
-            background:var(--acc-l);
-            animation:starCosmos var(--dur) ease-in-out infinite;
+            background:var(--star-color);
+            opacity:0;animation:starP var(--dur) ease-in-out infinite;
             animation-delay:var(--del);
+            contain:strict;
         }
-        @keyframes starCosmos{0%,100%{opacity:0;transform:scale(.5)}50%{opacity:.7;transform:scale(1)}}
+        @keyframes starP{0%,100%{opacity:0;transform:scale(.5)}50%{opacity:.7;transform:scale(1)}}
 
-        /* Flame: маленькие искры — оранжевые, поднимаются */
+        /* КОСМОС: маленькие звёзды + туманности */
+        [data-theme="cosmos"] .star{box-shadow:0 0 3px var(--star-color)}
+
+        /* ПЛАМЯ: искры — оранжевые, мерцают быстрее */
         [data-theme="flame"] .star{
-            width:3px;height:3px;
-            background:hsl(30 90% 60%);
-            box-shadow:0 0 4px hsla(20 100% 55%/.4);
-            animation:starFlame var(--dur) ease-out infinite;
-            animation-delay:var(--del);
-        }
-        @keyframes starFlame{
-            0%{opacity:0;transform:translateY(0) scale(.3)}
-            20%{opacity:.8}
-            100%{opacity:0;transform:translateY(-80px) scale(.1)}
+            background:var(--star-color);
+            box-shadow:0 0 4px hsla(35 90% 60%/.5);
+            width:3px!important;height:3px!important;
         }
 
-        /* Neon: цветные мигающие точки */
-        [data-theme="neon"] .star{
-            width:2px;height:2px;
-            animation:starNeon var(--dur) steps(2) infinite;
-            animation-delay:var(--del);
+        /* НЕОН: цветные точки — чередующиеся розовый/бирюзовый */
+        [data-theme="neon"] .star:nth-child(odd){
+            background:hsla(170 80% 65%/1);
+            box-shadow:0 0 5px hsla(170 80% 55%/.4);
         }
-        [data-theme="neon"] .star:nth-child(odd){background:hsl(280 80% 70%);box-shadow:0 0 6px hsla(280 80% 70%/.4)}
-        [data-theme="neon"] .star:nth-child(even){background:hsl(170 80% 60%);box-shadow:0 0 6px hsla(170 80% 60%/.4)}
-        @keyframes starNeon{
-            0%,100%{opacity:0}
-            10%{opacity:.9}
-            50%{opacity:.2}
-            60%{opacity:.8}
-            90%{opacity:0}
+        [data-theme="neon"] .star:nth-child(even){
+            background:hsla(300 80% 70%/1);
+            box-shadow:0 0 5px hsla(300 80% 60%/.4);
+        }
+
+        /* ====== ТЕМАТИЧЕСКАЯ СЕТКА ====== */
+        .grid-subtle{
+            position:fixed;inset:0;z-index:0;pointer-events:none;
+            opacity:.012;contain:strict;
+            transition:opacity .5s, background-image .5s;
+        }
+
+        /* КОСМОС: мягкая решётка */
+        [data-theme="cosmos"] .grid-subtle,.grid-subtle{
+            background-image:
+                linear-gradient(hsla(220 40% 50%/.3) 1px,transparent 1px),
+                linear-gradient(90deg,hsla(220 40% 50%/.3) 1px,transparent 1px);
+            background-size:80px 80px;
+        }
+
+        /* ПЛАМЯ: горизонтальные линии жара */
+        [data-theme="flame"] .grid-subtle{
+            opacity:.018;
+            background-image:
+                linear-gradient(hsla(20 50% 50%/.4) 1px,transparent 1px);
+            background-size:100% 60px;
+        }
+
+        /* НЕОН: плотная сетка киберпанка */
+        [data-theme="neon"] .grid-subtle{
+            opacity:.025;
+            background-image:
+                linear-gradient(hsla(280 40% 55%/.25) 1px,transparent 1px),
+                linear-gradient(90deg,hsla(170 40% 50%/.25) 1px,transparent 1px);
+            background-size:50px 50px;
         }
 
         /* ====== ТЕМАТИЧЕСКИЙ ДЕКОР ====== */
-
-        /* Cosmos: тонкая сетка-созвездие */
-        .theme-decor{position:fixed;inset:0;z-index:0;pointer-events:none;contain:strict;transition:opacity .8s}
-        .decor-cosmos{
-            opacity:.012;
-            background-image:
-                linear-gradient(hsla(218 40% 50%/.3) 1px,transparent 1px),
-                linear-gradient(90deg,hsla(218 40% 50%/.3) 1px,transparent 1px);
-            background-size:80px 80px;
+        /* Cosmos: туманность */
+        .theme-decor{
+            position:fixed;pointer-events:none;z-index:0;
+            contain:strict;transition:opacity 1s;
         }
-        [data-theme="flame"] .decor-cosmos{opacity:0}
-        [data-theme="neon"] .decor-cosmos{opacity:0}
 
-        /* Flame: heat haze — волнистый overlay */
-        .decor-flame{
-            opacity:0;
+        .nebula{
+            inset:0;opacity:0;
+        }
+        [data-theme="cosmos"] .nebula{
+            opacity:1;
             background:
-                repeating-linear-gradient(0deg,transparent,transparent 3px,hsla(20 60% 50%/.015) 3px,hsla(20 60% 50%/.015) 4px);
-            animation:heatHaze 8s ease-in-out infinite;
-        }
-        [data-theme="flame"] .decor-flame{opacity:1}
-        @keyframes heatHaze{
-            0%,100%{transform:translateY(0) scaleY(1)}
-            50%{transform:translateY(-2px) scaleY(1.002)}
+                radial-gradient(ellipse 40% 30% at 70% 25%,hsla(260 60% 40%/.06),transparent),
+                radial-gradient(ellipse 35% 40% at 25% 70%,hsla(200 50% 35%/.05),transparent);
         }
 
-        /* Neon: scanlines */
-        .decor-neon{
+        /* Flame: ember glow — тёплое свечение снизу */
+        .ember-glow{
+            bottom:0;left:0;right:0;height:40%;opacity:0;
+        }
+        [data-theme="flame"] .ember-glow{
+            opacity:1;
+            background:linear-gradient(to top,hsla(15 60% 12%/.3),hsla(25 50% 10%/.1) 40%,transparent);
+        }
+
+        /* Neon: горизонтальная линия на горизонте */
+        .neon-horizon{
+            bottom:18%;left:5%;right:5%;height:1px;opacity:0;
+        }
+        [data-theme="neon"] .neon-horizon{
+            opacity:1;
+            background:linear-gradient(90deg,transparent,hsla(170 80% 55%/.2) 20%,hsla(280 70% 60%/.25) 50%,hsla(170 80% 55%/.2) 80%,transparent);
+            box-shadow:0 0 15px hsla(170 80% 55%/.08),0 0 40px hsla(280 60% 55%/.05);
+        }
+        /* Neon: вторая линия */
+        .neon-horizon-2{
+            bottom:22%;left:10%;right:10%;height:1px;opacity:0;
+        }
+        [data-theme="neon"] .neon-horizon-2{
+            opacity:.5;
+            background:linear-gradient(90deg,transparent,hsla(280 70% 60%/.15) 30%,hsla(170 70% 55%/.15) 70%,transparent);
+        }
+
+        /* Flame: плавающие эмберы (CSS-only) */
+        .flame-embers{
+            position:fixed;inset:0;pointer-events:none;z-index:0;
+            overflow:hidden;opacity:0;transition:opacity 1s;
+            contain:strict;
+        }
+        [data-theme="flame"] .flame-embers{opacity:1}
+        .ember{
+            position:absolute;border-radius:50%;
+            background:hsla(30 90% 60%/.6);
+            animation:emberRise var(--edur) ease-in infinite;
+            animation-delay:var(--edel);
             opacity:0;
-            background:repeating-linear-gradient(
-                0deg,transparent,transparent 2px,
-                hsla(0 0% 0%/.04) 2px,hsla(0 0% 0%/.04) 4px
-            );
+            contain:strict;
         }
-        [data-theme="neon"] .decor-neon{opacity:1}
-
-        /* Neon: горизонтальные линии-акценты */
-        .neon-line{
-            position:fixed;height:1px;z-index:0;pointer-events:none;
-            opacity:0;transition:opacity .8s;contain:strict;
+        @keyframes emberRise{
+            0%{opacity:0;transform:translateY(0) scale(.5)}
+            15%{opacity:.6}
+            85%{opacity:.4}
+            100%{opacity:0;transform:translateY(calc(-100vh - 20px)) translateX(var(--edrift)) scale(.2)}
         }
-        [data-theme="neon"] .neon-line{opacity:1}
-        .neon-line-1{
-            top:20%;left:0;right:0;
-            background:linear-gradient(90deg,transparent,hsla(170 80% 50%/.08) 30%,hsla(280 70% 60%/.08) 70%,transparent);
-        }
-        .neon-line-2{
-            bottom:25%;left:0;right:0;
-            background:linear-gradient(90deg,transparent,hsla(280 70% 60%/.06) 40%,hsla(170 80% 50%/.06) 60%,transparent);
-        }
-
-        /* Flame: виньетка снизу (жар) */
-        .flame-vignette{
-            position:fixed;bottom:0;left:0;right:0;height:30%;z-index:0;
-            pointer-events:none;opacity:0;transition:opacity .8s;contain:strict;
-            background:linear-gradient(to top,hsla(0 50% 10%/.15),transparent);
-        }
-        [data-theme="flame"] .flame-vignette{opacity:1}
-
-        /* Cosmos: виньетка — космическая глубина */
-        .cosmos-vignette{
-            position:fixed;inset:0;z-index:0;pointer-events:none;
-            opacity:0;transition:opacity .8s;contain:strict;
-            background:radial-gradient(ellipse 70% 70% at 50% 50%,transparent 40%,hsla(240 40% 3%/.3));
-        }
-        [data-theme="cosmos"] .cosmos-vignette{opacity:1}
 
         /* ====== ГЛАВНЫЙ КОНТЕЙНЕР ====== */
         .main{
             position:relative;z-index:1;
             display:flex;flex-direction:column;align-items:center;
-            padding:8px 16px 16px;
+            padding:10px 16px 16px;
             opacity:0;animation:mainIn .8s ease forwards .1s;
         }
         @keyframes mainIn{to{opacity:1}}
 
-        /* ====== ЗАГОЛОВОК — ВЫСОКО ====== */
+        /* ====== ЗАГОЛОВОК — ВВЕРХУ ====== */
         .hdr{
             text-align:center;
-            margin-bottom:2px;
+            margin-bottom:8px;
             margin-top:-8px;
         }
         .hdr h1{
             font-size:clamp(17px,4.2vw,30px);font-weight:900;
-            letter-spacing:4px;text-transform:uppercase;
+            letter-spacing:3px;text-transform:uppercase;
             background:linear-gradient(100deg,hsla(var(--h) 35% 58%/.5),var(--txt) 25%,#fff 50%,var(--txt) 75%,hsla(var(--h) 35% 58%/.5));
             background-size:280% 100%;
             -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
@@ -264,43 +283,35 @@
             letter-spacing:6px;text-transform:uppercase;margin-top:2px;
         }
 
-        /* Flame title */
-        [data-theme="flame"] .hdr h1{
-            background:linear-gradient(100deg,hsla(0 50% 50%/.5),hsl(40 90% 90%) 25%,#fff 50%,hsl(40 90% 90%) 75%,hsla(0 50% 50%/.5));
-            background-size:280% 100%;
-            -webkit-background-clip:text;background-clip:text;
-            animation:tSh 8s linear infinite;
-        }
-        /* Neon title */
-        [data-theme="neon"] .hdr h1{
-            background:linear-gradient(100deg,hsla(170 60% 50%/.5),hsl(280 60% 88%) 25%,#fff 50%,hsl(170 60% 85%) 75%,hsla(280 60% 50%/.5));
-            background-size:280% 100%;
-            -webkit-background-clip:text;background-clip:text;
-            animation:tSh 6s linear infinite;
-        }
+        /* Тематические подзаголовки */
+        [data-theme="flame"] .hdr .sub{letter-spacing:5px;color:hsla(30 50% 65%/.5)}
+        [data-theme="neon"] .hdr .sub{letter-spacing:7px;color:hsla(280 40% 70%/.4)}
 
         /* ====== ТАЙМЕР ====== */
         .timer-box{
             position:fixed;top:12px;right:12px;z-index:50;
             display:flex;flex-direction:column;align-items:flex-end;gap:2px;
         }
-        .timer-label{font-size:8px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--txt-m);opacity:.5}
+        .timer-label{
+            font-size:8px;font-weight:600;letter-spacing:2px;
+            text-transform:uppercase;color:var(--txt-m);opacity:.6;
+        }
         .timer-val{
             color:var(--acc-l);font-weight:800;font-size:12px;
             background:hsla(var(--h) 45% 30%/.2);
             padding:4px 12px;border-radius:18px;
             border:1px solid hsla(var(--h) 50% 55%/.08);
             font-variant-numeric:tabular-nums;
-            min-width:84px;text-align:center;
+            min-width:82px;text-align:center;
             transition:all .5s;
         }
         .timer-val.ready{
             color:hsl(140 70% 65%);
             border-color:hsla(140 60% 50%/.15);
-            background:hsla(140 50% 30%/.12);
-            animation:readyPulse 2.5s ease-in-out infinite;
+            background:hsla(140 50% 30%/.1);
+            animation:readyPulse 2s ease-in-out infinite;
         }
-        @keyframes readyPulse{0%,100%{box-shadow:none}50%{box-shadow:0 0 12px 1px hsla(140 60% 50%/.1)}}
+        @keyframes readyPulse{0%,100%{box-shadow:0 0 0 0 hsla(140 60% 50%/.05)}50%{box-shadow:0 0 12px 2px hsla(140 60% 50%/.1)}}
 
         /* ====== ТЕМЫ ====== */
         .theme-selector{
@@ -316,26 +327,26 @@
         .theme-btn:active{transform:scale(.9)}
         .theme-btn.active{
             border-color:var(--acc-l);
-            box-shadow:0 0 14px var(--glow);
+            box-shadow:0 0 14px var(--glow),0 0 3px var(--glow);
             transform:scale(1.05);
         }
         .theme-btn::before{content:'';position:absolute;inset:3px;border-radius:50%}
         .theme-btn::after{
             content:'';position:absolute;inset:3px;border-radius:50%;
-            background:linear-gradient(160deg,hsla(0 0% 100%/.22),transparent 50%);
+            background:linear-gradient(160deg,hsla(0 0% 100%/.2),transparent 50%);
         }
-        .theme-btn[data-theme="cosmos"]::before{background:linear-gradient(135deg,hsl(260 50% 40%),hsl(218 55% 28%))}
-        .theme-btn[data-theme="flame"]::before{background:linear-gradient(135deg,hsl(0 65% 42%),hsl(30 80% 38%))}
-        .theme-btn[data-theme="neon"]::before{background:linear-gradient(135deg,hsl(280 55% 42%),hsl(170 65% 32%))}
+        .theme-btn[data-theme="cosmos"]::before{background:linear-gradient(135deg,hsl(260 50% 45%),hsl(218 55% 30%))}
+        .theme-btn[data-theme="flame"]::before{background:linear-gradient(135deg,hsl(12 72% 45%),hsl(35 80% 40%))}
+        .theme-btn[data-theme="neon"]::before{background:linear-gradient(135deg,hsl(280 60% 45%),hsl(170 70% 35%))}
 
         .theme-name{
             position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);
-            font-size:7px;font-weight:700;letter-spacing:1.5px;
+            font-size:6px;font-weight:700;letter-spacing:2px;
             text-transform:uppercase;color:var(--txt-m);
             white-space:nowrap;opacity:0;
             transition:opacity .3s;pointer-events:none;
         }
-        .theme-btn.active .theme-name{opacity:.7}
+        .theme-btn.active .theme-name{opacity:.8}
 
         /* ====== КОЛЕСО ====== */
         .wh-wrap{
@@ -344,52 +355,52 @@
         }
 
         .ring{
-            position:absolute;inset:-28px;border-radius:50%;
+            position:absolute;inset:-26px;border-radius:50%;
             border:1px solid var(--glass-b);
             box-shadow:0 0 70px hsla(var(--h) 55% 28%/.1),inset 0 0 50px hsla(var(--h) 55% 28%/.04);
             transition:box-shadow .5s,border-color .5s;
             contain:strict;
         }
 
+        /* Тематические ring */
         [data-theme="cosmos"] .ring,.ring{
-            background:linear-gradient(135deg,hsla(260 40% 50%/.05),hsla(218 40% 38%/.02) 40%,hsla(200 50% 50%/.04));
+            background:linear-gradient(135deg,hsla(260 35% 45%/.05),hsla(218 35% 35%/.02) 40%,hsla(200 40% 45%/.04));
         }
         [data-theme="flame"] .ring{
-            background:linear-gradient(135deg,hsla(0 45% 35%/.07),hsla(30 40% 25%/.03) 40%,hsla(15 50% 35%/.05));
+            background:linear-gradient(135deg,hsla(0 45% 35%/.07),hsla(35 35% 28%/.03) 40%,hsla(20 40% 35%/.05));
         }
         [data-theme="neon"] .ring{
-            background:linear-gradient(135deg,hsla(280 45% 45%/.06),hsla(170 35% 35%/.03) 40%,hsla(220 50% 45%/.05));
+            background:linear-gradient(135deg,hsla(280 45% 40%/.06),hsla(170 35% 35%/.03) 40%,hsla(200 40% 40%/.05));
         }
 
         .ring.glow{
             box-shadow:0 0 100px hsla(var(--h) 55% 28%/.18),0 0 50px hsla(var(--h) 55% 35%/.1),inset 0 0 70px hsla(var(--h) 55% 28%/.05);
-            border-color:hsla(var(--h) 50% 60%/.22);
+            border-color:hsla(var(--h) 50% 60%/.2);
         }
 
-        /* Ring shimmer — тематический conic */
         .ring::before{
             content:'';position:absolute;inset:0;border-radius:50%;
-            background:conic-gradient(from 0deg,transparent 0%,var(--ring-conic) 8%,transparent 16%,var(--ring-conic2) 24%,transparent 32%);
-            animation:ringShimmer 14s linear infinite;
+            background:conic-gradient(from 0deg,transparent 0%,var(--ring-shimmer) 8%,transparent 16%);
+            animation:ringShimmer 10s linear infinite;
         }
         @keyframes ringShimmer{to{transform:rotate(360deg)}}
 
-        /* Ring — flame: пульсирующий жар */
+        /* Flame: двойной shimmer — золото + красный */
         [data-theme="flame"] .ring::after{
-            content:'';position:absolute;inset:-2px;border-radius:50%;
-            border:1px solid hsla(30 80% 50%/.06);
-            animation:flameRingPulse 3s ease-in-out infinite;
+            content:'';position:absolute;inset:0;border-radius:50%;
+            background:conic-gradient(from 180deg,transparent 0%,hsla(0 60% 50%/.04) 5%,transparent 10%);
+            animation:ringShimmer 14s linear infinite reverse;
         }
-        @keyframes flameRingPulse{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:.7;transform:scale(1.008)}}
 
-        /* Ring — neon: двойной контур */
+        /* Neon: dual-tone shimmer */
         [data-theme="neon"] .ring::after{
-            content:'';position:absolute;inset:4px;border-radius:50%;
-            border:1px solid hsla(170 80% 50%/.06);
+            content:'';position:absolute;inset:0;border-radius:50%;
+            background:conic-gradient(from 120deg,transparent 0%,hsla(170 70% 55%/.05) 6%,transparent 12%);
+            animation:ringShimmer 12s linear infinite reverse;
         }
 
         /* LEDs */
-        .leds{position:absolute;inset:-28px;border-radius:50%;pointer-events:none;contain:strict}
+        .leds{position:absolute;inset:-26px;border-radius:50%;pointer-events:none;contain:strict}
         .led{
             position:absolute;width:5px;height:5px;border-radius:50%;
             background:var(--acc-l);opacity:.06;
@@ -397,21 +408,21 @@
         }
         .led.on{
             opacity:1;
-            box-shadow:0 0 10px var(--glow),0 0 20px hsla(var(--h) 70% 60%/.15);
+            box-shadow:0 0 8px var(--led-glow),0 0 18px hsla(var(--h) 70% 60%/.12);
             transform:scale(1.3);
         }
         .led.dim{opacity:.3;transform:scale(1.1)}
 
-        /* Flame LEDs — оранжевые */
-        [data-theme="flame"] .led{background:hsl(30 90% 65%)}
-        [data-theme="flame"] .led.on{box-shadow:0 0 10px hsla(20 90% 55%/.5),0 0 20px hsla(30 80% 50%/.2)}
+        /* Flame LEDs — тёплый оттенок */
+        [data-theme="flame"] .led{background:hsla(35 80% 65%/1)}
+        [data-theme="flame"] .led.on{box-shadow:0 0 8px hsla(25 90% 55%/.5),0 0 18px hsla(15 80% 50%/.15)}
 
-        /* Neon LEDs — чередуются */
-        [data-theme="neon"] .led:nth-child(odd){background:hsl(280 80% 70%)}
-        [data-theme="neon"] .led:nth-child(even){background:hsl(170 80% 60%)}
-        [data-theme="neon"] .led.on{box-shadow:0 0 10px hsla(280 80% 60%/.4),0 0 20px hsla(170 80% 50%/.2)}
+        /* Neon LEDs — чередование цветов */
+        [data-theme="neon"] .led:nth-child(odd){background:hsla(170 80% 65%/1)}
+        [data-theme="neon"] .led:nth-child(even){background:hsla(300 70% 70%/1)}
+        [data-theme="neon"] .led.on:nth-child(odd){box-shadow:0 0 8px hsla(170 80% 55%/.5),0 0 18px hsla(170 70% 50%/.15)}
+        [data-theme="neon"] .led.on:nth-child(even){box-shadow:0 0 8px hsla(300 80% 60%/.5),0 0 18px hsla(300 70% 55%/.15)}
 
-        /* РОТОР */
         .rotor{
             position:absolute;inset:0;border-radius:50%;
             will-change:transform;
@@ -422,119 +433,119 @@
 
         .in-sh{
             position:absolute;inset:0;border-radius:50%;
-            box-shadow:inset 0 0 50px hsla(var(--h) 42% 4%/.35),inset 0 -6px 25px hsla(var(--h) 42% 4%/.2);
+            box-shadow:inset 0 0 45px hsla(var(--h) 42% 4%/.3),inset 0 -5px 22px hsla(var(--h) 42% 4%/.18);
             pointer-events:none;z-index:3;contain:strict;
         }
         .gloss{
             position:absolute;inset:0;border-radius:50%;
-            background:linear-gradient(165deg,hsla(var(--h) 60% 90%/.06) 0%,transparent 35%);
+            background:linear-gradient(165deg,hsla(var(--h) 60% 90%/.05) 0%,transparent 32%);
             pointer-events:none;z-index:3;contain:strict;
         }
 
         /* УКАЗАТЕЛЬ */
         .ptr{
-            position:absolute;top:-36px;left:50%;
+            position:absolute;top:-34px;left:50%;
             transform:translate3d(-50%,0,0);z-index:20;
-            filter:drop-shadow(0 5px 20px var(--glow));
+            filter:drop-shadow(0 4px 18px var(--glow));
             will-change:transform;contain:layout;
         }
-        .ptr-body{width:34px;height:46px;position:relative}
+        .ptr-body{width:32px;height:44px;position:relative}
         .ptr-shape{
             width:100%;height:100%;
             clip-path:polygon(50% 100%,5% 0,95% 0);
-            background:linear-gradient(180deg,var(--acc-l) 0%,var(--acc) 60%,hsla(var(--h) 52% 40%/.9) 100%);
+            background:linear-gradient(180deg,var(--acc-l) 0%,var(--acc) 60%,hsla(var(--h) 52% 40%/.85) 100%);
         }
         .ptr-shape::before{
             content:'';position:absolute;inset:3px;
             clip-path:polygon(50% 100%,5% 0,95% 0);
-            background:linear-gradient(180deg,rgba(255,255,255,.4),transparent 55%);
+            background:linear-gradient(180deg,rgba(255,255,255,.35),transparent 50%);
         }
         .ptr-glow{
             position:absolute;bottom:-10px;left:50%;
             transform:translateX(-50%);
-            width:18px;height:18px;border-radius:50%;
-            background:var(--glow);filter:blur(8px);
+            width:16px;height:16px;border-radius:50%;
+            background:var(--glow);filter:blur(7px);
             animation:pG 2.5s ease-in-out infinite;
         }
-        @keyframes pG{0%,100%{opacity:.25;transform:translateX(-50%) scale(1)}50%{opacity:.7;transform:translateX(-50%) scale(1.8)}}
+        @keyframes pG{0%,100%{opacity:.2;transform:translateX(-50%) scale(1)}50%{opacity:.7;transform:translateX(-50%) scale(1.7)}}
 
         /* ХАБ */
         .hub{
             position:absolute;top:50%;left:50%;
             transform:translate3d(-50%,-50%,0);
-            width:78px;height:78px;border-radius:50%;z-index:10;
-            background:linear-gradient(145deg,hsla(var(--h) 38% 22%/.92),hsla(var(--h) 34% 10%/.98));
-            border:1px solid hsla(var(--h) 50% 58%/.18);
-            box-shadow:0 0 35px hsla(var(--h) 48% 22%/.2),inset 0 2px 0 hsla(0 0% 100%/.07),inset 0 -3px 10px hsla(var(--h) 38% 4%/.3);
+            width:74px;height:74px;border-radius:50%;z-index:10;
+            background:linear-gradient(145deg,hsla(var(--h) 38% 20%/.92),hsla(var(--h) 34% 8%/.96));
+            border:1px solid hsla(var(--h) 50% 58%/.15);
+            box-shadow:0 0 30px hsla(var(--h) 48% 22%/.18),inset 0 1px 0 hsla(0 0% 100%/.06),inset 0 -3px 8px hsla(var(--h) 38% 4%/.25);
             contain:strict;
         }
         .hub::before{
-            content:'';position:absolute;inset:6px;border-radius:50%;
-            border:1px solid hsla(var(--h) 50% 58%/.06);
-            background:radial-gradient(circle at 30% 30%,hsla(var(--h) 58% 68%/.06),transparent 55%);
+            content:'';position:absolute;inset:5px;border-radius:50%;
+            border:1px solid hsla(var(--h) 50% 58%/.05);
+            background:radial-gradient(circle at 30% 30%,hsla(var(--h) 58% 68%/.05),transparent 55%);
         }
         .hub::after{
-            content:'';position:absolute;inset:14px;border-radius:50%;
+            content:'';position:absolute;inset:13px;border-radius:50%;
             background:radial-gradient(circle,var(--acc-xl),var(--acc));
-            box-shadow:0 0 18px var(--glow);
+            box-shadow:0 0 15px var(--glow);
             animation:hubP 3s ease-in-out infinite;
         }
-        @keyframes hubP{0%,100%{box-shadow:0 0 18px var(--glow)}50%{box-shadow:0 0 30px var(--glow),0 0 50px hsla(var(--h) 70% 60%/.15)}}
+        @keyframes hubP{0%,100%{box-shadow:0 0 15px var(--glow)}50%{box-shadow:0 0 28px var(--glow),0 0 45px hsla(var(--h) 70% 60%/.12)}}
 
         .hub-icon{
             position:absolute;top:50%;left:50%;
             transform:translate(-50%,-50%);z-index:11;
-            font-size:20px;line-height:1;
-            animation:hubSpin 20s linear infinite;
+            font-size:20px;
+            animation:hubSpin 18s linear infinite;
+            filter:drop-shadow(0 0 5px hsla(var(--h) 60% 80%/.3));
         }
         @keyframes hubSpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
 
-        /* Тематические hub иконки — через CSS content */
-        [data-theme="cosmos"] .hub-icon::after{content:'✦'}
-        [data-theme="flame"] .hub-icon::after{content:'🔥'}
-        [data-theme="neon"] .hub-icon::after{content:'⚡'}
+        /* Flame hub icon */
+        [data-theme="flame"] .hub-icon{filter:drop-shadow(0 0 5px hsla(30 80% 60%/.4))}
+        [data-theme="neon"] .hub-icon{filter:drop-shadow(0 0 6px hsla(280 70% 70%/.4))}
 
         .burst{
             position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
             width:0;height:0;border-radius:50%;
-            background:radial-gradient(circle,hsla(var(--h) 70% 68%/.18),transparent 70%);
+            background:radial-gradient(circle,hsla(var(--h) 70% 68%/.16),transparent 70%);
             pointer-events:none;z-index:4;
             transition:width 1.2s cubic-bezier(.1,.8,.1,1),height 1.2s cubic-bezier(.1,.8,.1,1);
             contain:strict;
         }
-        .burst.on{width:650px;height:650px}
+        .burst.on{width:600px;height:600px}
 
         .rays{
             position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-            width:480px;height:480px;z-index:4;pointer-events:none;
+            width:450px;height:450px;z-index:4;pointer-events:none;
             opacity:0;transition:opacity 1s ease;contain:strict;
         }
         .rays.on{opacity:1;animation:raysRot 25s linear infinite}
         @keyframes raysRot{to{transform:translate(-50%,-50%) rotate(360deg)}}
         .ray{
-            position:absolute;top:50%;left:50%;width:2px;height:230px;
+            position:absolute;top:50%;left:50%;width:2px;height:220px;
             transform-origin:top center;
-            background:linear-gradient(180deg,hsla(var(--h) 68% 78%/.22),transparent 50%);
+            background:linear-gradient(180deg,hsla(var(--h) 68% 78%/.2),transparent 50%);
             border-radius:1px;
         }
 
         .energy-ring{
-            position:absolute;inset:-15px;border-radius:50%;
+            position:absolute;inset:-14px;border-radius:50%;
             border:2px solid transparent;pointer-events:none;z-index:2;
             opacity:0;transition:opacity .4s;contain:strict;
         }
         .energy-ring.on{opacity:1;animation:eP 1.4s ease-out infinite}
-        @keyframes eP{0%{transform:scale(1);border-color:hsla(var(--h) 70% 70%/.35)}100%{transform:scale(1.22);border-color:transparent}}
+        @keyframes eP{0%{transform:scale(1);border-color:hsla(var(--h) 70% 70%/.3)}100%{transform:scale(1.2);border-color:transparent}}
 
         /* ====== КНОПКА ====== */
         .btn{
-            position:relative;padding:17px 54px;
+            position:relative;padding:16px 52px;
             font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;
             letter-spacing:5px;text-transform:uppercase;color:var(--txt);
             cursor:pointer;z-index:1;
-            background:linear-gradient(135deg,hsla(var(--h) 44% 28%/.5),hsla(var(--h) 38% 16%/.6));
+            background:linear-gradient(135deg,hsla(var(--h) 44% 28%/.45),hsla(var(--h) 38% 16%/.55));
             border:1px solid var(--glass-b);border-radius:60px;
-            box-shadow:0 8px 28px hsla(var(--h) 48% 14%/.2),inset 0 1px 0 hsla(0 0% 100%/.06);
+            box-shadow:0 8px 28px hsla(var(--h) 48% 14%/.18),inset 0 1px 0 hsla(0 0% 100%/.05);
             transition:all .3s ease;overflow:hidden;margin-top:32px;
             -webkit-tap-highlight-color:transparent;
         }
@@ -547,54 +558,44 @@
         @keyframes btnShine{0%,100%{left:-100%}50%{left:150%}}
         .btn:active:not(:disabled){transform:scale(.96);transition-duration:.1s}
         .btn:disabled{opacity:.3;cursor:not-allowed;pointer-events:none}
-        .btn.waiting{font-size:10px;letter-spacing:3px;padding:15px 28px}
-
-        /* Themed button glow */
-        [data-theme="flame"] .btn{
-            box-shadow:0 8px 28px hsla(0 50% 14%/.2),0 0 20px hsla(30 70% 40%/.05),inset 0 1px 0 hsla(0 0% 100%/.06);
-        }
-        [data-theme="neon"] .btn{
-            box-shadow:0 8px 28px hsla(280 50% 14%/.2),0 0 20px hsla(170 60% 40%/.05),inset 0 1px 0 hsla(0 0% 100%/.06);
-        }
+        .btn.waiting{font-size:9px;letter-spacing:3px;padding:14px 28px}
 
         /* ====== МОДАЛКА ====== */
         .m-ov{
             position:fixed;inset:0;z-index:200;
             display:flex;align-items:center;justify-content:center;
             background:hsla(var(--h) 42% 4%/.88);
-            opacity:0;pointer-events:none;
-            transition:opacity .4s ease;
+            opacity:0;pointer-events:none;transition:opacity .4s ease;
         }
         .m-ov.open{opacity:1;pointer-events:all}
 
         .m-c{
-            text-align:center;padding:42px 40px 36px;
-            border-radius:28px;max-width:380px;width:88vw;
+            text-align:center;padding:40px 38px 36px;
+            border-radius:26px;max-width:370px;width:88vw;
             position:relative;overflow:hidden;
             background:linear-gradient(165deg,hsla(var(--h) 38% 18%/.88),hsla(var(--h) 34% 6%/.94));
-            border:1px solid hsla(var(--h) 48% 58%/.15);
-            box-shadow:0 25px 80px hsla(var(--h) 38% 5%/.5),inset 0 1px 0 hsla(0 0% 100%/.06);
+            border:1px solid hsla(var(--h) 48% 58%/.12);
+            box-shadow:0 22px 70px hsla(var(--h) 38% 5%/.45),inset 0 1px 0 hsla(0 0% 100%/.05);
             transform:scale(.8) translateY(30px);
             transition:transform .5s cubic-bezier(.175,.885,.32,1.275);
         }
         .m-ov.open .m-c{transform:scale(1) translateY(0)}
-
         .m-c::before{
-            content:'';position:absolute;top:-40%;right:-20%;
+            content:'';position:absolute;top:-35%;right:-18%;
             width:160px;height:160px;border-radius:50%;
             background:radial-gradient(circle,hsla(var(--h) 60% 60%/.08),transparent 70%);
             filter:blur(20px);pointer-events:none;
         }
 
-        .m-emoji{font-size:44px;margin-bottom:14px;display:block;animation:mEmoji .6s cubic-bezier(.175,.885,.32,1.275) forwards;transform:scale(0)}
-        @keyframes mEmoji{to{transform:scale(1)}}
+        .m-emoji{font-size:44px;margin-bottom:14px;display:block;animation:mE .6s cubic-bezier(.175,.885,.32,1.275) forwards;transform:scale(0)}
+        @keyframes mE{to{transform:scale(1)}}
 
         .m-tag{
             display:inline-block;font-size:9px;font-weight:700;
-            letter-spacing:5px;text-transform:uppercase;color:var(--acc);
-            padding:7px 18px;border:1px solid hsla(var(--h) 48% 55%/.16);
+            letter-spacing:4px;text-transform:uppercase;color:var(--acc);
+            padding:6px 18px;border:1px solid hsla(var(--h) 48% 55%/.15);
             border-radius:50px;margin-bottom:20px;
-            background:hsla(var(--h) 48% 48%/.06);
+            background:hsla(var(--h) 48% 48%/.05);
         }
         .m-tag.r{
             color:var(--rare-gold);border-color:hsla(45 80% 55%/.2);
@@ -602,8 +603,8 @@
         }
 
         .m-val{
-            font-size:clamp(22px,6.5vw,34px);font-weight:900;
-            line-height:1.2;margin-bottom:10px;letter-spacing:2px;
+            font-size:clamp(20px,6vw,34px);font-weight:900;
+            line-height:1.2;margin-bottom:8px;letter-spacing:2px;
         }
         .m-val.rv{
             background:linear-gradient(135deg,var(--rare-gold),#fff,var(--rare-gold));
@@ -616,9 +617,8 @@
 
         .m-badge{
             display:inline-flex;align-items:center;gap:4px;
-            padding:5px 12px;border-radius:18px;
-            font-size:10px;font-weight:700;letter-spacing:1px;
-            margin-bottom:10px;
+            padding:4px 11px;border-radius:16px;
+            font-size:10px;font-weight:700;letter-spacing:1px;margin-bottom:8px;
         }
         .m-badge.common{background:hsla(var(--h) 40% 30%/.2);color:var(--txt-m);border:1px solid hsla(var(--h) 40% 50%/.12)}
         .m-badge.rare{background:hsla(45 80% 50%/.1);color:var(--rare-gold);border:1px solid hsla(45 80% 55%/.15)}
@@ -627,53 +627,46 @@
         .m-sub{font-size:12px;font-weight:400;color:var(--txt-m);margin-bottom:28px}
 
         .m-btn{
-            padding:14px 44px;font-family:'Montserrat',sans-serif;
-            font-size:11px;font-weight:600;letter-spacing:4px;text-transform:uppercase;
-            color:var(--acc-l);
-            background:hsla(var(--h) 42% 32%/.2);
-            border:1px solid hsla(var(--h) 48% 55%/.14);
-            border-radius:55px;cursor:pointer;
-            transition:all .3s ease;
+            padding:13px 44px;font-family:'Montserrat',sans-serif;
+            font-size:10px;font-weight:600;letter-spacing:4px;text-transform:uppercase;
+            color:var(--acc-l);background:hsla(var(--h) 42% 32%/.18);
+            border:1px solid hsla(var(--h) 48% 55%/.12);
+            border-radius:55px;cursor:pointer;transition:all .3s ease;
             -webkit-tap-highlight-color:transparent;
         }
         .m-btn:active{transform:scale(.96)}
 
-        /* ====== FX ====== */
+        /* FX */
         .fx-canvas{position:fixed;inset:0;z-index:199;pointer-events:none}
         .particle-canvas{position:fixed;inset:0;z-index:1;pointer-events:none}
-        .screen-flash{
-            position:fixed;inset:0;z-index:198;pointer-events:none;
-            opacity:0;contain:strict;
-        }
+        .screen-flash{position:fixed;inset:0;z-index:198;pointer-events:none;opacity:0;contain:strict}
 
         /* ====== RESPONSIVE ====== */
         @media(max-width:480px){
-            .main{padding-top:2px;padding-bottom:12px}
-            .hdr{margin-bottom:0;margin-top:-4px}
+            .main{padding:4px 12px 12px}
+            .hdr{margin-bottom:4px;margin-top:-4px}
             .hdr h1{font-size:clamp(15px,4.2vw,22px);letter-spacing:2px}
-            .hdr .sub{font-size:6.5px;letter-spacing:4px}
-            .wh-wrap{--wh:min(290px,76vw)}
+            .hdr .sub{font-size:6px;letter-spacing:4px}
+            .wh-wrap{--wh:min(280px,76vw)}
             .btn{padding:14px 34px;font-size:10px;letter-spacing:3px;margin-top:22px}
-            .btn.waiting{padding:13px 22px;font-size:9px;letter-spacing:2px}
-            .timer-box{top:7px;right:7px}
-            .timer-val{font-size:10px;padding:3px 9px;min-width:74px}
+            .btn.waiting{padding:12px 22px;font-size:8px;letter-spacing:2px}
+            .timer-box{top:6px;right:6px}
+            .timer-val{font-size:10px;padding:3px 9px;min-width:72px}
             .timer-label{font-size:7px}
-            .ring{inset:-20px}.leds{inset:-20px}
-            .hub{width:60px;height:60px}.hub::after{inset:10px}
+            .ring{inset:-18px}.leds{inset:-18px}
+            .hub{width:58px;height:58px}.hub::after{inset:10px}
             .hub-icon{font-size:16px}
-            .ptr{top:-30px}.ptr-body{width:28px;height:38px}
-            .theme-selector{left:7px;top:7px}.theme-btn{width:26px;height:26px}
-            .theme-name{font-size:6px;bottom:-16px}
-            .m-c{padding:28px 20px 24px}
-            .m-emoji{font-size:36px}
+            .ptr{top:-28px}.ptr-body{width:26px;height:36px}
+            .theme-selector{left:6px;top:6px}.theme-btn{width:26px;height:26px}
+            .m-c{padding:28px 20px 24px}.m-emoji{font-size:36px}
         }
         @media(max-width:360px){
-            .wh-wrap{--wh:min(248px,80vw)}
+            .wh-wrap{--wh:min(240px,80vw)}
             .btn{padding:12px 26px;font-size:9px;letter-spacing:2px}
             .hdr h1{font-size:15px}
         }
-        @media(min-width:481px) and (max-width:768px){.wh-wrap{--wh:min(360px,70vw)}}
-        @media(min-width:1200px){.wh-wrap{--wh:440px}.hdr h1{font-size:34px}}
+        @media(min-width:481px) and (max-width:768px){.wh-wrap{--wh:min(350px,70vw)}}
+        @media(min-width:1200px){.wh-wrap{--wh:430px}.hdr h1{font-size:34px}}
     </style>
 </head>
 <body data-theme="cosmos">
@@ -681,18 +674,16 @@
 <div class="bg"></div>
 <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
 <div class="noise"></div>
-
-<!-- Тематический декор -->
-<div class="theme-decor decor-cosmos"></div>
-<div class="theme-decor decor-flame"></div>
-<div class="theme-decor decor-neon"></div>
-<div class="neon-line neon-line-1"></div>
-<div class="neon-line neon-line-2"></div>
-<div class="flame-vignette"></div>
-<div class="cosmos-vignette"></div>
-
+<div class="grid-subtle"></div>
 <div class="stars" id="stars"></div>
 <canvas class="particle-canvas" id="particleCv"></canvas>
+
+<!-- Theme-specific decor -->
+<div class="theme-decor nebula"></div>
+<div class="theme-decor ember-glow"></div>
+<div class="theme-decor neon-horizon"></div>
+<div class="theme-decor neon-horizon-2"></div>
+<div class="flame-embers" id="flameEmbers"></div>
 
 <div class="theme-selector">
     <div class="theme-btn active" data-theme="cosmos"><span class="theme-name">Космос</span></div>
@@ -729,7 +720,7 @@
         <div class="burst" id="burst"></div>
         <div class="rays" id="rays"></div>
         <div class="hub"></div>
-        <div class="hub-icon"></div>
+        <div class="hub-icon">✦</div>
     </div>
 
     <button class="btn" id="btnSpin">Крутить</button>
@@ -754,58 +745,53 @@
    КОНФИГ
    ===================================================== */
 const PRIZES = [
-    {id:"10d",        label:"10 D",            w:35,desc:"Небольшой бонус",            d:10, rarity:"common",emoji:"🎁"},
-    {id:"25d",        label:"25 D",            w:28,desc:"Приятный подарок",           d:25, rarity:"common",emoji:"🎁"},
-    {id:"50d",        label:"50 D",            w:20,desc:"Хороший выигрыш",            d:50, rarity:"common",emoji:"✨"},
-    {id:"250d",       label:"250 D",           w:10,desc:"Отличный приз!",            d:250,rarity:"rare",  emoji:"💎"},
-    {id:"premium_1d", label:"+1 день Premium", w:6, desc:"Пробный доступ — 120 D",    d:120,rarity:"rare",  emoji:"⭐"},
-    {id:"premium_7d", label:"+7 дней Premium", w:2, desc:"Невероятная удача! — 600 D", d:600,rarity:"epic",  emoji:"🏆"},
-    {id:"discount_15",label:"Скидка 15%",      w:12,desc:"На Premium — 200 D",         d:200,rarity:"rare",  emoji:"🔥"},
+    {id:"10d",label:"10 D",w:35,desc:"Небольшой бонус",d:10,rarity:"common",emoji:"🎁"},
+    {id:"25d",label:"25 D",w:28,desc:"Приятный подарок",d:25,rarity:"common",emoji:"🎁"},
+    {id:"50d",label:"50 D",w:20,desc:"Хороший выигрыш",d:50,rarity:"common",emoji:"✨"},
+    {id:"250d",label:"250 D",w:10,desc:"Отличный приз!",d:250,rarity:"rare",emoji:"💎"},
+    {id:"premium_1d",label:"+1 день Premium",w:6,desc:"Пробный доступ — 120 D",d:120,rarity:"rare",emoji:"⭐"},
+    {id:"premium_7d",label:"+7 дней Premium",w:2,desc:"Невероятная удача! — 600 D",d:600,rarity:"epic",emoji:"🏆"},
+    {id:"discount_15",label:"Скидка 15%",w:12,desc:"На Premium — 200 D",d:200,rarity:"rare",emoji:"🔥"},
 ];
 
-const N = PRIZES.length, ARC = Math.PI*2/N, SEG_DEG = 360/N;
-
-const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
-const isLow = isMobile && (navigator.hardwareConcurrency || 4) <= 4;
-const PERF = {
-    stars:    isLow ? 8 : 16,
-    rays:     isLow ? 8 : 14,
-    leds:     isLow ? 32 : 48,
-    confetti: isLow ? 20 : 45,
-    particles:!isLow,
-};
+const N=PRIZES.length, ARC=Math.PI*2/N, SEG_DEG=360/N;
+const isMobile=/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+const isLow=isMobile&&(navigator.hardwareConcurrency||4)<=4;
+const PERF={stars:isLow?8:16,rays:isLow?8:14,leds:isLow?30:46,confetti:isLow?18:42,particles:!isLow,embers:isLow?4:8};
 
 /* =====================================================
    TELEGRAM
    ===================================================== */
-const tg = window.Telegram.WebApp;
-tg.ready(); tg.expand();
-const API_URL = 'https://squaretoed-overfloridly-alonzo.ngrok-free.dev';
+const tg=window.Telegram.WebApp;tg.ready();tg.expand();
+const API_URL='https://squaretoed-overfloridly-alonzo.ngrok-free.dev';
 
-function haptic(type) {
-    try {
-        if (!tg.HapticFeedback) return;
-        if (type === 'light')        tg.HapticFeedback.impactOccurred('light');
-        else if (type === 'med')     tg.HapticFeedback.impactOccurred('medium');
-        else if (type === 'heavy')   tg.HapticFeedback.impactOccurred('heavy');
-        else if (type === 'success') tg.HapticFeedback.notificationOccurred('success');
-    } catch(e) {}
+function haptic(t){
+    try{
+        if(!tg.HapticFeedback)return;
+        if(t==='light')tg.HapticFeedback.impactOccurred('light');
+        else if(t==='med')tg.HapticFeedback.impactOccurred('medium');
+        else if(t==='success')tg.HapticFeedback.notificationOccurred('success');
+    }catch(e){}
 }
 
 /* =====================================================
    DOM
    ===================================================== */
-const $ = id => document.getElementById(id);
-const cv=$('cv'),c=cv.getContext('2d'),rotor=$('rotor'),btnSp=$('btnSpin'),ptr=$('ptr');
-const ring=$('ring'),energyRing=$('energyRing'),burst=$('burst'),raysEl=$('rays'),flash=$('flash');
-const mOv=$('mOv'),mTag=$('mTag'),mVal=$('mVal'),mBadge=$('mBadge'),mSub=$('mSub'),mBtn=$('mBtn'),mEmoji=$('mEmoji');
+const $=id=>document.getElementById(id);
+const cv=$('cv'),c=cv.getContext('2d');
+const rotor=$('rotor'),btnSp=$('btnSpin'),ptr=$('ptr');
+const ring=$('ring'),energyRing=$('energyRing');
+const burst=$('burst'),raysEl=$('rays'),flash=$('flash');
+const mOv=$('mOv'),mTag=$('mTag'),mVal=$('mVal');
+const mBadge=$('mBadge'),mSub=$('mSub'),mBtn=$('mBtn'),mEmoji=$('mEmoji');
 const whWrap=$('whWrap'),ledsEl=$('leds');
 const fxCv=$('fxCv'),fxCtx=fxCv.getContext('2d');
 const particleCv=$('particleCv'),pCtx=particleCv.getContext('2d');
 const timerLabel=$('timerLabel'),timerVal=$('timerVal');
+const flameEmbers=$('flameEmbers');
 
 /* =====================================================
-   СОСТОЯНИЕ
+   STATE
    ===================================================== */
 let currentAngle=0,isSpinning=false,canSpin=true;
 let S,H=218,dpr=1;
@@ -816,78 +802,85 @@ let currentThemeName='cosmos';
 /* =====================================================
    AMBIENT HUM
    ===================================================== */
-let humCtx=null,humOsc=null,humGain=null;
-let humTargetGain=0.02;
-let humCurrentGain=0;
-let humAnimId=null;
-let humRunning=false;
+let ambCtx=null,ambOsc=null,ambGain=null,ambLfo=null,ambLfoGain=null;
+const AMB_BASE_GAIN=0.018;
+const AMB_SPIN_GAIN=0.06;
 
-function initHum() {
-    if (humCtx) return;
-    try {
-        humCtx = new (AudioContext || webkitAudioContext)();
-        humOsc = humCtx.createOscillator();
-        humGain = humCtx.createGain();
+function initAmbient(){
+    if(ambCtx)return;
+    try{
+        ambCtx=new(AudioContext||webkitAudioContext)();
 
-        humOsc.type = 'sine';
-        humOsc.frequency.value = 80;
-        humGain.gain.value = 0;
+        // Main drone
+        ambOsc=ambCtx.createOscillator();
+        ambOsc.type='sine';
+        ambOsc.frequency.value=80;
 
-        // Мягкий фильтр — убираем резкость
-        const filter = humCtx.createBiquadFilter();
-        filter.type = 'lowpass';
-        filter.frequency.value = 120;
-        filter.Q.value = 0.5;
+        ambGain=ambCtx.createGain();
+        ambGain.gain.value=AMB_BASE_GAIN;
 
-        humOsc.connect(filter);
-        filter.connect(humGain);
-        humGain.connect(humCtx.destination);
-        humOsc.start();
+        // LFO for subtle pulsation
+        ambLfo=ambCtx.createOscillator();
+        ambLfo.type='sine';
+        ambLfo.frequency.value=0.3;// very slow wobble
 
-        humRunning = true;
-        humCurrentGain = 0;
-        animateHum();
-    } catch(e) {}
+        ambLfoGain=ambCtx.createGain();
+        ambLfoGain.gain.value=0.005;// subtle
+
+        ambLfo.connect(ambLfoGain);
+        ambLfoGain.connect(ambGain.gain);
+
+        ambOsc.connect(ambGain);
+        ambGain.connect(ambCtx.destination);
+
+        ambOsc.start();
+        ambLfo.start();
+    }catch(e){}
 }
 
-function animateHum() {
-    if (!humRunning || !humGain) return;
-    // Плавная интерполяция к целевому значению
-    humCurrentGain += (humTargetGain - humCurrentGain) * 0.03;
-    humGain.gain.value = Math.max(0, humCurrentGain);
-    humAnimId = requestAnimationFrame(animateHum);
+function setAmbientIntensity(level){
+    // level 0..1: 0=idle, 1=full spin
+    if(!ambGain)return;
+    const target=AMB_BASE_GAIN+level*(AMB_SPIN_GAIN-AMB_BASE_GAIN);
+    ambGain.gain.setTargetAtTime(target,ambCtx.currentTime,0.1);
+
+    // Shift frequency slightly with speed
+    if(ambOsc){
+        const freq=80+level*40;// 80Hz → 120Hz
+        ambOsc.frequency.setTargetAtTime(freq,ambCtx.currentTime,0.1);
+    }
+
+    // LFO speed increases
+    if(ambLfo){
+        ambLfo.frequency.setTargetAtTime(0.3+level*2,ambCtx.currentTime,0.1);
+        ambLfoGain.gain.setTargetAtTime(0.005+level*0.015,ambCtx.currentTime,0.1);
+    }
 }
 
-function setHumIntensity(intensity) {
-    // intensity: 0 (тихо) — 1 (громко при вращении)
-    // idle = 0.015, max spin = 0.06
-    humTargetGain = 0.015 + intensity * 0.045;
-}
-
-function stopHum() {
-    humTargetGain = 0;
-    // Не останавливаем осциллятор — пусть затихает
+function setAmbientTheme(theme){
+    if(!ambOsc)return;
+    const freqs={cosmos:80,flame:65,neon:95};
+    ambOsc.frequency.setTargetAtTime(freqs[theme]||80,ambCtx.currentTime,0.3);
 }
 
 /* =====================================================
-   AUDIO — тики и победные звуки
+   TICK AUDIO
    ===================================================== */
 let actx=null,masterGain=null;
 
-function initAudio() {
-    if (actx) return;
-    try {
-        actx = new (AudioContext || webkitAudioContext)();
-        masterGain = actx.createGain();
-        masterGain.gain.value = 0.35;
+function initAudio(){
+    if(actx)return;
+    try{
+        actx=new(AudioContext||webkitAudioContext)();
+        masterGain=actx.createGain();
+        masterGain.gain.value=0.3;
         masterGain.connect(actx.destination);
-    } catch(e) {}
-    initHum();
+    }catch(e){}
 }
 
-function tick(freq,vol,dur) {
-    if (!actx) return;
-    try {
+function tick(freq,vol,dur){
+    if(!actx)return;
+    try{
         const t=actx.currentTime;
         const o=actx.createOscillator(),g=actx.createGain();
         o.type='sine';o.frequency.value=freq;
@@ -896,80 +889,81 @@ function tick(freq,vol,dur) {
         o.connect(g);g.connect(masterGain);
         o.start(t);o.stop(t+dur+.01);
         o.onended=()=>{o.disconnect();g.disconnect()};
-    } catch(e) {}
+    }catch(e){}
 }
 
-function playTick(speed) {
-    tick(1200+speed*600, .01+speed*.02, .02+speed*.012);
+// Тематические тики
+function playTick(speed){
+    const themes={
+        cosmos:{base:1200,range:600},
+        flame:{base:800,range:400},
+        neon:{base:1500,range:800},
+    };
+    const t=themes[currentThemeName]||themes.cosmos;
+    tick(t.base+speed*t.range,.01+speed*.018,.02+speed*.01);
 }
 
-function playWin(rarity) {
-    const seqs = {
-        common:[[523,.035,.1],[659,.035,.1],[784,.035,.1],[1047,.035,.13]],
-        rare:  [[523,.045,.14],[659,.045,.14],[784,.045,.14],[880,.045,.14],[1047,.045,.18],[1319,.045,.18]],
-        epic:  [[523,.055,.18],[659,.055,.18],[784,.055,.18],[880,.055,.18],[1047,.055,.18],[1175,.055,.22],[1319,.055,.22],[1568,.055,.25]],
+function playWin(rarity){
+    const seqs={
+        common:[[523,.03,.1],[659,.03,.1],[784,.03,.1],[1047,.03,.12]],
+        rare:[[523,.04,.14],[659,.04,.14],[784,.04,.14],[880,.04,.14],[1047,.04,.18],[1319,.04,.18]],
+        epic:[[523,.05,.18],[659,.05,.18],[784,.05,.18],[880,.05,.18],[1047,.05,.18],[1175,.05,.2],[1319,.05,.22],[1568,.05,.25]],
     };
     (seqs[rarity]||seqs.common).forEach(([f,v,d],i)=>setTimeout(()=>tick(f,v,d),i*85));
 }
 
 /* =====================================================
-   ТАЙМЕР
+   TIMER
    ===================================================== */
-function startCountdown(targetTs) {
-    nextSpinTime = targetTs;
-    clearInterval(timerInterval);
-    updateTimer();
-    timerInterval = setInterval(updateTimer, 1000);
+function startCountdown(ts){
+    nextSpinTime=ts;clearInterval(timerInterval);
+    updateTimer();timerInterval=setInterval(updateTimer,1000);
 }
 
-function updateTimer() {
-    if (!nextSpinTime) return;
-    const diff = nextSpinTime - Date.now();
-    if (diff <= 0) {
+function updateTimer(){
+    if(!nextSpinTime)return;
+    const diff=nextSpinTime-Date.now();
+    if(diff<=0){
         clearInterval(timerInterval);
-        timerLabel.textContent = 'Доступно';
-        timerVal.textContent = '1 спин';
+        timerLabel.textContent='Готово!';
+        timerVal.textContent='🎰 Спин';
         timerVal.classList.add('ready');
-        canSpin = true;
-        btnSp.disabled = false;
-        btnSp.textContent = 'Крутить';
+        canSpin=true;
+        btnSp.disabled=false;
+        btnSp.textContent='Крутить';
         btnSp.classList.remove('waiting');
         return;
     }
-    const h = Math.floor(diff/3600000);
-    const m = Math.floor((diff%3600000)/60000);
-    const s = Math.floor((diff%60000)/1000);
-    timerLabel.textContent = 'Следующий спин';
-    timerVal.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    const h=Math.floor(diff/36e5),m=Math.floor(diff%36e5/6e4),s=Math.floor(diff%6e4/1e3);
+    timerLabel.textContent='Следующий спин';
+    timerVal.textContent=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
     timerVal.classList.remove('ready');
 }
 
-function showSpinReady() {
-    timerLabel.textContent = 'Доступно';
-    timerVal.textContent = '1 спин';
+function showSpinReady(){
+    timerLabel.textContent='Доступно';
+    timerVal.textContent='1 спин';
     timerVal.classList.add('ready');
 }
 
-function showSpinUsed() {
-    btnSp.disabled = true;
-    btnSp.textContent = 'Следующий спин скоро';
+function showSpinUsed(){
+    btnSp.disabled=true;
+    btnSp.textContent='Следующий спин скоро';
     btnSp.classList.add('waiting');
-    canSpin = false;
+    canSpin=false;
 }
 
-function countdownToMidnight() {
-    const now = new Date();
-    const mid = new Date(now);
-    mid.setHours(24,0,0,0);
-    startCountdown(mid.getTime());
+function countdownToMidnight(){
+    const n=new Date(),m=new Date(n);m.setHours(24,0,0,0);
+    startCountdown(m.getTime());
 }
 
 /* =====================================================
-   CANVAS RESIZE
+   CANVAS SIZE
    ===================================================== */
-function resizeFx() {
-    dpr = Math.min(devicePixelRatio||1, 2);
-    const w=window.innerWidth, h=window.innerHeight;
+function resizeFx(){
+    dpr=Math.min(devicePixelRatio||1,2);
+    const w=innerWidth,h=innerHeight;
     fxCv.width=w*dpr;fxCv.height=h*dpr;
     fxCv.style.width=w+'px';fxCv.style.height=h+'px';
     fxCtx.setTransform(dpr,0,0,dpr,0,0);
@@ -979,30 +973,30 @@ function resizeFx() {
 }
 
 /* =====================================================
-   КОЛЕСО — CANVAS
+   WHEEL CANVAS
    ===================================================== */
-const themeWheelColors = {
-    cosmos: {
-        seg:[{l:14,s:50,a:.78},{l:18,s:45,a:.7},{l:12,s:55,a:.82},{l:16,s:48,a:.75}],
+const themeWheelColors={
+    cosmos:{
+        seg:[{l:14,s:50,a:.78},{l:20,s:44,a:.68},{l:12,s:55,a:.82},{l:17,s:48,a:.74}],
         rare:{s1:60,l1:90,s2:55,l2:82},
     },
-    flame: {
-        seg:[{l:16,s:55,a:.78},{l:20,s:50,a:.7},{l:14,s:60,a:.82},{l:18,s:52,a:.75}],
-        rare:{s1:65,l1:88,s2:60,l2:80},
+    flame:{
+        seg:[{l:18,s:58,a:.78},{l:22,s:52,a:.68},{l:15,s:62,a:.82},{l:20,s:55,a:.74}],
+        rare:{s1:68,l1:88,s2:62,l2:80},
     },
-    neon: {
-        seg:[{l:12,s:50,a:.78},{l:16,s:45,a:.7},{l:10,s:55,a:.82},{l:14,s:48,a:.75}],
-        rare:{s1:58,l1:90,s2:52,l2:84},
+    neon:{
+        seg:[{l:12,s:52,a:.78},{l:17,s:46,a:.68},{l:10,s:58,a:.82},{l:15,s:50,a:.74}],
+        rare:{s1:60,l1:92,s2:55,l2:85},
     },
 };
 
-function segColor(i,rarity) {
-    if (rarity==='epic') {
+function segColor(i,rarity){
+    if(rarity==='epic'){
         const v=i%2;
         return{g1:`hsla(45 ${80+v*10}% ${90+v*5}%/.95)`,g2:`hsla(50 ${75+v*10}% ${80+v*5}%/.9)`,t:'hsl(280 60% 15%)',border:'hsla(45 90% 70%/1)'};
     }
-    const tc = themeWheelColors[currentThemeName] || themeWheelColors.cosmos;
-    if (rarity==='rare') {
+    const tc=themeWheelColors[currentThemeName]||themeWheelColors.cosmos;
+    if(rarity==='rare'){
         const v=i%2;
         return{g1:`hsla(${H} ${tc.rare.s1+v*12}% ${tc.rare.l1+v*3}%/.92)`,g2:`hsla(${H} ${tc.rare.s2+v*8}% ${tc.rare.l2+v*4}%/.88)`,t:`hsl(${H} 60% 12%)`,border:`hsla(${H} 50% 85%/.9)`};
     }
@@ -1010,7 +1004,7 @@ function segColor(i,rarity) {
     return{g1:`hsla(${H} ${v.s}% ${v.l}%/${v.a})`,g2:`hsla(${H} ${v.s+5}% ${v.l-3}%/${v.a+.05})`,t:`hsl(${H} 55% 75%)`,border:null};
 }
 
-function initCv() {
+function initCv(){
     const b=cv.parentElement.getBoundingClientRect();
     S=Math.round(b.width);
     const d=Math.min(devicePixelRatio||1,2);
@@ -1020,14 +1014,12 @@ function initCv() {
     drawWheel();
 }
 
-function drawWheel() {
+function drawWheel(){
     const cx=S/2,cy=S/2,R=S/2;
     c.clearRect(0,0,S,S);
+
     for(let i=0;i<N;i++){
-        const p=PRIZES[i];
-        const a0=i*ARC-Math.PI/2;
-        const a1=a0+ARC;
-        const mid=a0+ARC/2;
+        const p=PRIZES[i],a0=i*ARC-Math.PI/2,a1=a0+ARC,mid=a0+ARC/2;
         const cl=segColor(i,p.rarity);
         const g=c.createRadialGradient(cx,cy,R*.12,cx+R*.5*Math.cos(mid),cy+R*.5*Math.sin(mid),R);
         g.addColorStop(0,cl.g2);g.addColorStop(.65,cl.g1);g.addColorStop(1,cl.g1);
@@ -1035,58 +1027,55 @@ function drawWheel() {
         c.fillStyle=g;c.fill();
         if(cl.border){
             c.beginPath();c.arc(cx,cy,R-5,a0+.02,a1-.02);
-            c.strokeStyle=cl.border;c.lineWidth=p.rarity==='epic'?2.5:2;c.stroke();
+            c.strokeStyle=cl.border;c.lineWidth=p.rarity==='epic'?2.5:1.8;c.stroke();
         }
         c.beginPath();
         c.moveTo(cx+R*.18*Math.cos(a0),cy+R*.18*Math.sin(a0));
         c.lineTo(cx+(R-3)*Math.cos(a0),cy+(R-3)*Math.sin(a0));
-        c.strokeStyle=`hsla(${H} 48% 58%/.08)`;c.lineWidth=1;c.stroke();
+        c.strokeStyle=`hsla(${H} 48% 58%/.07)`;c.lineWidth=1;c.stroke();
+
         c.save();c.translate(cx,cy);c.rotate(mid);
-        const label=p.label;const parts=label.split(' ');
-        const isMulti=parts.length>1&&label.length>5;
-        const fs=Math.round(S*(isMulti?.021:label.length>6?.026:.029));
+        const label=p.label,parts=label.split(' ');
+        const isM=parts.length>1&&label.length>5;
+        const fs=Math.round(S*(isM?.02:label.length>6?.025:.028));
         c.font=`${p.rarity==='epic'?900:p.rarity==='rare'?800:700} ${fs}px Montserrat,sans-serif`;
         c.fillStyle=cl.t;c.textAlign='center';c.textBaseline='middle';
-        const tr=R*.58;c.save();c.translate(tr,0);
-        if(isMulti){
-            const lh=fs*1.15;
-            const lines=parts.length===2?parts:[parts[0],parts.slice(1).join(' ')];
+        const tr=R*.57;c.save();c.translate(tr,0);
+        if(isM){
+            const lh=fs*1.15,lines=parts.length===2?parts:[parts[0],parts.slice(1).join(' ')];
             const sy=-(lines.length-1)*lh/2;
             lines.forEach((ln,li)=>c.fillText(ln,0,sy+li*lh));
         }else c.fillText(label,0,0);
         c.restore();c.restore();
     }
     c.beginPath();c.arc(cx,cy,cx-1.5,0,Math.PI*2);
-    c.strokeStyle=`hsla(${H} 48% 60%/.06)`;c.lineWidth=1.5;c.stroke();
+    c.strokeStyle=`hsla(${H} 48% 60%/.05)`;c.lineWidth=1.5;c.stroke();
 }
 
 /* =====================================================
    LEDs
    ===================================================== */
-function initLEDs() {
+function initLEDs(){
     ledsEl.innerHTML='';ledA=[];
-    const NL=PERF.leds;
-    const frag=document.createDocumentFragment();
-    const rr=ledsEl.offsetWidth/2||200;
+    const NL=PERF.leds,frag=document.createDocumentFragment();
+    const rr=ledsEl.offsetWidth/2||190;
     for(let i=0;i<NL;i++){
-        const ang=(i/NL)*360;
-        const d=document.createElement('div');
+        const a=(i/NL)*360,d=document.createElement('div');
         d.className='led';
-        const rad=(ang-90)*Math.PI/180;
-        d.style.transform=`translate(${(rr-12)*Math.cos(rad)-2.5}px,${(rr-12)*Math.sin(rad)-2.5}px)`;
+        const rad=(a-90)*Math.PI/180;
+        d.style.transform=`translate(${(rr-11)*Math.cos(rad)-2.5}px,${(rr-11)*Math.sin(rad)-2.5}px)`;
         frag.appendChild(d);ledA.push(d);
     }
     ledsEl.appendChild(frag);
 }
 
-let ledSpeed=35,ledRunning=false,ledLastT=0;
+let ledSpeed=30,ledRunning=false,ledLastT=0;
 
-function ledsGo(speed){
-    ledSpeed=speed;
+function ledsGo(spd){
+    ledSpeed=spd;
     if(ledRunning)return;
     ledRunning=true;ledLastT=0;
-    const NL=ledA.length;
-    const states=new Int8Array(NL);
+    const NL=ledA.length,states=new Int8Array(NL);
     function loop(now){
         if(!ledRunning)return;
         if(!ledLastT)ledLastT=now;
@@ -1097,11 +1086,10 @@ function ledsGo(speed){
                 let ns=0;
                 if(rel<2)ns=1;else if(rel<4)ns=2;
                 if(states[i]!==ns){
-                    states[i]=ns;
-                    const el=ledA[i];
+                    states[i]=ns;const el=ledA[i];
                     if(ns===1){el.classList.add('on');el.classList.remove('dim')}
                     else if(ns===2){el.classList.remove('on');el.classList.add('dim')}
-                    else{el.classList.remove('on','dim')}
+                    else el.classList.remove('on','dim');
                 }
             }
             ledIdx+=2;
@@ -1111,79 +1099,103 @@ function ledsGo(speed){
     ledAnimId=requestAnimationFrame(loop);
 }
 
-function ledsStop(){ledRunning=false;cancelAnimationFrame(ledAnimId);for(let i=0;i<ledA.length;i++)ledA[i].classList.remove('on','dim')}
-function ledsHighlight(idx){const NL=ledA.length;const s=Math.floor(idx*(NL/N));const cnt=Math.ceil(NL/N);for(let j=0;j<cnt;j++)ledA[(s+j)%NL].classList.add('on')}
+function ledsStop(){
+    ledRunning=false;cancelAnimationFrame(ledAnimId);
+    for(let i=0;i<ledA.length;i++)ledA[i].classList.remove('on','dim');
+}
+
+function ledsHighlight(si){
+    const NL=ledA.length,st=Math.floor(si*(NL/N)),cnt=Math.ceil(NL/N);
+    for(let j=0;j<cnt;j++)ledA[(st+j)%NL].classList.add('on');
+}
 
 /* =====================================================
-   ЗВЁЗДЫ & ЛУЧИ
+   INIT DECOR
    ===================================================== */
+// Stars
 (function(){
-    const el=$('stars');const frag=document.createDocumentFragment();
+    const el=$('stars'),frag=document.createDocumentFragment();
     for(let i=0;i<PERF.stars;i++){
         const s=document.createElement('div');s.className='star';
-        s.style.left=Math.random()*100+'%';
-        s.style.top=Math.random()*100+'%';
-        s.style.setProperty('--dur',(3+Math.random()*3)+'s');
-        s.style.setProperty('--del',Math.random()*4+'s');
+        const size=1.5+Math.random()*1.5;
+        s.style.width=size+'px';s.style.height=size+'px';
+        s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';
+        s.style.setProperty('--dur',(3+Math.random()*4)+'s');
+        s.style.setProperty('--del',Math.random()*5+'s');
         frag.appendChild(s);
     }
     el.appendChild(frag);
 })();
 
+// Rays
 (function(){
     const frag=document.createDocumentFragment();
     for(let i=0;i<PERF.rays;i++){
         const r=document.createElement('div');r.className='ray';
         r.style.transform=`rotate(${i*(360/PERF.rays)}deg)`;
-        r.style.opacity=.08+Math.random()*.3;
-        r.style.height=(130+Math.random()*70)+'px';
+        r.style.opacity=.06+Math.random()*.3;
+        r.style.height=(120+Math.random()*65)+'px';
         frag.appendChild(r);
     }
     raysEl.appendChild(frag);
 })();
 
+// Flame embers (CSS-only particles)
+(function(){
+    const frag=document.createDocumentFragment();
+    for(let i=0;i<PERF.embers;i++){
+        const e=document.createElement('div');e.className='ember';
+        const size=2+Math.random()*3;
+        e.style.width=size+'px';e.style.height=size+'px';
+        e.style.left=(10+Math.random()*80)+'%';
+        e.style.bottom='-10px';
+        e.style.setProperty('--edur',(4+Math.random()*6)+'s');
+        e.style.setProperty('--edel',Math.random()*8+'s');
+        e.style.setProperty('--edrift',(Math.random()*40-20)+'px');
+        // Color variation
+        const hue=20+Math.random()*25;
+        e.style.background=`hsla(${hue} 90% ${55+Math.random()*15}%/.6)`;
+        e.style.boxShadow=`0 0 ${size+2}px hsla(${hue} 80% 50%/.3)`;
+        frag.appendChild(e);
+    }
+    flameEmbers.appendChild(frag);
+})();
+
 /* =====================================================
    CONFETTI — Canvas
    ===================================================== */
-let confettiParts=[],confettiRunning=false;
+let confettiP=[],confettiRun=false;
 
 function fireConfetti(count,isGold=false){
-    const palette=isGold
-        ?['#FFD700','#FFC107','#FFE082','#FFF8E1','#FFF']
-        :[`hsl(${H},65%,75%)`,`hsl(${H},55%,60%)`,`hsl(${H},70%,85%)`,`hsl(${H},75%,92%)`,'#fff'];
-    const cx=window.innerWidth/2,cy=window.innerHeight/2;
+    const pal=isGold?['#FFD700','#FFC107','#FFE082','#FFF8E1','#FFF']:
+        currentThemeName==='flame'?['hsl(12,70%,65%)','hsl(35,80%,65%)','hsl(45,85%,70%)','hsl(0,60%,60%)','#fff']:
+        currentThemeName==='neon'?['hsl(280,70%,70%)','hsl(170,70%,65%)','hsl(300,60%,75%)','hsl(180,65%,60%)','#fff']:
+        [`hsl(${H},65%,75%)`,`hsl(${H},55%,60%)`,`hsl(${H},70%,85%)`,`hsl(${H},75%,92%)`,'#fff'];
+
+    const cx=innerWidth/2,cy=innerHeight/2;
     for(let i=0;i<count;i++){
-        const ang=Math.random()*Math.PI*2;
-        const vel=180+Math.random()*380;
-        confettiParts.push({
-            x:cx,y:cy,
-            vx:Math.cos(ang)*vel,vy:Math.sin(ang)*vel-180,
-            w:2+Math.random()*5,h:2+Math.random()*9,
-            rot:Math.random()*360,rotV:(Math.random()-.5)*14,
-            color:palette[Math.floor(Math.random()*palette.length)],
-            life:1,decay:.009+Math.random()*.011,
-            gravity:280+Math.random()*180,
-        });
+        const ang=Math.random()*Math.PI*2,vel=170+Math.random()*360;
+        confettiP.push({x:cx,y:cy,vx:Math.cos(ang)*vel,vy:Math.sin(ang)*vel-170,
+            w:2+Math.random()*5,h:2+Math.random()*8,rot:Math.random()*360,
+            rotV:(Math.random()-.5)*13,color:pal[Math.floor(Math.random()*pal.length)],
+            life:1,decay:.009+Math.random()*.01,gravity:260+Math.random()*160});
     }
-    if(!confettiRunning){
-        confettiRunning=true;let lastT=performance.now();
+    if(!confettiRun){
+        confettiRun=true;let lastT=performance.now();
         function loop(now){
-            const dt=Math.min((now-lastT)/1000,.05);lastT=now;
-            fxCtx.clearRect(0,0,window.innerWidth,window.innerHeight);
-            for(let i=confettiParts.length-1;i>=0;i--){
-                const p=confettiParts[i];
+            const dt=Math.min((now-lastT)/1e3,.05);lastT=now;
+            fxCtx.clearRect(0,0,innerWidth,innerHeight);
+            for(let i=confettiP.length-1;i>=0;i--){
+                const p=confettiP[i];
                 p.vy+=p.gravity*dt;p.x+=p.vx*dt;p.y+=p.vy*dt;
                 p.vx*=.99;p.rot+=p.rotV;p.life-=p.decay;
-                if(p.life<=0){confettiParts.splice(i,1);continue}
-                fxCtx.save();fxCtx.translate(p.x,p.y);
-                fxCtx.rotate(p.rot*Math.PI/180);
-                fxCtx.globalAlpha=Math.min(p.life,1);
-                fxCtx.fillStyle=p.color;
-                fxCtx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
-                fxCtx.restore();
+                if(p.life<=0){confettiP.splice(i,1);continue}
+                fxCtx.save();fxCtx.translate(p.x,p.y);fxCtx.rotate(p.rot*Math.PI/180);
+                fxCtx.globalAlpha=Math.min(p.life,1);fxCtx.fillStyle=p.color;
+                fxCtx.fillRect(-p.w/2,-p.h/2,p.w,p.h);fxCtx.restore();
             }
-            if(confettiParts.length>0)requestAnimationFrame(loop);
-            else{confettiRunning=false;fxCtx.clearRect(0,0,window.innerWidth,window.innerHeight)}
+            if(confettiP.length>0)requestAnimationFrame(loop);
+            else{confettiRun=false;fxCtx.clearRect(0,0,innerWidth,innerHeight)}
         }
         requestAnimationFrame(loop);
     }
@@ -1192,79 +1204,55 @@ function fireConfetti(count,isGold=false){
 /* =====================================================
    STARDUST — Canvas
    ===================================================== */
-let stardustParts=[],stardustRunning=false;
+let sdP=[],sdRun=false;
 
-function addStardustBurst(){
+function addSD(){
     if(!PERF.particles)return;
-    const rect=whWrap.getBoundingClientRect();
-    const cx=rect.left+rect.width/2,cy=rect.top+rect.height/2;
-    const r=rect.width/2;
+    const r=whWrap.getBoundingClientRect();
+    const cx=r.left+r.width/2,cy=r.top+r.height/2,rad=r.width/2;
     for(let i=0;i<2;i++){
-        const ang=Math.random()*Math.PI*2;
-        const radius=r*(.75+Math.random()*.3);
-        const flyAng=ang+(Math.random()-.5)*.4;
-        const flyDist=30+Math.random()*80;
-
-        // Тематический цвет частиц
-        let color = '#fff';
-        if (currentThemeName === 'flame') color = Math.random()>.5 ? '#FFB74D' : '#FF8A65';
-        else if (currentThemeName === 'neon') color = Math.random()>.5 ? '#CE93D8' : '#80CBC4';
-
-        stardustParts.push({
-            x:cx+Math.cos(ang)*radius,y:cy+Math.sin(ang)*radius,
-            vx:Math.cos(flyAng)*flyDist,vy:Math.sin(flyAng)*flyDist,
-            size:1+Math.random()*2.5,life:1,decay:.018+Math.random()*.022,
-            color,
-        });
+        const a=Math.random()*Math.PI*2,rr=rad*(.72+Math.random()*.28);
+        const fa=a+(Math.random()-.5)*.4,fd=25+Math.random()*70;
+        sdP.push({x:cx+Math.cos(a)*rr,y:cy+Math.sin(a)*rr,
+            vx:Math.cos(fa)*fd,vy:Math.sin(fa)*fd,
+            size:1+Math.random()*2,life:1,decay:.02+Math.random()*.02});
     }
 }
 
-function runStardustLoop(){
-    if(stardustRunning)return;stardustRunning=true;
-    let lastT=performance.now();
+function runSD(){
+    if(sdRun)return;sdRun=true;let lastT=performance.now();
     function loop(now){
-        const dt=Math.min((now-lastT)/1000,.05);lastT=now;
-        pCtx.clearRect(0,0,window.innerWidth,window.innerHeight);
-        for(let i=stardustParts.length-1;i>=0;i--){
-            const p=stardustParts[i];
-            p.x+=p.vx*dt;p.y+=p.vy*dt;
+        const dt=Math.min((now-lastT)/1e3,.05);lastT=now;
+        pCtx.clearRect(0,0,innerWidth,innerHeight);
+        for(let i=sdP.length-1;i>=0;i--){
+            const p=sdP[i];p.x+=p.vx*dt;p.y+=p.vy*dt;
             p.vx*=.94;p.vy*=.94;p.life-=p.decay;
-            if(p.life<=0){stardustParts.splice(i,1);continue}
-            pCtx.globalAlpha=p.life*.8;
-            pCtx.fillStyle=p.color;
-            pCtx.beginPath();
-            pCtx.arc(p.x,p.y,p.size*p.life,0,Math.PI*2);
-            pCtx.fill();
+            if(p.life<=0){sdP.splice(i,1);continue}
+            pCtx.globalAlpha=p.life*.7;pCtx.fillStyle='#fff';
+            pCtx.beginPath();pCtx.arc(p.x,p.y,p.size*p.life,0,Math.PI*2);pCtx.fill();
         }
-        if(stardustParts.length>0)requestAnimationFrame(loop);
-        else{stardustRunning=false;pCtx.clearRect(0,0,window.innerWidth,window.innerHeight)}
+        if(sdP.length>0)requestAnimationFrame(loop);
+        else{sdRun=false;pCtx.clearRect(0,0,innerWidth,innerHeight)}
     }
     requestAnimationFrame(loop);
 }
 
 /* =====================================================
-   ТЕМЫ
+   THEMES
    ===================================================== */
-const themeButtons=document.querySelectorAll('.theme-btn');
 const themeH={cosmos:218,flame:12,neon:280};
-
-themeButtons.forEach(btn=>{
+document.querySelectorAll('.theme-btn').forEach(btn=>{
     btn.addEventListener('click',()=>{
         if(isSpinning)return;
-        themeButtons.forEach(b=>b.classList.remove('active'));
+        document.querySelectorAll('.theme-btn').forEach(b=>b.classList.remove('active'));
         btn.classList.add('active');
         const t=btn.dataset.theme;
         currentThemeName=t;
         document.body.dataset.theme=t;
         H=themeH[t]||218;
         drawWheel();
+        setAmbientTheme(t);
         haptic('light');
-
-        // Обновляем частоту hum под тему
-        if(humOsc){
-            const freqs={cosmos:80,flame:65,neon:100};
-            humOsc.frequency.setTargetAtTime(freqs[t]||80, humCtx.currentTime, 0.5);
-        }
     });
 });
 
@@ -1289,8 +1277,8 @@ async function requestSpin(){
 async function checkCanSpin(){
     try{
         const r=await fetch(API_URL+'/wheel/check',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({init_data:tg.initData})});
-        const data=await r.json();
-        if(!data.can_spin){showSpinUsed();if(data.next_spin_at)startCountdown(data.next_spin_at);else countdownToMidnight()}
+        const d=await r.json();
+        if(!d.can_spin){showSpinUsed();d.next_spin_at?startCountdown(d.next_spin_at):countdownToMidnight()}
         else showSpinReady();
     }catch(e){console.error(e);showSpinReady()}
 }
@@ -1300,124 +1288,111 @@ async function checkCanSpin(){
    ===================================================== */
 function spinEase(t){
     if(t<.12){const p=t/.12;return .12*(p*p*p)}
-    const p=(t-.12)/.88;
-    return .12+.88*(1-Math.pow(1-p,4.5));
+    const p=(t-.12)/.88;return .12+.88*(1-Math.pow(1-p,4.5));
 }
 
 /* =====================================================
-   ВРАЩЕНИЕ
+   SPIN
    ===================================================== */
 function spinWheel(winIdx){
     isSpinning=true;btnSp.disabled=true;
     ring.classList.add('glow');energyRing.classList.add('on');
     haptic('med');
 
-    // Ambient hum усиливается
-    setHumIntensity(1);
-
-    const randomOffset=(.12+Math.random()*.76)*SEG_DEG;
-    const prizeAngle=winIdx*SEG_DEG+randomOffset;
-    let targetStop=((360-prizeAngle)%360+360)%360;
-    const curNorm=((currentAngle%360)+360)%360;
-    const fullRots=5+Math.floor(Math.random()*3);
-    let delta=targetStop-curNorm;
-    if(delta<=0)delta+=360;
-    delta+=fullRots*360;
-
-    const targetAngle=currentAngle+delta;
-    const startAngle=currentAngle;
-    const startTime=performance.now();
-    const duration=4800+Math.random()*1500;
+    const rOff=(.12+Math.random()*.76)*SEG_DEG;
+    const pAng=winIdx*SEG_DEG+rOff;
+    let ts=((360-pAng)%360+360)%360;
+    const cn=((currentAngle%360)+360)%360;
+    const fr=5+Math.floor(Math.random()*3);
+    let d=ts-cn;if(d<=0)d+=360;d+=fr*360;
+    const ta=currentAngle+d,sa=currentAngle;
+    const st=performance.now(),dur=4800+Math.random()*1500;
     let lastSeg=-1;
 
-    ledsGo(30);
+    ledsGo(28);
 
     function animate(now){
-        const elapsed=now-startTime;
-        const progress=Math.min(elapsed/duration,1);
-        const eased=spinEase(progress);
-        const speed=1-eased;
+        const el=now-st,pr=Math.min(el/dur,1);
+        const ea=spinEase(pr),sp=1-ea;
 
-        currentAngle=startAngle+(targetAngle-startAngle)*eased;
+        currentAngle=sa+(ta-sa)*ea;
         rotor.style.transform=`rotate(${currentAngle}deg)`;
-        ledSpeed=Math.max(22,90*speed);
 
-        // Ambient hum — следует за скоростью
-        setHumIntensity(speed);
+        ledSpeed=Math.max(20,85*sp);
 
-        if(PERF.particles&&speed>.08&&progress<.92){addStardustBurst();runStardustLoop()}
+        // Ambient intensity follows speed
+        setAmbientIntensity(sp);
 
-        const normAng=((currentAngle%360)+360)%360;
-        const curSeg=Math.floor(normAng/SEG_DEG);
-        if(curSeg!==lastSeg){
-            lastSeg=curSeg;
-            const bounce=(2.5+Math.random()*2.5)*Math.min(speed*2.2,1);
-            ptr.style.transform=`translate3d(-50%,0,0) rotate(${bounce}deg)`;
+        if(PERF.particles&&sp>.06&&pr<.92){addSD();runSD()}
+
+        const na=((currentAngle%360)+360)%360;
+        const cs=Math.floor(na/SEG_DEG);
+        if(cs!==lastSeg){
+            lastSeg=cs;
+            const b=(2+Math.random()*2.5)*Math.min(sp*2.2,1);
+            ptr.style.transform=`translate3d(-50%,0,0) rotate(${b}deg)`;
             setTimeout(()=>{
-                ptr.style.transform=`translate3d(-50%,0,0) rotate(${-bounce*.25}deg)`;
-                setTimeout(()=>ptr.style.transform='translate3d(-50%,0,0)',35);
-            },20);
-            playTick(speed);
-            if(speed>.25)haptic('light');
+                ptr.style.transform=`translate3d(-50%,0,0) rotate(${-b*.2}deg)`;
+                setTimeout(()=>ptr.style.transform='translate3d(-50%,0,0)',30);
+            },18);
+            playTick(sp);
+            if(sp>.2)haptic('light');
         }
 
-        if(progress<1)requestAnimationFrame(animate);
+        if(pr<1)requestAnimationFrame(animate);
         else onSpinEnd(winIdx);
     }
     requestAnimationFrame(animate);
 }
 
-/* =====================================================
-   КОНЕЦ ВРАЩЕНИЯ
-   ===================================================== */
 function onSpinEnd(winIdx){
     isSpinning=false;ledsStop();
     ring.classList.remove('glow');energyRing.classList.remove('on');
     ledsHighlight(winIdx);
     ptr.style.transform='translate3d(-50%,0,0)';
 
-    // Hum затихает
-    setHumIntensity(0);
+    // Return ambient to idle
+    setAmbientIntensity(0);
 
     const prize=PRIZES[winIdx];
-    const isEpic=prize.rarity==='epic';
-    const isRare=prize.rarity==='rare';
+    const isEpic=prize.rarity==='epic',isRare=prize.rarity==='rare';
 
     if(isEpic){
-        flash.style.background='radial-gradient(circle at center,hsla(45 90% 70%/.18),transparent 70%)';
+        flash.style.background='radial-gradient(circle at center,hsla(45 90% 70%/.16),transparent 70%)';
         flash.animate([{opacity:0},{opacity:1},{opacity:0}],{duration:500});
         burst.classList.add('on');raysEl.classList.add('on');
         haptic('success');playWin('epic');
         fireConfetti(PERF.confetti*2,true);
-        setTimeout(()=>fireConfetti(PERF.confetti),180);
-        if(navigator.vibrate)navigator.vibrate([80,40,160,40,250]);
+        setTimeout(()=>fireConfetti(PERF.confetti),170);
+        if(navigator.vibrate)navigator.vibrate([80,40,150,40,220]);
     }else if(isRare){
-        flash.style.background='radial-gradient(circle at center,hsla(45 90% 70%/.12),transparent 70%)';
-        flash.animate([{opacity:0},{opacity:.7},{opacity:0}],{duration:400});
+        flash.style.background='radial-gradient(circle at center,hsla(45 90% 70%/.1),transparent 70%)';
+        flash.animate([{opacity:0},{opacity:.65},{opacity:0}],{duration:380});
         burst.classList.add('on');raysEl.classList.add('on');
         haptic('success');playWin('rare');
-        fireConfetti(Math.floor(PERF.confetti*1.4));
-        fireConfetti(Math.floor(PERF.confetti*.7),true);
+        fireConfetti(Math.floor(PERF.confetti*1.3));
+        fireConfetti(Math.floor(PERF.confetti*.6),true);
     }else{
-        flash.style.background=`radial-gradient(circle at center,hsla(${H} 70% 80%/.1),transparent 70%)`;
-        flash.animate([{opacity:0},{opacity:.3},{opacity:0}],{duration:250});
+        flash.style.background=`radial-gradient(circle at center,hsla(${H} 70% 80%/.08),transparent 70%)`;
+        flash.animate([{opacity:0},{opacity:.25},{opacity:0}],{duration:230});
         haptic('med');playWin('common');
         fireConfetti(PERF.confetti);
     }
 
     countdownToMidnight();showSpinUsed();
-    setTimeout(()=>showModal(prize),isEpic?550:isRare?450:250);
+    setTimeout(()=>showModal(prize),isEpic?550:isRare?420:230);
     setTimeout(()=>{
         tg.sendData(JSON.stringify({action:'wheel_result',prize_id:prize.id,prize_index:winIdx}));
     },100);
 }
 
 /* =====================================================
-   КНОПКА
+   BUTTON
    ===================================================== */
 async function onSpinClick(){
     if(isSpinning||!canSpin)return;
-    canSpin=false;initAudio();
+    canSpin=false;
+    initAudio();initAmbient();
     const result=await requestSpin();
     if(!result){canSpin=true;return}
     spinWheel(result.prize_index);
@@ -1425,25 +1400,22 @@ async function onSpinClick(){
 btnSp.addEventListener('click',onSpinClick);
 
 /* =====================================================
-   МОДАЛКА
+   MODAL
    ===================================================== */
-const rarityMeta={
+const rMeta={
     common:{tag:'🎁 Ваш приз',tc:'',label:'Обычный'},
     rare:{tag:'💎 Редкий приз!',tc:'r',label:'Редкий'},
     epic:{tag:'🏆 Эпический приз!',tc:'r',label:'Эпический'},
 };
 
 function showModal(prize){
-    const m=rarityMeta[prize.rarity]||rarityMeta.common;
+    const m=rMeta[prize.rarity]||rMeta.common;
     mEmoji.textContent=prize.emoji||'🎁';
     mEmoji.style.animation='none';
     requestAnimationFrame(()=>{mEmoji.style.animation=''});
-    mTag.textContent=m.tag;
-    mTag.className='m-tag'+(m.tc?' '+m.tc:'');
-    mVal.textContent=prize.label;
-    mVal.className='m-val '+(prize.rarity!=='common'?'rv':'cv');
-    mBadge.textContent=`${prize.d} D · ${m.label}`;
-    mBadge.className='m-badge '+prize.rarity;
+    mTag.textContent=m.tag;mTag.className='m-tag'+(m.tc?' '+m.tc:'');
+    mVal.textContent=prize.label;mVal.className='m-val '+(prize.rarity!=='common'?'rv':'cv');
+    mBadge.textContent=`${prize.d} D · ${m.label}`;mBadge.className='m-badge '+prize.rarity;
     mSub.textContent=prize.desc;
     mOv.classList.add('open');
 }
@@ -1458,17 +1430,11 @@ mOv.addEventListener('click',e=>{if(e.target===mOv)closeModal()});
 /* =====================================================
    INIT
    ===================================================== */
-let resizeTimer;
-addEventListener('DOMContentLoaded',()=>{
-    resizeFx();initCv();initLEDs();checkCanSpin();
-});
-addEventListener('resize',()=>{
-    clearTimeout(resizeTimer);
-    resizeTimer=setTimeout(()=>{
-        resizeFx();
-        if(!isSpinning){const s=currentAngle;initCv();initLEDs();rotor.style.transform=`rotate(${s}deg)`}
-    },200);
-},{passive:true});
+let resizeT;
+addEventListener('DOMContentLoaded',()=>{resizeFx();initCv();initLEDs();checkCanSpin()});
+addEventListener('resize',()=>{clearTimeout(resizeT);resizeT=setTimeout(()=>{
+    resizeFx();if(!isSpinning){const s=currentAngle;initCv();initLEDs();rotor.style.transform=`rotate(${s}deg)`}
+},200)},{passive:true});
 </script>
 </body>
 </html>

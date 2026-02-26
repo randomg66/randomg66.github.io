@@ -10,9 +10,9 @@
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 
         :root{
-            --h:218;
+            --h:218;--s:58%;
             --bg:hsl(var(--h) 42% 5%);
-            --acc:hsl(var(--h) 58% 54%);
+            --acc:hsl(var(--h) var(--s) 54%);
             --acc-l:hsl(var(--h) 68% 78%);
             --acc-xl:hsl(var(--h) 72% 90%);
             --glow:hsla(var(--h) 80% 60%/.45);
@@ -21,45 +21,100 @@
             --txt-m:hsla(var(--h) 22% 72%/.5);
             --wh:min(420px,78vw);
             --rare-gold:hsl(45 80% 55%);
+            --theme-accent-2:hsl(var(--h) 50% 40%);
         }
 
-        [data-theme="ocean"]{--h:200}
-        [data-theme="sunset"]{--h:25}
-        [data-theme="forest"]{--h:140}
-        [data-theme="royal"]{--h:270}
-        [data-theme="cyber"]{--h:320}
+        /* ====== ТЕМА: КОСМОС (default) ====== */
+        [data-theme="cosmos"]{
+            --h:218;--s:58%;
+            --theme-accent-2:hsl(260 50% 45%);
+        }
+
+        /* ====== ТЕМА: ПЛАМЯ ====== */
+        [data-theme="flame"]{
+            --h:12;--s:72%;
+            --theme-accent-2:hsl(35 80% 50%);
+        }
+
+        /* ====== ТЕМА: НЕОН ====== */
+        [data-theme="neon"]{
+            --h:280;--s:65%;
+            --theme-accent-2:hsl(170 80% 45%);
+        }
 
         html{-webkit-font-smoothing:antialiased}
         body{
             font-family:'Montserrat',sans-serif;
             min-height:100vh;min-height:100dvh;
             display:flex;align-items:center;justify-content:center;
-            background:var(--bg);
-            overflow:hidden;
+            background:var(--bg);overflow:hidden;
             color:var(--txt);
             -webkit-tap-highlight-color:transparent;
             -webkit-user-select:none;user-select:none;
         }
 
-        /* ====== ФОН — минимум слоёв ====== */
+        /* ====== ФОН ====== */
         .bg{
             position:fixed;inset:0;z-index:0;
-            background:
-                radial-gradient(ellipse 130% 90% at 15% 5%,hsla(var(--h) 48% 16%/.55),transparent),
-                radial-gradient(ellipse 110% 100% at 85% 95%,hsla(var(--h) 38% 10%/.6),transparent),
-                linear-gradient(155deg,hsl(var(--h) 42% 5%),hsl(var(--h) 36% 9%));
+            transition:background 1.2s ease;
             contain:strict;
         }
 
+        [data-theme="cosmos"] .bg,
+        .bg{
+            background:
+                radial-gradient(ellipse 120% 80% at 20% 10%,hsla(260 50% 20%/.5),transparent),
+                radial-gradient(ellipse 100% 90% at 80% 90%,hsla(218 40% 12%/.6),transparent),
+                linear-gradient(155deg,hsl(218 42% 5%),hsl(240 36% 4%));
+        }
+        [data-theme="flame"] .bg{
+            background:
+                radial-gradient(ellipse 120% 80% at 20% 10%,hsla(0 60% 15%/.6),transparent),
+                radial-gradient(ellipse 100% 90% at 80% 90%,hsla(35 50% 10%/.5),transparent),
+                linear-gradient(155deg,hsl(0 30% 5%),hsl(20 25% 4%));
+        }
+        [data-theme="neon"] .bg{
+            background:
+                radial-gradient(ellipse 120% 80% at 20% 10%,hsla(280 50% 15%/.6),transparent),
+                radial-gradient(ellipse 100% 90% at 80% 90%,hsla(170 40% 10%/.5),transparent),
+                linear-gradient(155deg,hsl(270 30% 4%),hsl(200 25% 3%));
+        }
+
+        /* Орбы — тематические */
         .orb{
             position:fixed;border-radius:50%;
             filter:blur(100px);z-index:0;
             contain:strict;
+            transition:background 1.2s ease;
         }
-        .o1{width:600px;height:600px;background:hsla(var(--h) 50% 22%/.18);top:-20%;left:-14%;animation:oF1 30s ease-in-out infinite alternate}
-        .o2{width:450px;height:450px;background:hsla(var(--h) 55% 28%/.14);bottom:-16%;right:-10%;animation:oF2 24s ease-in-out infinite alternate-reverse}
-        @keyframes oF1{0%{transform:translate3d(0,0,0)}100%{transform:translate3d(30px,-30px,0)}}
-        @keyframes oF2{0%{transform:translate3d(0,0,0)}100%{transform:translate3d(-20px,20px,0)}}
+        .o1{
+            width:550px;height:550px;top:-18%;left:-12%;
+            animation:oF1 28s ease-in-out infinite alternate;
+        }
+        .o2{
+            width:400px;height:400px;bottom:-14%;right:-8%;
+            animation:oF2 22s ease-in-out infinite alternate-reverse;
+        }
+        .o3{
+            width:250px;height:250px;top:40%;left:60%;
+            animation:oF3 32s ease-in-out infinite alternate;
+        }
+
+        [data-theme="cosmos"] .o1,.o1{background:hsla(260 50% 25%/.2)}
+        [data-theme="cosmos"] .o2,.o2{background:hsla(218 55% 20%/.16)}
+        [data-theme="cosmos"] .o3,.o3{background:hsla(200 60% 30%/.08)}
+
+        [data-theme="flame"] .o1{background:hsla(0 60% 25%/.22)}
+        [data-theme="flame"] .o2{background:hsla(35 55% 20%/.18)}
+        [data-theme="flame"] .o3{background:hsla(20 50% 30%/.1)}
+
+        [data-theme="neon"] .o1{background:hsla(280 60% 25%/.2)}
+        [data-theme="neon"] .o2{background:hsla(170 50% 20%/.16)}
+        [data-theme="neon"] .o3{background:hsla(200 55% 30%/.08)}
+
+        @keyframes oF1{0%{transform:translate3d(0,0,0) scale(1)}100%{transform:translate3d(35px,-25px,0) scale(1.06)}}
+        @keyframes oF2{0%{transform:translate3d(0,0,0) scale(1)}100%{transform:translate3d(-25px,20px,0) scale(1.04)}}
+        @keyframes oF3{0%{transform:translate3d(0,0,0) scale(1)}100%{transform:translate3d(-15px,-20px,0) scale(1.1)}}
 
         .noise{
             position:fixed;inset:0;z-index:0;opacity:.02;pointer-events:none;
@@ -71,36 +126,119 @@
         .star{
             position:absolute;width:2px;height:2px;
             background:var(--acc-l);border-radius:50%;
-            opacity:0;animation:starP 4s ease-in-out infinite;
+            opacity:0;animation:starP var(--dur) ease-in-out infinite;
+            animation-delay:var(--del);
             contain:strict;
         }
         @keyframes starP{0%,100%{opacity:0;transform:scale(.5)}50%{opacity:.7;transform:scale(1)}}
+
+        /* ====== GRID SUBTLE ====== */
+        .grid-subtle{
+            position:fixed;inset:0;z-index:0;pointer-events:none;
+            opacity:.015;contain:strict;
+            background-image:
+                linear-gradient(hsla(var(--h) 40% 50%/.3) 1px,transparent 1px),
+                linear-gradient(90deg,hsla(var(--h) 40% 50%/.3) 1px,transparent 1px);
+            background-size:80px 80px;
+        }
 
         /* ====== ГЛАВНЫЙ КОНТЕЙНЕР ====== */
         .main{
             position:relative;z-index:1;
             display:flex;flex-direction:column;align-items:center;
-            padding:20px;
+            padding:16px;
             opacity:0;animation:mainIn .8s ease forwards .1s;
         }
         @keyframes mainIn{to{opacity:1}}
 
-        /* ====== ЗАГОЛОВОК ====== */
-        .hdr{text-align:center;margin-bottom:12px}
+        /* ====== ЗАГОЛОВОК — ПОДНЯТ ====== */
+        .hdr{
+            text-align:center;
+            margin-bottom:4px;
+            position:relative;
+        }
         .hdr h1{
-            font-size:clamp(20px,5vw,36px);font-weight:900;
+            font-size:clamp(18px,4.5vw,32px);font-weight:900;
             letter-spacing:4px;text-transform:uppercase;
-            background:linear-gradient(100deg,hsla(var(--h) 35% 58%/.6),var(--txt) 28%,#fff 50%,var(--txt) 72%,hsla(var(--h) 35% 58%/.6));
+            background:linear-gradient(100deg,hsla(var(--h) 35% 58%/.5),var(--txt) 25%,#fff 50%,var(--txt) 75%,hsla(var(--h) 35% 58%/.5));
             background-size:280% 100%;
             -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
             animation:tSh 8s linear infinite;
-            filter:drop-shadow(0 2px 20px hsla(var(--h) 60% 50%/.2));
+            line-height:1.1;
         }
         @keyframes tSh{0%{background-position:280% center}100%{background-position:-280% center}}
         .hdr .sub{
-            font-size:9px;font-weight:500;color:var(--txt-m);
-            letter-spacing:8px;text-transform:uppercase;margin-top:4px;
+            font-size:8px;font-weight:600;color:var(--txt-m);
+            letter-spacing:7px;text-transform:uppercase;margin-top:2px;
         }
+
+        /* ====== СЧЁТЧИК / ТАЙМЕР — правый верхний угол ====== */
+        .timer-box{
+            position:fixed;top:14px;right:14px;z-index:50;
+            display:flex;flex-direction:column;align-items:flex-end;gap:2px;
+            font-size:10px;font-weight:600;color:var(--txt-m);
+            letter-spacing:1px;
+        }
+        .timer-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;opacity:.6}
+        .timer-val{
+            color:var(--acc-l);font-weight:800;font-size:13px;
+            background:hsla(var(--h) 45% 30%/.25);
+            padding:5px 14px;border-radius:20px;
+            border:1px solid hsla(var(--h) 50% 55%/.1);
+            font-variant-numeric:tabular-nums;
+            min-width:90px;text-align:center;
+        }
+        .timer-val.ready{
+            color:hsl(140 70% 65%);
+            border-color:hsla(140 60% 50%/.2);
+            background:hsla(140 50% 30%/.15);
+            animation:readyPulse 2s ease-in-out infinite;
+        }
+        @keyframes readyPulse{0%,100%{box-shadow:0 0 0 0 hsla(140 60% 50%/.1)}50%{box-shadow:0 0 15px 2px hsla(140 60% 50%/.15)}}
+
+        /* ====== ТЕМЫ ====== */
+        .theme-selector{
+            position:fixed;top:14px;left:14px;z-index:50;
+            display:flex;gap:8px;
+        }
+        .theme-btn{
+            width:34px;height:34px;border-radius:50%;
+            border:2px solid hsla(var(--h) 40% 50%/.15);cursor:pointer;
+            transition:all .4s;position:relative;overflow:hidden;
+            -webkit-tap-highlight-color:transparent;
+        }
+        .theme-btn:active{transform:scale(.9)}
+        .theme-btn.active{
+            border-color:var(--acc-l);
+            box-shadow:0 0 16px var(--glow),0 0 4px var(--glow);
+            transform:scale(1.05);
+        }
+        .theme-btn::before{content:'';position:absolute;inset:3px;border-radius:50%}
+        .theme-btn::after{
+            content:'';position:absolute;inset:3px;border-radius:50%;
+            background:linear-gradient(160deg,hsla(0 0% 100%/.25),transparent 50%);
+        }
+
+        .theme-btn[data-theme="cosmos"]::before{
+            background:linear-gradient(135deg,hsl(260 50% 45%),hsl(218 55% 30%));
+        }
+        .theme-btn[data-theme="flame"]::before{
+            background:linear-gradient(135deg,hsl(12 72% 45%),hsl(35 80% 40%));
+        }
+        .theme-btn[data-theme="neon"]::before{
+            background:linear-gradient(135deg,hsl(280 60% 45%),hsl(170 70% 35%));
+        }
+
+        /* Тултипы тем */
+        .theme-btn[data-theme="cosmos"]::after{content:''}
+        .theme-name{
+            position:absolute;bottom:-22px;left:50%;transform:translateX(-50%);
+            font-size:7px;font-weight:700;letter-spacing:2px;
+            text-transform:uppercase;color:var(--txt-m);
+            white-space:nowrap;opacity:0;
+            transition:opacity .3s;pointer-events:none;
+        }
+        .theme-btn.active .theme-name{opacity:1}
 
         /* ====== КОЛЕСО ====== */
         .wh-wrap{
@@ -110,225 +248,237 @@
 
         .ring{
             position:absolute;inset:-28px;border-radius:50%;
-            background:linear-gradient(135deg,hsla(var(--h) 50% 58%/.08),hsla(var(--h) 40% 38%/.02) 40%,hsla(var(--h) 50% 58%/.06));
             border:1px solid var(--glass-b);
             box-shadow:0 0 80px hsla(var(--h) 55% 28%/.12),inset 0 0 60px hsla(var(--h) 55% 28%/.05);
-            transition:box-shadow .5s;
+            transition:box-shadow .5s,border-color .5s;
             contain:strict;
         }
+
+        /* Тематические ring стили */
+        [data-theme="cosmos"] .ring,.ring{
+            background:linear-gradient(135deg,hsla(260 40% 50%/.06),hsla(218 40% 38%/.03) 40%,hsla(200 50% 50%/.05));
+        }
+        [data-theme="flame"] .ring{
+            background:linear-gradient(135deg,hsla(0 50% 40%/.08),hsla(35 40% 30%/.03) 40%,hsla(20 50% 40%/.06));
+        }
+        [data-theme="neon"] .ring{
+            background:linear-gradient(135deg,hsla(280 50% 50%/.07),hsla(170 40% 38%/.03) 40%,hsla(200 50% 50%/.06));
+        }
+
         .ring.glow{
             box-shadow:0 0 120px hsla(var(--h) 55% 28%/.2),0 0 60px hsla(var(--h) 55% 35%/.12),inset 0 0 80px hsla(var(--h) 55% 28%/.06);
+            border-color:hsla(var(--h) 50% 60%/.25);
         }
+
+        /* Ring shimmer */
+        .ring::before{
+            content:'';position:absolute;inset:0;border-radius:50%;
+            background:conic-gradient(from 0deg,transparent 0%,hsla(var(--h) 60% 70%/.04) 10%,transparent 20%);
+            animation:ringShimmer 12s linear infinite;
+        }
+        @keyframes ringShimmer{to{transform:rotate(360deg)}}
 
         /* LEDs */
         .leds{position:absolute;inset:-28px;border-radius:50%;pointer-events:none;contain:strict}
         .led{
             position:absolute;width:5px;height:5px;border-radius:50%;
-            background:var(--acc-l);opacity:.08;
+            background:var(--acc-l);opacity:.06;
             top:50%;left:50%;
-            transition:none;
             contain:strict;
         }
         .led.on{
             opacity:1;
-            box-shadow:0 0 12px var(--glow),0 0 24px hsla(var(--h) 70% 60%/.2);
+            box-shadow:0 0 10px var(--glow),0 0 20px hsla(var(--h) 70% 60%/.15);
             transform:scale(1.3);
         }
-        .led.dim{opacity:.4;transform:scale(1.1)}
+        .led.dim{opacity:.35;transform:scale(1.1)}
 
         /* РОТОР */
         .rotor{
             position:absolute;inset:0;border-radius:50%;
             will-change:transform;
-            transform:translate3d(0,0,0);
+            transform:translate3d(0,0,0) rotate(0deg);
             contain:layout size;
         }
         .cv{width:100%;height:100%;border-radius:50%;display:block}
 
-        /* Тени и блик */
         .in-sh{
             position:absolute;inset:0;border-radius:50%;
-            box-shadow:inset 0 0 60px hsla(var(--h) 42% 4%/.4),inset 0 -8px 30px hsla(var(--h) 42% 4%/.25);
+            box-shadow:inset 0 0 50px hsla(var(--h) 42% 4%/.35),inset 0 -6px 25px hsla(var(--h) 42% 4%/.2);
             pointer-events:none;z-index:3;contain:strict;
         }
         .gloss{
             position:absolute;inset:0;border-radius:50%;
-            background:linear-gradient(165deg,hsla(var(--h) 60% 90%/.07) 0%,transparent 35%);
+            background:linear-gradient(165deg,hsla(var(--h) 60% 90%/.06) 0%,transparent 35%);
             pointer-events:none;z-index:3;contain:strict;
         }
 
         /* УКАЗАТЕЛЬ */
         .ptr{
-            position:absolute;top:-38px;left:50%;
+            position:absolute;top:-36px;left:50%;
             transform:translate3d(-50%,0,0);z-index:20;
-            filter:drop-shadow(0 6px 25px var(--glow));
-            will-change:transform;
-            contain:layout;
+            filter:drop-shadow(0 5px 20px var(--glow));
+            will-change:transform;contain:layout;
         }
-        .ptr-body{width:36px;height:48px;position:relative}
+        .ptr-body{width:34px;height:46px;position:relative}
         .ptr-shape{
             width:100%;height:100%;
-            clip-path:polygon(50% 100%,0 0,100% 0);
-            background:linear-gradient(180deg,var(--acc-l),hsla(var(--h) 52% 50%/.88));
+            clip-path:polygon(50% 100%,5% 0,95% 0);
+            background:linear-gradient(180deg,var(--acc-l) 0%,var(--acc) 60%,hsla(var(--h) 52% 40%/.9) 100%);
         }
         .ptr-shape::before{
             content:'';position:absolute;inset:3px;
-            clip-path:polygon(50% 100%,0 0,100% 0);
-            background:linear-gradient(180deg,rgba(255,255,255,.45),transparent 60%);
+            clip-path:polygon(50% 100%,5% 0,95% 0);
+            background:linear-gradient(180deg,rgba(255,255,255,.4),transparent 55%);
         }
         .ptr-glow{
-            position:absolute;bottom:-12px;left:50%;
+            position:absolute;bottom:-10px;left:50%;
             transform:translateX(-50%);
-            width:20px;height:20px;border-radius:50%;
+            width:18px;height:18px;border-radius:50%;
             background:var(--glow);filter:blur(8px);
-            animation:pG 2.4s ease-in-out infinite;
+            animation:pG 2.5s ease-in-out infinite;
         }
-        @keyframes pG{0%,100%{opacity:.3;transform:translateX(-50%) scale(1)}50%{opacity:.8;transform:translateX(-50%) scale(2)}}
+        @keyframes pG{0%,100%{opacity:.25;transform:translateX(-50%) scale(1)}50%{opacity:.75;transform:translateX(-50%) scale(1.8)}}
 
         /* ХАБ */
         .hub{
             position:absolute;top:50%;left:50%;
             transform:translate3d(-50%,-50%,0);
-            width:80px;height:80px;border-radius:50%;z-index:10;
+            width:78px;height:78px;border-radius:50%;z-index:10;
             background:linear-gradient(145deg,hsla(var(--h) 38% 22%/.92),hsla(var(--h) 34% 10%/.98));
-            border:1px solid hsla(var(--h) 50% 58%/.2);
-            box-shadow:0 0 40px hsla(var(--h) 48% 22%/.25),inset 0 2px 0 hsla(0 0% 100%/.08),inset 0 -4px 12px hsla(var(--h) 38% 4%/.35);
+            border:1px solid hsla(var(--h) 50% 58%/.18);
+            box-shadow:0 0 35px hsla(var(--h) 48% 22%/.2),inset 0 2px 0 hsla(0 0% 100%/.07),inset 0 -3px 10px hsla(var(--h) 38% 4%/.3);
             contain:strict;
+        }
+        .hub::before{
+            content:'';position:absolute;inset:6px;border-radius:50%;
+            border:1px solid hsla(var(--h) 50% 58%/.06);
+            background:radial-gradient(circle at 30% 30%,hsla(var(--h) 58% 68%/.06),transparent 55%);
         }
         .hub::after{
             content:'';position:absolute;inset:14px;border-radius:50%;
             background:radial-gradient(circle,var(--acc-xl),var(--acc));
-            box-shadow:0 0 20px var(--glow);
+            box-shadow:0 0 18px var(--glow);
             animation:hubP 3s ease-in-out infinite;
         }
-        @keyframes hubP{0%,100%{box-shadow:0 0 20px var(--glow)}50%{box-shadow:0 0 35px var(--glow),0 0 60px hsla(var(--h) 70% 60%/.2)}}
+        @keyframes hubP{0%,100%{box-shadow:0 0 18px var(--glow)}50%{box-shadow:0 0 30px var(--glow),0 0 50px hsla(var(--h) 70% 60%/.15)}}
 
-        /* BURST & RAYS — лёгкие */
+        /* Hub icon — fortune symbol */
+        .hub-icon{
+            position:absolute;top:50%;left:50%;
+            transform:translate(-50%,-50%);z-index:11;
+            font-size:22px;
+            animation:hubIconSpin 20s linear infinite;
+            filter:drop-shadow(0 0 6px hsla(var(--h) 60% 80%/.4));
+        }
+        @keyframes hubIconSpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+
         .burst{
             position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
             width:0;height:0;border-radius:50%;
-            background:radial-gradient(circle,hsla(var(--h) 70% 68%/.2),transparent 70%);
+            background:radial-gradient(circle,hsla(var(--h) 70% 68%/.18),transparent 70%);
             pointer-events:none;z-index:4;
             transition:width 1.2s cubic-bezier(.1,.8,.1,1),height 1.2s cubic-bezier(.1,.8,.1,1);
             contain:strict;
         }
-        .burst.on{width:700px;height:700px}
+        .burst.on{width:650px;height:650px}
 
         .rays{
             position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-            width:500px;height:500px;z-index:4;pointer-events:none;
+            width:480px;height:480px;z-index:4;pointer-events:none;
             opacity:0;transition:opacity 1s ease;contain:strict;
         }
         .rays.on{opacity:1;animation:raysRot 25s linear infinite}
         @keyframes raysRot{to{transform:translate(-50%,-50%) rotate(360deg)}}
         .ray{
-            position:absolute;top:50%;left:50%;width:2px;height:240px;
+            position:absolute;top:50%;left:50%;width:2px;height:230px;
             transform-origin:top center;
-            background:linear-gradient(180deg,hsla(var(--h) 68% 78%/.25),transparent 50%);
+            background:linear-gradient(180deg,hsla(var(--h) 68% 78%/.22),transparent 50%);
             border-radius:1px;
         }
 
-        /* ЭНЕРГО-КОЛЬЦО */
         .energy-ring{
-            position:absolute;inset:-16px;border-radius:50%;
+            position:absolute;inset:-15px;border-radius:50%;
             border:2px solid transparent;pointer-events:none;z-index:2;
             opacity:0;transition:opacity .4s;contain:strict;
         }
-        .energy-ring.on{opacity:1;animation:eP 1.5s ease-out infinite}
-        @keyframes eP{0%{transform:scale(1);border-color:hsla(var(--h) 70% 70%/.4)}100%{transform:scale(1.25);border-color:transparent}}
+        .energy-ring.on{opacity:1;animation:eP 1.4s ease-out infinite}
+        @keyframes eP{0%{transform:scale(1);border-color:hsla(var(--h) 70% 70%/.35)}100%{transform:scale(1.22);border-color:transparent}}
 
         /* ====== КНОПКА ====== */
         .btn{
-            position:relative;padding:18px 60px;
-            font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;
+            position:relative;padding:18px 56px;
+            font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;
             letter-spacing:5px;text-transform:uppercase;color:var(--txt);
             cursor:pointer;z-index:1;
             background:linear-gradient(135deg,hsla(var(--h) 44% 28%/.5),hsla(var(--h) 38% 16%/.6));
             border:1px solid var(--glass-b);border-radius:60px;
-            box-shadow:0 10px 35px hsla(var(--h) 48% 14%/.25),inset 0 1px 0 hsla(0 0% 100%/.08);
-            transition:all .3s ease;overflow:hidden;margin-top:40px;
+            box-shadow:0 8px 30px hsla(var(--h) 48% 14%/.2),inset 0 1px 0 hsla(0 0% 100%/.06);
+            transition:all .3s ease;overflow:hidden;margin-top:36px;
             -webkit-tap-highlight-color:transparent;
         }
-        .btn::after{
-            content:'';position:absolute;top:0;left:-120%;width:70%;height:100%;
-            background:linear-gradient(90deg,transparent,hsla(0 0% 100%/.05),transparent);
-            transition:left .5s ease;
+        .btn::before{
+            content:'';position:absolute;top:0;left:-100%;
+            width:60%;height:100%;
+            background:linear-gradient(90deg,transparent,hsla(0 0% 100%/.04),transparent);
+            animation:btnShine 4s ease-in-out infinite;
         }
-        .btn:hover:not(:disabled)::after{left:130%}
-        .btn:active:not(:disabled){transform:scale(.97);transition-duration:.1s}
-        .btn:disabled{opacity:.35;cursor:not-allowed;pointer-events:none}
-
-        /* ====== СЧЁТЧИК ====== */
-        .counter{
-            position:fixed;top:16px;right:18px;z-index:50;
-            display:flex;align-items:center;gap:8px;
-            font-size:11px;font-weight:600;color:var(--txt-m);letter-spacing:2px;
+        @keyframes btnShine{0%,100%{left:-100%}50%{left:150%}}
+        .btn:active:not(:disabled){transform:scale(.96);transition-duration:.1s}
+        .btn:disabled{opacity:.3;cursor:not-allowed;pointer-events:none}
+        .btn.waiting{
+            font-size:10px;letter-spacing:3px;
+            padding:16px 32px;
         }
-        .counter-val{
-            color:var(--acc-l);font-weight:800;font-size:15px;
-            min-width:26px;text-align:center;
-            background:hsla(var(--h) 45% 30%/.25);
-            padding:5px 12px;border-radius:22px;
-            border:1px solid hsla(var(--h) 50% 55%/.1);
-        }
-
-        /* ====== ТЕМЫ ====== */
-        .theme-selector{
-            position:fixed;top:16px;left:18px;z-index:50;
-            display:flex;gap:7px;
-        }
-        .theme-btn{
-            width:30px;height:30px;border-radius:50%;
-            border:2px solid var(--glass-b);cursor:pointer;
-            transition:all .3s;position:relative;overflow:hidden;
-            -webkit-tap-highlight-color:transparent;
-        }
-        .theme-btn.active{border-color:var(--acc-l);box-shadow:0 0 12px var(--glow)}
-        .theme-btn::before{content:'';position:absolute;inset:3px;border-radius:50%}
-        .theme-btn[data-theme="default"]::before{background:linear-gradient(135deg,hsl(218 58% 54%),hsl(218 48% 35%))}
-        .theme-btn[data-theme="ocean"]::before{background:linear-gradient(135deg,hsl(200 58% 54%),hsl(180 48% 35%))}
-        .theme-btn[data-theme="sunset"]::before{background:linear-gradient(135deg,hsl(25 58% 54%),hsl(340 48% 35%))}
-        .theme-btn[data-theme="forest"]::before{background:linear-gradient(135deg,hsl(140 58% 54%),hsl(100 48% 35%))}
-        .theme-btn[data-theme="royal"]::before{background:linear-gradient(135deg,hsl(270 58% 54%),hsl(320 48% 35%))}
-        .theme-btn[data-theme="cyber"]::before{background:linear-gradient(135deg,hsl(320 58% 54%),hsl(180 48% 35%))}
 
         /* ====== МОДАЛКА ====== */
         .m-ov{
             position:fixed;inset:0;z-index:200;
             display:flex;align-items:center;justify-content:center;
-            background:hsla(var(--h) 42% 6%/.85);
+            background:hsla(var(--h) 42% 4%/.88);
             opacity:0;pointer-events:none;
             transition:opacity .4s ease;
         }
         .m-ov.open{opacity:1;pointer-events:all}
 
         .m-c{
-            text-align:center;padding:48px 50px 42px;
-            border-radius:28px;max-width:400px;width:88vw;
+            text-align:center;padding:44px 42px 38px;
+            border-radius:28px;max-width:380px;width:88vw;
             position:relative;overflow:hidden;
-            background:linear-gradient(165deg,hsla(var(--h) 38% 20%/.85),hsla(var(--h) 34% 8%/.92));
-            border:1px solid hsla(var(--h) 48% 58%/.18);
-            box-shadow:0 30px 100px hsla(var(--h) 38% 5%/.5),0 0 60px hsla(var(--h) 50% 40%/.08),inset 0 1px 0 hsla(0 0% 100%/.08);
-            transform:scale(.8) translateY(40px);
+            background:linear-gradient(165deg,hsla(var(--h) 38% 18%/.88),hsla(var(--h) 34% 6%/.94));
+            border:1px solid hsla(var(--h) 48% 58%/.15);
+            box-shadow:0 25px 80px hsla(var(--h) 38% 5%/.5),inset 0 1px 0 hsla(0 0% 100%/.06);
+            transform:scale(.8) translateY(30px);
             transition:transform .5s cubic-bezier(.175,.885,.32,1.275);
         }
         .m-ov.open .m-c{transform:scale(1) translateY(0)}
 
+        /* Декор модалки */
+        .m-c::before{
+            content:'';position:absolute;top:-40%;right:-20%;
+            width:180px;height:180px;border-radius:50%;
+            background:radial-gradient(circle,hsla(var(--h) 60% 60%/.1),transparent 70%);
+            filter:blur(25px);pointer-events:none;
+        }
+
+        .m-emoji{font-size:48px;margin-bottom:16px;display:block;animation:mEmoji .6s cubic-bezier(.175,.885,.32,1.275) forwards;transform:scale(0)}
+        @keyframes mEmoji{to{transform:scale(1)}}
+
         .m-tag{
-            display:inline-block;font-size:10px;font-weight:700;
+            display:inline-block;font-size:9px;font-weight:700;
             letter-spacing:5px;text-transform:uppercase;color:var(--acc);
-            padding:8px 22px;border:1px solid hsla(var(--h) 48% 55%/.2);
-            border-radius:50px;margin-bottom:28px;
-            background:hsla(var(--h) 48% 48%/.08);
+            padding:7px 20px;border:1px solid hsla(var(--h) 48% 55%/.18);
+            border-radius:50px;margin-bottom:22px;
+            background:hsla(var(--h) 48% 48%/.06);
         }
         .m-tag.r{
-            color:var(--rare-gold);border-color:hsla(45 80% 55%/.3);
-            background:hsla(45 80% 50%/.1);box-shadow:0 0 20px hsla(45 80% 55%/.15);
+            color:var(--rare-gold);border-color:hsla(45 80% 55%/.25);
+            background:hsla(45 80% 50%/.08);box-shadow:0 0 15px hsla(45 80% 55%/.1);
         }
 
         .m-val{
-            font-size:clamp(24px,7vw,38px);font-weight:900;
-            line-height:1.2;margin-bottom:12px;letter-spacing:2px;
+            font-size:clamp(22px,6.5vw,36px);font-weight:900;
+            line-height:1.2;margin-bottom:10px;letter-spacing:2px;
         }
         .m-val.rv{
             background:linear-gradient(135deg,var(--rare-gold),#fff,var(--rare-gold));
@@ -341,102 +491,102 @@
 
         .m-badge{
             display:inline-flex;align-items:center;gap:4px;
-            padding:6px 14px;border-radius:20px;
-            font-size:11px;font-weight:700;letter-spacing:1px;
-            margin-bottom:12px;
+            padding:5px 12px;border-radius:18px;
+            font-size:10px;font-weight:700;letter-spacing:1px;
+            margin-bottom:10px;
         }
-        .m-badge.common{background:hsla(var(--h) 40% 30%/.3);color:var(--txt-m);border:1px solid hsla(var(--h) 40% 50%/.2)}
-        .m-badge.rare{background:hsla(45 80% 50%/.15);color:var(--rare-gold);border:1px solid hsla(45 80% 55%/.25)}
-        .m-badge.epic{background:hsla(280 70% 50%/.15);color:hsl(280 80% 75%);border:1px solid hsla(280 70% 60%/.25)}
+        .m-badge.common{background:hsla(var(--h) 40% 30%/.25);color:var(--txt-m);border:1px solid hsla(var(--h) 40% 50%/.15)}
+        .m-badge.rare{background:hsla(45 80% 50%/.12);color:var(--rare-gold);border:1px solid hsla(45 80% 55%/.2)}
+        .m-badge.epic{background:hsla(280 70% 50%/.12);color:hsl(280 80% 75%);border:1px solid hsla(280 70% 60%/.2)}
 
-        .m-sub{font-size:13px;font-weight:400;color:var(--txt-m);margin-bottom:36px}
+        .m-sub{font-size:12px;font-weight:400;color:var(--txt-m);margin-bottom:30px}
 
         .m-btn{
-            padding:15px 50px;font-family:'Montserrat',sans-serif;
+            padding:14px 46px;font-family:'Montserrat',sans-serif;
             font-size:11px;font-weight:600;letter-spacing:4px;text-transform:uppercase;
             color:var(--acc-l);
-            background:hsla(var(--h) 42% 32%/.25);
-            border:1px solid hsla(var(--h) 48% 55%/.18);
+            background:hsla(var(--h) 42% 32%/.2);
+            border:1px solid hsla(var(--h) 48% 55%/.15);
             border-radius:55px;cursor:pointer;
             transition:all .3s ease;
             -webkit-tap-highlight-color:transparent;
         }
-        .m-btn:active{transform:scale(.97)}
+        .m-btn:active{transform:scale(.96)}
 
-        /* ====== FX — конфетти канвас ====== */
-        .fx-canvas{
-            position:fixed;inset:0;z-index:199;
-            pointer-events:none;
-        }
+        /* ====== FX ====== */
+        .fx-canvas{position:fixed;inset:0;z-index:199;pointer-events:none}
+        .particle-canvas{position:fixed;inset:0;z-index:1;pointer-events:none}
         .screen-flash{
             position:fixed;inset:0;z-index:198;pointer-events:none;
-            background:radial-gradient(circle at center,hsla(var(--h) 70% 80%/.1),transparent 70%);
-            opacity:0;contain:strict;
-        }
-        .screen-flash.gold{background:radial-gradient(circle at center,hsla(45 90% 70%/.15),transparent 70%)}
-
-        /* ====== PARTICLE CANVAS ====== */
-        .particle-canvas{
-            position:fixed;inset:0;z-index:1;
-            pointer-events:none;
+            opacity:0;contain:strict;transition:background .3s;
         }
 
         /* ====== RESPONSIVE ====== */
         @media(max-width:480px){
-            .main{padding-top:8px;padding-bottom:20px}
-            .hdr{margin-bottom:8px}
-            .hdr h1{font-size:clamp(18px,5vw,26px);letter-spacing:3px}
-            .hdr .sub{font-size:8px;letter-spacing:5px}
-            .wh-wrap{--wh:min(300px,76vw)}
-            .btn{padding:16px 40px;font-size:11px;letter-spacing:4px;margin-top:28px}
-            .counter{top:8px;right:10px;font-size:9px}
-            .ring{inset:-22px}.leds{inset:-22px}
-            .hub{width:64px;height:64px}.hub::after{inset:11px}
-            .ptr{top:-32px}.ptr-body{width:30px;height:42px}
-            .theme-selector{left:10px;top:8px}.theme-btn{width:26px;height:26px}
-            .m-c{padding:36px 24px 30px}
+            .main{padding-top:6px;padding-bottom:16px}
+            .hdr{margin-bottom:2px}
+            .hdr h1{font-size:clamp(16px,4.5vw,24px);letter-spacing:3px}
+            .hdr .sub{font-size:7px;letter-spacing:4px}
+            .wh-wrap{--wh:min(290px,76vw)}
+            .btn{padding:15px 36px;font-size:10px;letter-spacing:4px;margin-top:24px}
+            .btn.waiting{padding:14px 24px;font-size:9px;letter-spacing:2px}
+            .timer-box{top:8px;right:8px}
+            .timer-val{font-size:11px;padding:4px 10px;min-width:80px}
+            .timer-label{font-size:8px}
+            .ring{inset:-20px}.leds{inset:-20px}
+            .hub{width:62px;height:62px}.hub::after{inset:11px}
+            .hub-icon{font-size:18px}
+            .ptr{top:-30px}.ptr-body{width:28px;height:40px}
+            .theme-selector{left:8px;top:8px}.theme-btn{width:28px;height:28px}
+            .m-c{padding:32px 22px 28px}
+            .m-emoji{font-size:40px}
         }
         @media(max-width:360px){
-            .wh-wrap{--wh:min(260px,80vw)}
-            .btn{padding:14px 32px;font-size:10px;letter-spacing:3px}
-            .hdr h1{font-size:18px}
+            .wh-wrap{--wh:min(250px,80vw)}
+            .btn{padding:13px 28px;font-size:9px;letter-spacing:3px}
+            .hdr h1{font-size:16px}
         }
         @media(min-width:481px) and (max-width:768px){
             .wh-wrap{--wh:min(360px,70vw)}
         }
         @media(min-width:1200px){
-            .wh-wrap{--wh:460px}
-            .hdr h1{font-size:40px}
+            .wh-wrap{--wh:440px}
+            .hdr h1{font-size:36px}
         }
     </style>
 </head>
-<body>
+<body data-theme="cosmos">
 
 <div class="bg"></div>
 <div class="orb o1"></div>
 <div class="orb o2"></div>
+<div class="orb o3"></div>
 <div class="noise"></div>
+<div class="grid-subtle"></div>
 <div class="stars" id="stars"></div>
 <canvas class="particle-canvas" id="particleCv"></canvas>
 
 <div class="theme-selector" id="themeSel">
-    <div class="theme-btn active" data-theme="default"></div>
-    <div class="theme-btn" data-theme="ocean"></div>
-    <div class="theme-btn" data-theme="sunset"></div>
-    <div class="theme-btn" data-theme="forest"></div>
-    <div class="theme-btn" data-theme="royal"></div>
-    <div class="theme-btn" data-theme="cyber"></div>
+    <div class="theme-btn active" data-theme="cosmos">
+        <span class="theme-name">Космос</span>
+    </div>
+    <div class="theme-btn" data-theme="flame">
+        <span class="theme-name">Пламя</span>
+    </div>
+    <div class="theme-btn" data-theme="neon">
+        <span class="theme-name">Неон</span>
+    </div>
 </div>
 
-<div class="counter">
-    <span>Осталось</span>
-    <span class="counter-val" id="spinsLeft">1</span>
+<div class="timer-box" id="timerBox">
+    <span class="timer-label" id="timerLabel">Осталось</span>
+    <span class="timer-val" id="timerVal">1 спин</span>
 </div>
 
 <div class="main">
     <div class="hdr">
         <h1>Колесо Фортуны</h1>
-        <p class="sub">Испытай свою удачу</p>
+        <p class="sub">Испытай удачу</p>
     </div>
 
     <div class="wh-wrap" id="whWrap">
@@ -459,6 +609,7 @@
         <div class="burst" id="burst"></div>
         <div class="rays" id="rays"></div>
         <div class="hub"></div>
+        <div class="hub-icon">✦</div>
     </div>
 
     <button class="btn" id="btnSpin">Крутить</button>
@@ -466,7 +617,8 @@
 
 <div class="m-ov" id="mOv">
     <div class="m-c">
-        <div class="m-tag" id="mTag">🎁 Ваш приз</div>
+        <span class="m-emoji" id="mEmoji">🎁</span>
+        <div class="m-tag" id="mTag">Ваш приз</div>
         <div class="m-val" id="mVal">Приз</div>
         <div class="m-badge" id="mBadge"></div>
         <div class="m-sub" id="mSub">Описание</div>
@@ -479,52 +631,47 @@
 
 <script>
 /* =====================================================
-   КОНФИГУРАЦИЯ
+   КОНФИГ
    ===================================================== */
 const PRIZES = [
-    {id:"10d",       label:"10 D",             w:35, desc:"Небольшой бонус",               d:10,  rarity:"common"},
-    {id:"25d",       label:"25 D",             w:28, desc:"Приятный подарок",              d:25,  rarity:"common"},
-    {id:"50d",       label:"50 D",             w:20, desc:"Хороший выигрыш",               d:50,  rarity:"common"},
-    {id:"250d",      label:"250 D",            w:10, desc:"Отличный приз!",               d:250, rarity:"rare"},
-    {id:"premium_1d",label:"+1 день Premium",  w:6,  desc:"Пробный доступ — 120 D",       d:120, rarity:"rare"},
-    {id:"premium_7d",label:"+7 дней Premium",  w:2,  desc:"Невероятная удача! — 600 D",    d:600, rarity:"epic"},
-    {id:"discount_15",label:"Скидка 15%",      w:12, desc:"На Premium — 200 D",            d:200, rarity:"rare"},
+    {id:"10d",       label:"10 D",             w:35, desc:"Небольшой бонус",            d:10,  rarity:"common", emoji:"🎁"},
+    {id:"25d",       label:"25 D",             w:28, desc:"Приятный подарок",           d:25,  rarity:"common", emoji:"🎁"},
+    {id:"50d",       label:"50 D",             w:20, desc:"Хороший выигрыш",            d:50,  rarity:"common", emoji:"✨"},
+    {id:"250d",      label:"250 D",            w:10, desc:"Отличный приз!",            d:250, rarity:"rare",   emoji:"💎"},
+    {id:"premium_1d",label:"+1 день Premium",  w:6,  desc:"Пробный доступ — 120 D",    d:120, rarity:"rare",   emoji:"⭐"},
+    {id:"premium_7d",label:"+7 дней Premium",  w:2,  desc:"Невероятная удача! — 600 D", d:600, rarity:"epic",   emoji:"🏆"},
+    {id:"discount_15",label:"Скидка 15%",      w:12, desc:"На Premium — 200 D",         d:200, rarity:"rare",   emoji:"🔥"},
 ];
 
 const N = PRIZES.length;
-const ARC = (Math.PI * 2) / N;
+const ARC = Math.PI * 2 / N;
 const SEG_DEG = 360 / N;
 
-/* =====================================================
-   ОПРЕДЕЛЕНИЕ ПРОИЗВОДИТЕЛЬНОСТИ
-   ===================================================== */
+/* ПЕРФ */
 const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
-const isLowEnd = isMobile && (navigator.hardwareConcurrency || 4) <= 4;
+const isLow = isMobile && (navigator.hardwareConcurrency || 4) <= 4;
 const PERF = {
-    stars:    isLowEnd ? 10 : 18,
-    rays:     isLowEnd ? 10 : 16,
-    leds:     isLowEnd ? 36 : 52,
-    confetti: isLowEnd ? 25 : 50,
-    particles:!isLowEnd,
+    stars:    isLow ? 8 : 16,
+    rays:     isLow ? 8 : 14,
+    leds:     isLow ? 32 : 48,
+    confetti: isLow ? 20 : 45,
+    particles:!isLow,
 };
 
 /* =====================================================
    TELEGRAM
    ===================================================== */
 const tg = window.Telegram.WebApp;
-tg.ready();
-tg.expand();
+tg.ready(); tg.expand();
 const API_URL = 'https://squaretoed-overfloridly-alonzo.ngrok-free.dev';
 
 function haptic(type) {
     try {
-        if (tg.HapticFeedback) {
-            if (type === 'light')    tg.HapticFeedback.impactOccurred('light');
-            else if (type === 'med') tg.HapticFeedback.impactOccurred('medium');
-            else if (type === 'heavy') tg.HapticFeedback.impactOccurred('heavy');
-            else if (type === 'success') tg.HapticFeedback.notificationOccurred('success');
-            else if (type === 'error')   tg.HapticFeedback.notificationOccurred('error');
-        }
+        if (!tg.HapticFeedback) return;
+        if (type === 'light')      tg.HapticFeedback.impactOccurred('light');
+        else if (type === 'med')   tg.HapticFeedback.impactOccurred('medium');
+        else if (type === 'heavy') tg.HapticFeedback.impactOccurred('heavy');
+        else if (type === 'success') tg.HapticFeedback.notificationOccurred('success');
     } catch(e) {}
 }
 
@@ -535,13 +682,14 @@ const $ = id => document.getElementById(id);
 const cv = $('cv'), c = cv.getContext('2d');
 const rotor = $('rotor'), btnSp = $('btnSpin'), ptr = $('ptr');
 const ring = $('ring'), energyRing = $('energyRing');
-const burst = $('burst'), raysEl = $('rays');
-const flash = $('flash'), mOv = $('mOv');
-const mTag = $('mTag'), mVal = $('mVal'), mBadge = $('mBadge');
-const mSub = $('mSub'), mBtn = $('mBtn');
+const burst = $('burst'), raysEl = $('rays'), flash = $('flash');
+const mOv = $('mOv'), mTag = $('mTag'), mVal = $('mVal');
+const mBadge = $('mBadge'), mSub = $('mSub'), mBtn = $('mBtn');
+const mEmoji = $('mEmoji');
 const whWrap = $('whWrap'), ledsEl = $('leds');
 const fxCv = $('fxCv'), fxCtx = fxCv.getContext('2d');
 const particleCv = $('particleCv'), pCtx = particleCv.getContext('2d');
+const timerLabel = $('timerLabel'), timerVal = $('timerVal');
 
 /* =====================================================
    СОСТОЯНИЕ
@@ -549,28 +697,136 @@ const particleCv = $('particleCv'), pCtx = particleCv.getContext('2d');
 let currentAngle = 0, isSpinning = false, canSpin = true;
 let S, H = 218, dpr = 1;
 let ledA = [], ledAnimId = null, ledIdx = 0;
+let timerInterval = null;
+let spunToday = false; // уже крутил сегодня?
+let nextSpinTime = null; // когда можно крутить (timestamp)
 
 /* =====================================================
-   CANVAS РАЗМЕРЫ
+   ТАЙМЕР ОБРАТНОГО ОТСЧЁТА
+   ===================================================== */
+function startCountdown(targetTimestamp) {
+    nextSpinTime = targetTimestamp;
+    spunToday = true;
+    clearInterval(timerInterval);
+    updateTimerDisplay();
+    timerInterval = setInterval(updateTimerDisplay, 1000);
+}
+
+function updateTimerDisplay() {
+    if (!nextSpinTime) return;
+
+    const now = Date.now();
+    const diff = nextSpinTime - now;
+
+    if (diff <= 0) {
+        // Время пришло — можно крутить!
+        clearInterval(timerInterval);
+        timerLabel.textContent = 'Готово!';
+        timerVal.textContent = '🎰 Спин';
+        timerVal.classList.add('ready');
+        canSpin = true;
+        spunToday = false;
+        btnSp.disabled = false;
+        btnSp.textContent = 'Крутить';
+        btnSp.classList.remove('waiting');
+        return;
+    }
+
+    const hours = Math.floor(diff / 3600000);
+    const mins = Math.floor((diff % 3600000) / 60000);
+    const secs = Math.floor((diff % 60000) / 1000);
+
+    timerLabel.textContent = 'Следующий спин';
+    timerVal.textContent = `${String(hours).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+    timerVal.classList.remove('ready');
+}
+
+function showSpinReady() {
+    timerLabel.textContent = 'Доступно';
+    timerVal.textContent = '1 спин';
+    timerVal.classList.add('ready');
+}
+
+function showSpinUsed() {
+    btnSp.disabled = true;
+    btnSp.textContent = 'Следующий спин скоро';
+    btnSp.classList.add('waiting');
+    canSpin = false;
+}
+
+/* =====================================================
+   CANVAS RESIZE
    ===================================================== */
 function resizeFxCanvas() {
     dpr = Math.min(devicePixelRatio || 1, 2);
-    fxCv.width = window.innerWidth * dpr;
-    fxCv.height = window.innerHeight * dpr;
-    fxCv.style.width = window.innerWidth + 'px';
-    fxCv.style.height = window.innerHeight + 'px';
+    const w = window.innerWidth, h = window.innerHeight;
+    fxCv.width = w * dpr; fxCv.height = h * dpr;
+    fxCv.style.width = w + 'px'; fxCv.style.height = h + 'px';
     fxCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    particleCv.width = window.innerWidth * dpr;
-    particleCv.height = window.innerHeight * dpr;
-    particleCv.style.width = window.innerWidth + 'px';
-    particleCv.style.height = window.innerHeight + 'px';
+    particleCv.width = w * dpr; particleCv.height = h * dpr;
+    particleCv.style.width = w + 'px'; particleCv.style.height = h + 'px';
     pCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 
 /* =====================================================
-   КОЛЕСО — CANVAS (рисуется один раз, кроме смены темы)
+   КОЛЕСО — CANVAS
    ===================================================== */
+const themeColors = {
+    cosmos: {
+        seg: [
+            {l:14,s:50,a:.78}, {l:18,s:45,a:.7},
+            {l:12,s:55,a:.82}, {l:16,s:48,a:.75}
+        ],
+        rare: {s1:60,l1:90,s2:55,l2:82},
+    },
+    flame: {
+        seg: [
+            {l:16,s:55,a:.78}, {l:20,s:50,a:.7},
+            {l:14,s:60,a:.82}, {l:18,s:52,a:.75}
+        ],
+        rare: {s1:65,l1:88,s2:60,l2:80},
+    },
+    neon: {
+        seg: [
+            {l:12,s:50,a:.78}, {l:16,s:45,a:.7},
+            {l:10,s:55,a:.82}, {l:14,s:48,a:.75}
+        ],
+        rare: {s1:58,l1:90,s2:52,l2:84},
+    },
+};
+
+let currentThemeName = 'cosmos';
+
+function segColor(i, rarity) {
+    if (rarity === 'epic') {
+        const v = i % 2;
+        return {
+            g1:`hsla(45 ${80+v*10}% ${90+v*5}%/.95)`,
+            g2:`hsla(50 ${75+v*10}% ${80+v*5}%/.9)`,
+            t:'hsl(280 60% 15%)',
+            border:'hsla(45 90% 70%/1)'
+        };
+    }
+    const tc = themeColors[currentThemeName] || themeColors.cosmos;
+    if (rarity === 'rare') {
+        const v = i % 2;
+        return {
+            g1:`hsla(${H} ${tc.rare.s1+v*12}% ${tc.rare.l1+v*3}%/.92)`,
+            g2:`hsla(${H} ${tc.rare.s2+v*8}% ${tc.rare.l2+v*4}%/.88)`,
+            t:`hsl(${H} 60% 12%)`,
+            border:`hsla(${H} 50% 85%/.9)`
+        };
+    }
+    const v = tc.seg[i % 4];
+    return {
+        g1:`hsla(${H} ${v.s}% ${v.l}%/${v.a})`,
+        g2:`hsla(${H} ${v.s+5}% ${v.l-3}%/${v.a+.05})`,
+        t:`hsl(${H} 55% 75%)`,
+        border:null
+    };
+}
+
 function initCv() {
     const b = cv.parentElement.getBoundingClientRect();
     S = Math.round(b.width);
@@ -579,34 +835,6 @@ function initCv() {
     cv.style.width = S + 'px'; cv.style.height = S + 'px';
     c.setTransform(d, 0, 0, d, 0, 0);
     drawWheel();
-}
-
-function segColor(i, rarity) {
-    if (rarity === 'epic') {
-        const v = i % 2;
-        return {
-            g1:`hsla(45 ${80+v*10}% ${90+v*5}%/.95)`,
-            g2:`hsla(50 ${75+v*10}% ${80+v*5}%/.9)`,
-            t:`hsl(280 60% 15%)`,
-            border:`hsla(45 90% 70%/1)`
-        };
-    }
-    if (rarity === 'rare') {
-        const v = i % 2;
-        return {
-            g1:`hsla(${H} ${55+v*15}% ${90+v*3}%/.92)`,
-            g2:`hsla(${H} ${50+v*10}% ${80+v*4}%/.88)`,
-            t:`hsl(${H} 60% 12%)`,
-            border:`hsla(${H} 50% 85%/.9)`
-        };
-    }
-    const v = [{l:14,s:45,a:.75},{l:18,s:42,a:.68},{l:12,s:48,a:.8},{l:16,s:44,a:.72}][i % 4];
-    return {
-        g1:`hsla(${H} ${v.s}% ${v.l}%/${v.a})`,
-        g2:`hsla(${H} ${v.s+5}% ${v.l-3}%/${v.a+.05})`,
-        t:`hsl(${H} 55% 75%)`,
-        border:null
-    };
 }
 
 function drawWheel() {
@@ -620,10 +848,9 @@ function drawWheel() {
         const mid = a0 + ARC/2;
         const cl = segColor(i, p.rarity);
 
-        // Сегмент
-        const g = c.createRadialGradient(cx, cy, R*.15, cx + R*.5*Math.cos(mid), cy + R*.5*Math.sin(mid), R);
+        const g = c.createRadialGradient(cx, cy, R*.12, cx + R*.5*Math.cos(mid), cy + R*.5*Math.sin(mid), R);
         g.addColorStop(0, cl.g2);
-        g.addColorStop(.7, cl.g1);
+        g.addColorStop(.65, cl.g1);
         g.addColorStop(1, cl.g1);
 
         c.beginPath(); c.moveTo(cx, cy); c.arc(cx, cy, R-2, a0, a1); c.closePath();
@@ -633,15 +860,15 @@ function drawWheel() {
         if (cl.border) {
             c.beginPath(); c.arc(cx, cy, R-5, a0+.02, a1-.02);
             c.strokeStyle = cl.border;
-            c.lineWidth = p.rarity === 'epic' ? 3 : 2;
+            c.lineWidth = p.rarity === 'epic' ? 2.5 : 2;
             c.stroke();
         }
 
         // Разделитель
         c.beginPath();
-        c.moveTo(cx + R*.2*Math.cos(a0), cy + R*.2*Math.sin(a0));
+        c.moveTo(cx + R*.18*Math.cos(a0), cy + R*.18*Math.sin(a0));
         c.lineTo(cx + (R-3)*Math.cos(a0), cy + (R-3)*Math.sin(a0));
-        c.strokeStyle = `hsla(${H} 48% 58%/.1)`;
+        c.strokeStyle = `hsla(${H} 48% 58%/.08)`;
         c.lineWidth = 1; c.stroke();
 
         // Текст
@@ -649,15 +876,15 @@ function drawWheel() {
         const label = p.label;
         const parts = label.split(' ');
         const isMulti = parts.length > 1 && label.length > 5;
-        const fs = Math.round(S * (isMulti ? .022 : label.length > 6 ? .027 : .03));
+        const fs = Math.round(S * (isMulti ? .021 : label.length > 6 ? .026 : .029));
         c.font = `${p.rarity === 'epic' ? 900 : p.rarity === 'rare' ? 800 : 700} ${fs}px Montserrat,sans-serif`;
         c.fillStyle = cl.t;
         c.textAlign = 'center'; c.textBaseline = 'middle';
 
-        const tr = R * .6;
+        const tr = R * .58;
         c.save(); c.translate(tr, 0);
         if (isMulti) {
-            const lh = fs * 1.2;
+            const lh = fs * 1.15;
             const lines = parts.length === 2 ? parts : [parts[0], parts.slice(1).join(' ')];
             const sy = -(lines.length - 1) * lh / 2;
             lines.forEach((ln, li) => c.fillText(ln, 0, sy + li * lh));
@@ -668,27 +895,27 @@ function drawWheel() {
     }
 
     // Внешняя рамка
-    c.beginPath(); c.arc(cx, cy, cx - 2, 0, Math.PI*2);
-    c.strokeStyle = `hsla(${H} 48% 60%/.08)`;
-    c.lineWidth = 2; c.stroke();
+    c.beginPath(); c.arc(cx, cy, cx - 1.5, 0, Math.PI*2);
+    c.strokeStyle = `hsla(${H} 48% 60%/.06)`;
+    c.lineWidth = 1.5; c.stroke();
 }
 
 /* =====================================================
-   LEDs — пакетное обновление
+   LEDs
    ===================================================== */
 function initLEDs() {
     ledsEl.innerHTML = '';
     ledA = [];
     const NL = PERF.leds;
     const frag = document.createDocumentFragment();
-    const rr = ledsEl.offsetWidth / 2 || 230;
+    const rr = ledsEl.offsetWidth / 2 || 200;
 
     for (let i = 0; i < NL; i++) {
-        const a = (i / NL) * 360;
+        const ang = (i / NL) * 360;
         const d = document.createElement('div');
         d.className = 'led';
-        const rad = (a - 90) * Math.PI / 180;
-        d.style.transform = `translate(${(rr-13)*Math.cos(rad)-2.5}px,${(rr-13)*Math.sin(rad)-2.5}px)`;
+        const rad = (ang - 90) * Math.PI / 180;
+        d.style.transform = `translate(${(rr-12)*Math.cos(rad)-2.5}px,${(rr-12)*Math.sin(rad)-2.5}px)`;
         frag.appendChild(d);
         ledA.push(d);
     }
@@ -704,8 +931,7 @@ function ledsGo(speed) {
     ledLastT = 0;
 
     const NL = ledA.length;
-    // Кэш предыдущих состояний для минимизации DOM операций
-    const states = new Int8Array(NL); // 0=off, 1=on, 2=dim
+    const states = new Int8Array(NL);
 
     function loop(now) {
         if (!ledRunning) return;
@@ -714,16 +940,16 @@ function ledsGo(speed) {
             ledLastT = now;
             for (let i = 0; i < NL; i++) {
                 const rel = ((i - ledIdx % NL) + NL) % NL;
-                let newState = 0;
-                if (rel < 2) newState = 1;
-                else if (rel < 4) newState = 2;
+                let ns = 0;
+                if (rel < 2) ns = 1;
+                else if (rel < 4) ns = 2;
 
-                if (states[i] !== newState) {
-                    states[i] = newState;
+                if (states[i] !== ns) {
+                    states[i] = ns;
                     const el = ledA[i];
-                    if (newState === 1)      { el.classList.add('on'); el.classList.remove('dim'); }
-                    else if (newState === 2)  { el.classList.remove('on'); el.classList.add('dim'); }
-                    else                      { el.classList.remove('on', 'dim'); }
+                    if (ns === 1) { el.classList.add('on'); el.classList.remove('dim'); }
+                    else if (ns === 2) { el.classList.remove('on'); el.classList.add('dim'); }
+                    else { el.classList.remove('on', 'dim'); }
                 }
             }
             ledIdx += 2;
@@ -747,9 +973,9 @@ function ledsHighlight(segIdx) {
 }
 
 /* =====================================================
-   ЗВЁЗДЫ
+   ЗВЁЗДЫ & ЛУЧИ
    ===================================================== */
-(function initStars() {
+(function() {
     const el = $('stars');
     const frag = document.createDocumentFragment();
     for (let i = 0; i < PERF.stars; i++) {
@@ -757,28 +983,28 @@ function ledsHighlight(segIdx) {
         s.className = 'star';
         s.style.left = Math.random()*100 + '%';
         s.style.top = Math.random()*100 + '%';
-        s.style.animationDelay = Math.random()*4 + 's';
+        s.style.setProperty('--dur', (3 + Math.random()*3) + 's');
+        s.style.setProperty('--del', Math.random()*4 + 's');
         frag.appendChild(s);
     }
     el.appendChild(frag);
 })();
 
-/* Лучи */
-(function initRays() {
+(function() {
     const frag = document.createDocumentFragment();
     for (let i = 0; i < PERF.rays; i++) {
         const r = document.createElement('div');
         r.className = 'ray';
         r.style.transform = `rotate(${i * (360/PERF.rays)}deg)`;
-        r.style.opacity = .1 + Math.random()*.4;
-        r.style.height = (140 + Math.random()*80) + 'px';
+        r.style.opacity = .08 + Math.random()*.35;
+        r.style.height = (130 + Math.random()*70) + 'px';
         frag.appendChild(r);
     }
     raysEl.appendChild(frag);
 })();
 
 /* =====================================================
-   CONFETTI — на Canvas (0 DOM элементов!)
+   CONFETTI — Canvas
    ===================================================== */
 let confettiParts = [];
 let confettiRunning = false;
@@ -786,29 +1012,25 @@ let confettiRunning = false;
 function fireConfetti(count, isGold = false) {
     const palette = isGold
         ? ['#FFD700','#FFC107','#FFE082','#FFF8E1','#FFFFFF']
-        : [
-            `hsl(${H},65%,75%)`,`hsl(${H},55%,60%)`,
-            `hsl(${H},70%,85%)`,`hsl(${H},75%,92%)`,'#fff'
-          ];
+        : [`hsl(${H},65%,75%)`,`hsl(${H},55%,60%)`,`hsl(${H},70%,85%)`,`hsl(${H},75%,92%)`,'#fff'];
 
-    const cx = window.innerWidth / 2;
-    const cy = window.innerHeight / 2;
+    const cx = window.innerWidth / 2, cy = window.innerHeight / 2;
 
     for (let i = 0; i < count; i++) {
-        const angle = Math.random() * Math.PI * 2;
-        const vel = 200 + Math.random() * 400;
+        const ang = Math.random() * Math.PI * 2;
+        const vel = 180 + Math.random() * 380;
         confettiParts.push({
             x: cx, y: cy,
-            vx: Math.cos(angle) * vel,
-            vy: Math.sin(angle) * vel - 200,
-            w: 2 + Math.random() * 6,
-            h: 2 + Math.random() * 10,
+            vx: Math.cos(ang) * vel,
+            vy: Math.sin(ang) * vel - 180,
+            w: 2 + Math.random() * 5,
+            h: 2 + Math.random() * 9,
             rot: Math.random() * 360,
-            rotV: (Math.random() - .5) * 15,
+            rotV: (Math.random() - .5) * 14,
             color: palette[Math.floor(Math.random() * palette.length)],
             life: 1,
-            decay: .008 + Math.random() * .012,
-            gravity: 300 + Math.random() * 200,
+            decay: .009 + Math.random() * .011,
+            gravity: 280 + Math.random() * 180,
         });
     }
 
@@ -819,40 +1041,30 @@ function fireConfetti(count, isGold = false) {
             const dt = Math.min((now - lastT) / 1000, .05);
             lastT = now;
             fxCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-
             for (let i = confettiParts.length - 1; i >= 0; i--) {
                 const p = confettiParts[i];
                 p.vy += p.gravity * dt;
-                p.x += p.vx * dt;
-                p.y += p.vy * dt;
-                p.vx *= .99;
-                p.rot += p.rotV;
+                p.x += p.vx * dt; p.y += p.vy * dt;
+                p.vx *= .99; p.rot += p.rotV;
                 p.life -= p.decay;
-
                 if (p.life <= 0) { confettiParts.splice(i, 1); continue; }
-
                 fxCtx.save();
                 fxCtx.translate(p.x, p.y);
                 fxCtx.rotate(p.rot * Math.PI / 180);
-                fxCtx.globalAlpha = p.life;
+                fxCtx.globalAlpha = Math.min(p.life, 1);
                 fxCtx.fillStyle = p.color;
                 fxCtx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
                 fxCtx.restore();
             }
-
-            if (confettiParts.length > 0) {
-                requestAnimationFrame(loop);
-            } else {
-                confettiRunning = false;
-                fxCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-            }
+            if (confettiParts.length > 0) requestAnimationFrame(loop);
+            else { confettiRunning = false; fxCtx.clearRect(0, 0, window.innerWidth, window.innerHeight); }
         }
         requestAnimationFrame(loop);
     }
 }
 
 /* =====================================================
-   STARDUST PARTICLES — на Canvas
+   STARDUST — Canvas
    ===================================================== */
 let stardustParts = [];
 let stardustRunning = false;
@@ -860,23 +1072,22 @@ let stardustRunning = false;
 function addStardustBurst() {
     if (!PERF.particles) return;
     const rect = whWrap.getBoundingClientRect();
-    const cx = rect.left + rect.width/2;
-    const cy = rect.top + rect.height/2;
+    const cx = rect.left + rect.width/2, cy = rect.top + rect.height/2;
     const r = rect.width / 2;
 
-    for (let i = 0; i < 3; i++) {
-        const angle = Math.random() * Math.PI * 2;
-        const radius = r * (.8 + Math.random() * .3);
-        const flyAngle = angle + (Math.random() - .5) * .5;
-        const flyDist = 40 + Math.random() * 100;
+    for (let i = 0; i < 2; i++) {
+        const ang = Math.random() * Math.PI * 2;
+        const radius = r * (.75 + Math.random() * .3);
+        const flyAngle = ang + (Math.random() - .5) * .4;
+        const flyDist = 30 + Math.random() * 80;
         stardustParts.push({
-            x: cx + Math.cos(angle) * radius,
-            y: cy + Math.sin(angle) * radius,
+            x: cx + Math.cos(ang) * radius,
+            y: cy + Math.sin(ang) * radius,
             vx: Math.cos(flyAngle) * flyDist,
             vy: Math.sin(flyAngle) * flyDist,
-            size: 1.5 + Math.random() * 3,
+            size: 1 + Math.random() * 2.5,
             life: 1,
-            decay: .015 + Math.random() * .02,
+            decay: .018 + Math.random() * .022,
         });
     }
 }
@@ -885,39 +1096,30 @@ function runStardustLoop() {
     if (stardustRunning) return;
     stardustRunning = true;
     let lastT = performance.now();
-
     function loop(now) {
         const dt = Math.min((now - lastT) / 1000, .05);
         lastT = now;
         pCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-
         for (let i = stardustParts.length - 1; i >= 0; i--) {
             const p = stardustParts[i];
-            p.x += p.vx * dt;
-            p.y += p.vy * dt;
-            p.vx *= .95; p.vy *= .95;
+            p.x += p.vx * dt; p.y += p.vy * dt;
+            p.vx *= .94; p.vy *= .94;
             p.life -= p.decay;
             if (p.life <= 0) { stardustParts.splice(i, 1); continue; }
-
-            pCtx.globalAlpha = p.life;
+            pCtx.globalAlpha = p.life * .8;
             pCtx.fillStyle = '#fff';
             pCtx.beginPath();
             pCtx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
             pCtx.fill();
         }
-
-        if (stardustParts.length > 0) {
-            requestAnimationFrame(loop);
-        } else {
-            stardustRunning = false;
-            pCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-        }
+        if (stardustParts.length > 0) requestAnimationFrame(loop);
+        else { stardustRunning = false; pCtx.clearRect(0, 0, window.innerWidth, window.innerHeight); }
     }
     requestAnimationFrame(loop);
 }
 
 /* =====================================================
-   AUDIO — минимальный, переиспользование
+   AUDIO
    ===================================================== */
 let actx = null, masterGain = null;
 
@@ -926,7 +1128,7 @@ function initAudio() {
     try {
         actx = new (AudioContext || webkitAudioContext)();
         masterGain = actx.createGain();
-        masterGain.gain.value = 0.4;
+        masterGain.gain.value = 0.35;
         masterGain.connect(actx.destination);
     } catch(e) {}
 }
@@ -937,8 +1139,7 @@ function tick(freq, vol, dur) {
         const t = actx.currentTime;
         const o = actx.createOscillator();
         const g = actx.createGain();
-        o.type = 'sine';
-        o.frequency.value = freq;
+        o.type = 'sine'; o.frequency.value = freq;
         g.gain.setValueAtTime(vol, t);
         g.gain.exponentialRampToValueAtTime(.001, t + dur);
         o.connect(g); g.connect(masterGain);
@@ -948,23 +1149,23 @@ function tick(freq, vol, dur) {
 }
 
 function playTick(speed) {
-    tick(1200 + speed * 600, .012 + speed * .025, .025 + speed * .015);
+    tick(1200 + speed * 600, .01 + speed * .02, .02 + speed * .012);
 }
 
 function playWin(rarity) {
     const seqs = {
-        common: [[523,.04,.1],[659,.04,.1],[784,.04,.1],[1047,.04,.15]],
-        rare:   [[523,.05,.15],[659,.05,.15],[784,.05,.15],[880,.05,.15],[1047,.05,.2],[1319,.05,.2]],
-        epic:   [[523,.06,.2],[659,.06,.2],[784,.06,.2],[880,.06,.2],[1047,.06,.2],[1175,.06,.2],[1319,.06,.25],[1568,.06,.25]],
+        common: [[523,.035,.1],[659,.035,.1],[784,.035,.1],[1047,.035,.13]],
+        rare:   [[523,.045,.14],[659,.045,.14],[784,.045,.14],[880,.045,.14],[1047,.045,.18],[1319,.045,.18]],
+        epic:   [[523,.055,.18],[659,.055,.18],[784,.055,.18],[880,.055,.18],[1047,.055,.18],[1175,.055,.22],[1319,.055,.22],[1568,.055,.25]],
     };
-    (seqs[rarity] || seqs.common).forEach(([f,v,d], i) => setTimeout(() => tick(f,v,d), i * 90));
+    (seqs[rarity] || seqs.common).forEach(([f,v,d], i) => setTimeout(() => tick(f,v,d), i * 85));
 }
 
 /* =====================================================
    ТЕМЫ
    ===================================================== */
 const themeButtons = document.querySelectorAll('.theme-btn');
-const themeH = {default:218, ocean:200, sunset:25, forest:140, royal:270, cyber:320};
+const themeH = {cosmos:218, flame:12, neon:280};
 
 themeButtons.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -972,9 +1173,11 @@ themeButtons.forEach(btn => {
         themeButtons.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         const t = btn.dataset.theme;
-        document.body.dataset.theme = t === 'default' ? '' : t;
+        currentThemeName = t;
+        document.body.dataset.theme = t;
         H = themeH[t] || 218;
         drawWheel();
+        haptic('light');
     });
 });
 
@@ -990,9 +1193,18 @@ async function requestSpin() {
         });
         if (!r.ok) {
             const err = await r.json();
-            tg.showAlert(err.error === 'already_spun'
-                ? '⏰ Вы уже крутили сегодня!\nПриходите завтра.'
-                : 'Ошибка: ' + (err.message || 'попробуйте позже'));
+            if (err.error === 'already_spun') {
+                tg.showAlert('⏰ Вы уже крутили сегодня!\nПриходите завтра.');
+                // Запускаем таймер если сервер вернул next_spin_at
+                if (err.next_spin_at) {
+                    startCountdown(err.next_spin_at);
+                } else {
+                    // Дефолт: до полуночи
+                    startCountdownToMidnight();
+                }
+            } else {
+                tg.showAlert('Ошибка: ' + (err.message || 'попробуйте позже'));
+            }
             return null;
         }
         return await r.json();
@@ -1012,106 +1224,105 @@ async function checkCanSpin() {
         });
         const data = await r.json();
         if (!data.can_spin) {
-            btnSp.disabled = true;
-            btnSp.textContent = 'Приходите завтра';
-            canSpin = false;
+            showSpinUsed();
+            if (data.next_spin_at) {
+                startCountdown(data.next_spin_at);
+            } else {
+                startCountdownToMidnight();
+            }
+        } else {
+            showSpinReady();
         }
-    } catch(e) { console.error(e); }
+    } catch(e) {
+        console.error(e);
+        // Если нет связи — показываем готовность
+        showSpinReady();
+    }
+}
+
+function startCountdownToMidnight() {
+    const now = new Date();
+    const midnight = new Date(now);
+    midnight.setHours(24, 0, 0, 0);
+    startCountdown(midnight.getTime());
 }
 
 /* =====================================================
-   EASING — кастомный с 3 фазами
+   EASING
    ===================================================== */
 function spinEase(t) {
-    // Быстрый старт, длинный замедленный финиш
-    if (t < 0.15) {
-        // Ускорение — cubic ease-in
-        const p = t / 0.15;
-        return 0.15 * (p * p * p);
+    if (t < 0.12) {
+        const p = t / 0.12;
+        return 0.12 * (p * p * p);
     }
-    // Замедление — мощный ease-out
-    const p = (t - 0.15) / 0.85;
-    return 0.15 + 0.85 * (1 - Math.pow(1 - p, 4.5));
+    const p = (t - 0.12) / 0.88;
+    return 0.12 + 0.88 * (1 - Math.pow(1 - p, 4.5));
 }
 
 /* =====================================================
    ВРАЩЕНИЕ
    ===================================================== */
-function spinWheel(winIdx, e) {
+function spinWheel(winIdx) {
     isSpinning = true;
     btnSp.disabled = true;
-
     ring.classList.add('glow');
     energyRing.classList.add('on');
-
     haptic('med');
 
-    // Расчёт целевого угла
-    const randomOffset = (.15 + Math.random() * .7) * SEG_DEG;
+    // Угол
+    const randomOffset = (.12 + Math.random() * .76) * SEG_DEG;
     const prizeAngle = winIdx * SEG_DEG + randomOffset;
-    let targetStop = (360 - prizeAngle) % 360;
-    if (targetStop < 0) targetStop += 360;
+    let targetStop = ((360 - prizeAngle) % 360 + 360) % 360;
 
     const curNorm = ((currentAngle % 360) + 360) % 360;
     const fullRots = 5 + Math.floor(Math.random() * 3);
     let delta = targetStop - curNorm;
-    if (delta < 0) delta += 360;
+    if (delta <= 0) delta += 360;
     delta += fullRots * 360;
 
     const targetAngle = currentAngle + delta;
     const startAngle = currentAngle;
     const startTime = performance.now();
-    const duration = 5000 + Math.random() * 1500;
+    const duration = 4800 + Math.random() * 1500;
 
     let lastSeg = -1;
-    let stardustTimer = 0;
 
-    ledsGo(35);
+    ledsGo(30);
 
     function animate(now) {
         const elapsed = now - startTime;
         const progress = Math.min(elapsed / duration, 1);
         const eased = spinEase(progress);
-        const speed = 1 - eased; // нормализованная скорость [1→0]
+        const speed = 1 - eased;
 
         currentAngle = startAngle + (targetAngle - startAngle) * eased;
         rotor.style.transform = `rotate(${currentAngle}deg)`;
 
-        // LED скорость
-        ledSpeed = Math.max(25, 100 * speed);
+        ledSpeed = Math.max(22, 90 * speed);
 
-        // Stardust на canvas (не каждый кадр)
-        stardustTimer += elapsed;
-        if (PERF.particles && speed > 0.1 && progress < 0.95) {
+        // Stardust
+        if (PERF.particles && speed > 0.08 && progress < 0.92) {
             addStardustBurst();
             runStardustLoop();
         }
 
-        // Тик при смене сегмента
-        const normAngle = ((currentAngle % 360) + 360) % 360;
-        const curSeg = Math.floor(normAngle / SEG_DEG);
+        // Тик
+        const normAng = ((currentAngle % 360) + 360) % 360;
+        const curSeg = Math.floor(normAng / SEG_DEG);
         if (curSeg !== lastSeg) {
             lastSeg = curSeg;
-
-            // Отскок указателя — чистый transform, без layout
-            const bounce = (3 + Math.random() * 3) * Math.min(speed * 2, 1);
+            const bounce = (2.5 + Math.random() * 2.5) * Math.min(speed * 2.2, 1);
             ptr.style.transform = `translate3d(-50%,0,0) rotate(${bounce}deg)`;
             setTimeout(() => {
-                ptr.style.transform = `translate3d(-50%,0,0) rotate(${-bounce*.3}deg)`;
-                setTimeout(() => {
-                    ptr.style.transform = `translate3d(-50%,0,0)`;
-                }, 40);
-            }, 25);
-
+                ptr.style.transform = `translate3d(-50%,0,0) rotate(${-bounce*.25}deg)`;
+                setTimeout(() => ptr.style.transform = 'translate3d(-50%,0,0)', 35);
+            }, 20);
             playTick(speed);
-            if (speed > 0.3) haptic('light');
+            if (speed > 0.25) haptic('light');
         }
 
-        if (progress < 1) {
-            requestAnimationFrame(animate);
-        } else {
-            onSpinEnd(winIdx);
-        }
+        if (progress < 1) requestAnimationFrame(animate);
+        else onSpinEnd(winIdx);
     }
 
     requestAnimationFrame(animate);
@@ -1123,50 +1334,48 @@ function spinWheel(winIdx, e) {
 function onSpinEnd(winIdx) {
     isSpinning = false;
     ledsStop();
-
     ring.classList.remove('glow');
     energyRing.classList.remove('on');
-
-    // Подсветить выигравший сегмент
     ledsHighlight(winIdx);
-
     ptr.style.transform = 'translate3d(-50%,0,0)';
 
     const prize = PRIZES[winIdx];
     const isEpic = prize.rarity === 'epic';
     const isRare = prize.rarity === 'rare';
 
-    // Эффекты победы
     if (isEpic) {
-        flash.classList.add('gold');
+        flash.style.background = 'radial-gradient(circle at center,hsla(45 90% 70%/.18),transparent 70%)';
         flash.animate([{opacity:0},{opacity:1},{opacity:0}],{duration:500});
         burst.classList.add('on'); raysEl.classList.add('on');
         haptic('success');
         playWin('epic');
         fireConfetti(PERF.confetti * 2, true);
-        setTimeout(() => fireConfetti(PERF.confetti), 200);
-        if (navigator.vibrate) navigator.vibrate([100,50,200,50,300]);
+        setTimeout(() => fireConfetti(PERF.confetti), 180);
+        if (navigator.vibrate) navigator.vibrate([80,40,160,40,250]);
     } else if (isRare) {
-        flash.classList.add('gold');
+        flash.style.background = 'radial-gradient(circle at center,hsla(45 90% 70%/.12),transparent 70%)';
         flash.animate([{opacity:0},{opacity:.7},{opacity:0}],{duration:400});
         burst.classList.add('on'); raysEl.classList.add('on');
         haptic('success');
         playWin('rare');
-        fireConfetti(PERF.confetti * 1.5);
-        fireConfetti(Math.floor(PERF.confetti * .8), true);
+        fireConfetti(Math.floor(PERF.confetti * 1.4));
+        fireConfetti(Math.floor(PERF.confetti * .7), true);
     } else {
+        flash.style.background = `radial-gradient(circle at center,hsla(${H} 70% 80%/.1),transparent 70%)`;
         flash.animate([{opacity:0},{opacity:.3},{opacity:0}],{duration:250});
         haptic('med');
         playWin('common');
         fireConfetti(PERF.confetti);
     }
 
-    setTimeout(() => showModal(prize), isEpic ? 600 : isRare ? 500 : 250);
+    // Запускаем таймер (спин израсходован)
+    startCountdownToMidnight();
+    showSpinUsed();
+
+    setTimeout(() => showModal(prize), isEpic ? 550 : isRare ? 450 : 250);
     setTimeout(() => {
         tg.sendData(JSON.stringify({
-            action: 'wheel_result',
-            prize_id: prize.id,
-            prize_index: winIdx,
+            action:'wheel_result', prize_id:prize.id, prize_index:winIdx,
         }));
     }, 100);
 }
@@ -1174,7 +1383,7 @@ function onSpinEnd(winIdx) {
 /* =====================================================
    КНОПКА
    ===================================================== */
-async function onSpinClick(e) {
+async function onSpinClick() {
     if (isSpinning || !canSpin) return;
     canSpin = false;
     initAudio();
@@ -1182,7 +1391,7 @@ async function onSpinClick(e) {
     const result = await requestSpin();
     if (!result) { canSpin = true; return; }
 
-    spinWheel(result.prize_index, e);
+    spinWheel(result.prize_index);
 }
 
 btnSp.addEventListener('click', onSpinClick);
@@ -1198,6 +1407,9 @@ const rarityMeta = {
 
 function showModal(prize) {
     const m = rarityMeta[prize.rarity] || rarityMeta.common;
+    mEmoji.textContent = prize.emoji || '🎁';
+    mEmoji.style.animation = 'none';
+    requestAnimationFrame(() => { mEmoji.style.animation = ''; });
     mTag.textContent = m.tag;
     mTag.className = 'm-tag' + (m.tc ? ' ' + m.tc : '');
     mVal.textContent = prize.label;
@@ -1212,27 +1424,23 @@ function closeModal() {
     mOv.classList.remove('open');
     burst.classList.remove('on');
     raysEl.classList.remove('on');
-    flash.classList.remove('gold');
 }
 
 mBtn.addEventListener('click', closeModal);
 mOv.addEventListener('click', e => { if (e.target === mOv) closeModal(); });
 
 /* =====================================================
-   INIT & RESIZE
+   INIT
    ===================================================== */
 let resizeTimer;
 function handleResize() {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
+        resizeFxCanvas();
         if (!isSpinning) {
             const saved = currentAngle;
-            resizeFxCanvas();
-            initCv();
-            initLEDs();
+            initCv(); initLEDs();
             rotor.style.transform = `rotate(${saved}deg)`;
-        } else {
-            resizeFxCanvas();
         }
     }, 200);
 }
@@ -1244,14 +1452,7 @@ addEventListener('DOMContentLoaded', () => {
     checkCanSpin();
 });
 
-addEventListener('resize', handleResize, {passive: true});
-
-// Предотвращаем проблемы с overscroll в TG
-document.addEventListener('touchmove', e => {
-    if (e.target.closest('.m-ov') || e.target.closest('.main')) {
-        // Разрешаем скролл только если нужно
-    }
-}, {passive: true});
+addEventListener('resize', handleResize, {passive:true});
 </script>
 </body>
 </html>
